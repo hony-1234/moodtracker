@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="indigoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+  </defs>
+  <!-- Beautiful Rounded Squircle Background -->
+  <rect width="100" height="100" rx="24" fill="url(#indigoGrad)" />
+  <!-- Growing Seedling Motif -->
+  <g transform="translate(10, 10)">
+    <!-- Soil/Ground -->
+    <path d="M 25,65 Q 40,60 55,65" stroke="#a78bfa" stroke-width="4" stroke-linecap="round" fill="none" />
+    <!-- Main Stem -->
+    <path d="M 40,63 Q 38,40 46,20" stroke="#34d399" stroke-width="6" stroke-linecap="round" fill="none" />
+    <!-- Left Leaf -->
+    <path d="M 39,45 Q 22,35 28,25 Q 36,30 40,43" fill="#34d399" stroke="#34d399" stroke-width="1" />
+    <!-- Right Leaf -->
+    <path d="M 42,33 Q 58,23 56,13 Q 48,18 44,30" fill="#34d399" stroke="#34d399" stroke-width="1" />
+  </g>
+</svg>

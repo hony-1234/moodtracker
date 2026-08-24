@@ -1,0 +1,11 @@
+Searching for GCCPS, selectedClass, and safety in PushNotificationPanel.tsx...
+Line 35:   selectedClass: string;
+Line 38: export const PushNotificationPanel: React.FC<PushNotificationPanelProps> = ({ currentUser, selectedClass }) => {
+Line 94:       if (selectedClass === 'GCCPS') {
+Line 97:         const queryClasses = Array.from(new Set([selectedClass, 'GCCPS', ''])).filter((c) => typeof c === 'string' && c !== undefined && c !== null);
+Line 129:   }, [currentUser, selectedClass]);
+Line 236:         class: selectedClass // Link the subscription to the logged-in class
+Line 295:             body: '您好！這是一條測試預警推送通知。這代表您的設備與 GCCPS 即時情緒系統已完成連結！',
+Line 502:           {selectedClass === 'GCCPS' ? (
+Line 580:                   本班級（<strong>{selectedClass}班</strong>）已成功串接校方全局預警安全網絡，您<strong>無須手動輸入或維護</strong>任何 API 金鑰憑證。
+Line 585:                     本機裝置點選左側 <strong>「啟用並訂閱」</strong> 後，您將會<strong>僅接收</strong>來自於 <strong>{selectedClass}班</strong> 學生的異常情緒預警推送。

@@ -1,0 +1,52 @@
+{
+  "skills": {
+    "extension-to-functions-codebase": {
+      "source": "firebase/agent-skills",
+      "path": "skills/extension-to-functions-codebase"
+    },
+    "firebase-ai-logic-basics": {
+      "source": "firebase/agent-skills",
+      "path": "skills/firebase-ai-logic-basics"
+    },
+    "firebase-app-hosting-basics": {
+      "source": "firebase/agent-skills",
+      "path": "skills/firebase-app-hosting-basics"
+    },
+    "firebase-auth-basics": {
+      "source": "firebase/agent-skills",
+      "path": "skills/firebase-auth-basics"
+    },
+    "firebase-basics": {
+      "source": "firebase/agent-skills",
+      "path": "skills/firebase-basics"
+    },
+    "firebase-crashlytics": {
+      "source": "firebase/agent-skills",
+      "path": "skills/firebase-crashlytics"
+    },
+    "firebase-data-connect-basics": {
+      "source": "firebase/agent-skills",
+      "path": "skills/firebase-data-connect-basics"
+    },
+    "firebase-firestore": {
+      "source": "firebase/agent-skills",
+      "path": "skills/firebase-firestore"
+    },
+    "firebase-hosting-basics": {
+      "source": "firebase/agent-skills",
+      "path": "skills/firebase-hosting-basics"
+    },
+    "firebase-remote-config-basics": {
+      "source": "firebase/agent-skills",
+      "path": "skills/firebase-remote-config-basics"
+    },
+    "firebase-security-rules-auditor": {
+      "source": "firebase/agent-skills",
+      "path": "skills/firebase-security-rules-auditor"
+    },
+    "xcode-project-setup": {
+      "source": "firebase/agent-skills",
+      "path": "skills/xcode-project-setup"
+    }
+  }
+}

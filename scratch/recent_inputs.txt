@@ -1,0 +1,241 @@
+Total user inputs: 82
+
+--- USER INPUT 52 ---
+<USER_REQUEST>
+move the bubble upwards, try to improve the 2.5d model, make sure there are not empty spaces, 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T18:20:27+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 53 ---
+<USER_REQUEST>
+Continue
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T20:12:59+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 54 ---
+<USER_REQUEST>
+there are still empty gaps, work to make them complete
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T20:19:08+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 55 ---
+<USER_REQUEST>
+there are still gaps in between when it is moving, generate completed layers
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T20:47:14+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 56 ---
+<USER_REQUEST>
+there are still gaps in between when it is moving, generate completed layers
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T20:47:14+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 57 ---
+<USER_REQUEST>
+there are still gaps in between when it is moving, generate completed layers
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T20:47:14+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 58 ---
+<USER_REQUEST>
+the hands are connected to the face, detach the hands entirely from the face, stick the face back together
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:22:43+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 59 ---
+<USER_REQUEST>
+very close! some cheek still attached to the two fists, try to seprate the 2 bigger hearts from its face
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T22:29:44+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 60 ---
+<USER_REQUEST>
+very close! some cheek still attached to the two fists, try to seprate the 2 bigger hearts from its face
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T22:29:44+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 61 ---
+<USER_REQUEST>
+return the heart in the centre
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T22:53:55+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 62 ---
+<USER_REQUEST>
+restore image on the body 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T23:14:22+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 63 ---
+<USER_REQUEST>
+examine the orignal 信信, it looks different now
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T23:22:54+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 64 ---
+<USER_REQUEST>
+continue fixing until it looks like oringin
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T23:34:23+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 65 ---
+<USER_REQUEST>
+continue fixing until it looks like oringin
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T23:34:23+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 66 ---
+<USER_REQUEST>
+looks good, continue
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T23:55:23+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 67 ---
+<USER_REQUEST>
+Continue
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T07:07:18+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 68 ---
+<USER_REQUEST>
+Continue
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T07:07:18+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 69 ---
+<USER_REQUEST>
+continue working on 信信 mascot, try to work on completely detaching differetnt parts, make sure no empty space is shown when different parts move; try to give its eyes more animations other than blinking
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T07:10:26+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 70 ---
+<USER_REQUEST>
+continue working on 信信 mascot, try to work on completely detaching differetnt parts, make sure no empty space is shown when different parts move; try to give its eyes more animations other than blinking
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T07:10:26+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 71 ---
+<USER_REQUEST>
+implement
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T15:51:10+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 72 ---
+<USER_REQUEST>
+npm run dev
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T15:53:16+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 73 ---
+<USER_REQUEST>
+ activate expressive eye system automously , changing evry 10 seconds
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T15:56:24+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 74 ---
+<USER_REQUEST>
+make sure fire on head do not detach entirely, generate layers; his fist is still atached to some uncleand leftover on its head; the eyes aren't changing
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T15:58:24+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 75 ---
+<USER_REQUEST>
+no chage
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T16:02:36+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 76 ---
+<USER_REQUEST>
+continue on improving the live 2d mascot
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T16:04:51+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 77 ---
+<USER_REQUEST>
+continue upgrading 2.5 mascot
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T16:07:34+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 78 ---
+<USER_REQUEST>
+continue upgrading 2.5 mascot
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T16:07:34+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 79 ---
+<USER_REQUEST>
+ npm run dev
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T16:24:53+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 80 ---
+<USER_REQUEST>
+try to improve model
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T16:51:41+08:00.
+</ADDITIONAL_METADATA>
+
+--- USER INPUT 81 ---
+<USER_REQUEST>
+I meant the model for the 2.5d mascot
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T16:52:23+08:00.
+</ADDITIONAL_METADATA>

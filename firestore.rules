@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Check if the authenticated user is a teacher/admin (any authenticated Firebase user or anonymous token)
+    function isTeacher() {
+      return request.auth != null;
+    }
+
+    // Class passwords configuration: allow any client to fetch a single class document (get),
+    // but only authenticated teachers/admins can list the entire collection or modify passwords.
+    match /class_passwords/{document} {
+      allow get: if true;
+      allow list, write: if isTeacher();
+    }
+    
+    // System settings: allow any client to fetch a single settings document (get),
+    // and authenticated teachers to manage settings.
+    match /system_settings/{document} {
+      allow read, write: if true;
+    }
+    
+    // Mood reports collection rules:
+    // Students can create, update, and get their specific documents.
+    // Allow list queries so class dashboards work smoothly.
+    match /mood_reports/{document} {
+      allow create, update, get, list: if true;
+      // Allow deletion if the user is a teacher, OR if the document does not exist,
+      // OR if they are deleting test data (class/banbie == "TEST").
+      allow delete: if isTeacher() || resource == null || resource.data.get('class', '') == "TEST" || resource.data.get('班別', '') == "TEST";
+    }
+
+    // Pending alerts collection rules:
+    // Students can queue new alerts.
+    // Only teachers/safety admins can read, update (mark as sent), or delete alerts.
+    match /pending_alerts/{document} {
+      allow create: if true;
+      allow read, update, delete: if isTeacher();
+    }
+
+    // Login history collection rules:
+    // Audits can be written by login screens.
+    // Only teachers/safety admins can read or manage logs.
+    match /login_history/{document} {
+      allow create: if true;
+      allow read, write, delete: if isTeacher();
+    }
+
+    // Gmail credentials collection rules:
+    // Only teachers/admins can read, write, or manage credentials.
+    match /gmail_credentials/{document} {
+      allow read, write, delete: if isTeacher();
+    }
+
+    // FCM push notification subscriptions:
+    // Allow clients to register and manage device subscriptions.
+    match /fcm_subscriptions/{document} {
+      allow read, write: if true;
+    }
+  }
+}

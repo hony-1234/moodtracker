@@ -1,0 +1,18 @@
+{
+  "name": "心情加油站",
+  "short_name": "心情加油站",
+  "description": "天主教善導小學學生情緒健康與輔導管理系統",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8fafc",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

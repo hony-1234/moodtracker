@@ -1,0 +1,106 @@
+Total user inputs found: 45
+--- USER INPUT 0 ---
+Content: <USER_REQUEST>
+still can't see records of student comments
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-25T12:10:26+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 1 ---
+Content: <USER_REQUEST>
+still can't see anything, the student records are empty
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-25T12:23:16+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 2 ---
+Content: <USER_REQUEST>
+no sufficient permission when I use the delete test data button
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T15:12:11+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 3 ---
+Content: <USER_REQUEST>
+update warning system, only email when scoreing below 4 for 3 consecutive inputs; go through the entire comment database, learn if there is anything that can be updated and improved on the language detection system; ask me before updating
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T15:52:10+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 4 ---
+Content: <USER_REQUEST>
+execute
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T15:55:06+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 5 ---
+Content: <USER_REQUEST>
+do you have any suggestions how I could improve this website?
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T16:04:47+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 6 ---
+Content: <USER_REQUEST>
+any other suggestions?
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T16:06:29+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 7 ---
+Content: <USER_REQUEST>
+can you use nanobanana to create more images of mascots to implement to different  parts of the webpage e.g. background (let me check before implementing these pictures)
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T16:10:48+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 8 ---
+Content: <USER_REQUEST>
+regenerate these photos, use mascot photos in my file as reference to generate these pictures, the must resemble closely to our mascots!
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T16:13:50+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 9 ---
+Content: <USER_REQUEST>
+Mascot Home Banner mascots look different from the ones I uploaded
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T16:16:07+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 10 ---
+Content: <USER_REQUEST>
+execute
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T16:18:16+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 11 ---
+Content: <USER_REQUEST>
+use Refined Calming Mascot Background Pattern
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T16:22:16+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 12 ---
+Content: <USER_REQUEST>
+return to the previous version, where only one mascot will appear ata a time; I can't see background
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T16:26:20+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 13 ---
+Content: <USER_REQUEST>
+Update background picture, current one is good But I want it to include all 5 mascots;
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T16:31:42+08:00.
+</ADDITIONAL_METADATA>
+--- USER INPUT 14 ---
+Content: <USER_REQUEST>
+些些 堅堅 are not correct, they must be same as my picture
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T16:36:34+08:00.
+</ADDITIONAL_METADATA>
