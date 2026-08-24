@@ -1,12 +1,13 @@
 import React from 'react';
+import { getPublicAssetUrl } from '../../utils/assetHelper';
 
 export default function MascotWatermarkBackground() {
   const images = [
-    encodeURI('/學校圖檔/吉祥物/信信-01.png'),
-    encodeURI('/學校圖檔/吉祥物/些些_correct.png'),
-    encodeURI('/學校圖檔/吉祥物/尊重鳥圖(5).png'),
-    encodeURI('/學校圖檔/吉祥物/恩恩退地-01.png'),
-    encodeURI('/學校圖檔/吉祥物/堅堅_correct.png')
+    getPublicAssetUrl('/學校圖檔/吉祥物/信信-01.png'),
+    getPublicAssetUrl('/學校圖檔/吉祥物/些些_correct.png'),
+    getPublicAssetUrl('/學校圖檔/吉祥物/尊重鳥圖(5).png'),
+    getPublicAssetUrl('/學校圖檔/吉祥物/恩恩退地-01.png'),
+    getPublicAssetUrl('/學校圖檔/吉祥物/堅堅_correct.png')
   ];
 
   return (

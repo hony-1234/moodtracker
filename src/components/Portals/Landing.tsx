@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, useMotionTemplate } from 'motion/react';
 import { Shield, Sparkles, Heart, Volume2, VolumeX } from 'lucide-react';
+import { getPublicAssetUrl } from '../../utils/assetHelper';
 
 interface LandingProps {
   setViewState: (view: 'LANDING' | 'STUDENT_LOGIN' | 'STUDENT_DASHBOARD' | 'TEACHER_LOGIN' | 'TEACHER_DASHBOARD' | 'TEACHER_P1_3_BATCH') => void;
@@ -252,7 +253,7 @@ function SkeletalXinXin({ isWiggling, mascotX, mascotY, mouseX, mouseY, isHovere
       >
         {/* 1. Left Leg Layer (rendered behind skirt/body base with organic swaying, dancing, and parallax) */}
         <motion.img
-          src={encodeURI(`/學校圖檔/吉祥物/xinxin_left_leg_v7.png?v=${MASCOT_VERSION}`)}
+          src={getPublicAssetUrl(`/學校圖檔/吉祥物/xinxin_left_leg_v7.png?v=${MASCOT_VERSION}`)}
           alt="left leg"
           className="absolute"
           style={{
@@ -282,7 +283,7 @@ function SkeletalXinXin({ isWiggling, mascotX, mascotY, mouseX, mouseY, isHovere
 
         {/* 2. Right Leg Layer (rendered behind skirt/body base with organic swaying, dancing, and parallax) */}
         <motion.img
-          src={encodeURI(`/學校圖檔/吉祥物/xinxin_right_leg_v7.png?v=${MASCOT_VERSION}`)}
+          src={getPublicAssetUrl(`/學校圖檔/吉祥物/xinxin_right_leg_v7.png?v=${MASCOT_VERSION}`)}
           alt="right leg"
           className="absolute"
           style={{
@@ -312,7 +313,7 @@ function SkeletalXinXin({ isWiggling, mascotX, mascotY, mouseX, mouseY, isHovere
 
         {/* 3. Main Torso Body Base Layer (collar upwards to neck extended base and dress) */}
         <motion.img
-          src={encodeURI(`/學校圖檔/吉祥物/xinxin_body_base_v8.png?v=${MASCOT_VERSION}`)}
+          src={getPublicAssetUrl(`/學校圖檔/吉祥物/xinxin_body_base_v8.png?v=${MASCOT_VERSION}`)}
           alt="body"
           className="absolute left-0 top-0 w-full h-full"
           style={{ x: bodyX, y: bodyY }}
@@ -336,7 +337,7 @@ function SkeletalXinXin({ isWiggling, mascotX, mascotY, mouseX, mouseY, isHovere
         >
           {/* 4a. Fire Flame Layer (rendered behind her helmet inside the head block, creating organic lagging sway!) */}
           <motion.img
-            src={encodeURI(`/學校圖檔/吉祥物/xinxin_fire_v7.png?v=${MASCOT_VERSION}`)}
+            src={getPublicAssetUrl(`/學校圖檔/吉祥物/xinxin_fire_v7.png?v=${MASCOT_VERSION}`)}
             alt="fire flame"
             className="absolute"
             style={{
@@ -366,7 +367,7 @@ function SkeletalXinXin({ isWiggling, mascotX, mascotY, mouseX, mouseY, isHovere
 
           {/* 4b. Head Base Layer (helmet, hair, and face skin) */}
           <img
-            src={encodeURI(`/學校圖檔/吉祥物/xinxin_head_v8.png?v=${MASCOT_VERSION}`)}
+            src={getPublicAssetUrl(`/學校圖檔/吉祥物/xinxin_head_v8.png?v=${MASCOT_VERSION}`)}
             alt="head"
             className="absolute left-0 top-0 w-full h-full pointer-events-none"
           />
@@ -390,7 +391,7 @@ function SkeletalXinXin({ isWiggling, mascotX, mascotY, mouseX, mouseY, isHovere
               }}
             >
               <motion.img
-                src={encodeURI(`/學校圖檔/吉祥物/xinxin_left_eye_v7.png?v=${MASCOT_VERSION}`)}
+                src={getPublicAssetUrl(`/學校圖檔/吉祥物/xinxin_left_eye_v7.png?v=${MASCOT_VERSION}`)}
                 alt="left eye"
                 className="w-full h-full"
                 style={{ transformOrigin: "50% 50%" }}
@@ -447,7 +448,7 @@ function SkeletalXinXin({ isWiggling, mascotX, mascotY, mouseX, mouseY, isHovere
               }}
             >
               <motion.img
-                src={encodeURI(`/學校圖檔/吉祥物/xinxin_right_eye_v7.png?v=${MASCOT_VERSION}`)}
+                src={getPublicAssetUrl(`/學校圖檔/吉祥物/xinxin_right_eye_v7.png?v=${MASCOT_VERSION}`)}
                 alt="right eye"
                 className="w-full h-full"
                 style={{ transformOrigin: "50% 50%" }}
@@ -490,7 +491,7 @@ function SkeletalXinXin({ isWiggling, mascotX, mascotY, mouseX, mouseY, isHovere
 
         {/* 5. Left Hand Layer (rendered with custom parallax, outside head block so it doesn't rotate) */}
         <motion.img
-          src={encodeURI(`/學校圖檔/吉祥物/xinxin_left_hand_v7.png?v=${MASCOT_VERSION}`)}
+          src={getPublicAssetUrl(`/學校圖檔/吉祥物/xinxin_left_hand_v7.png?v=${MASCOT_VERSION}`)}
           alt="left hand"
           className="absolute"
           style={{
@@ -517,7 +518,7 @@ function SkeletalXinXin({ isWiggling, mascotX, mascotY, mouseX, mouseY, isHovere
 
         {/* 6. Right Hand Layer (rendered with custom parallax, outside head block so it doesn't rotate) */}
         <motion.img
-          src={encodeURI(`/學校圖檔/吉祥物/xinxin_right_hand_v7.png?v=${MASCOT_VERSION}`)}
+          src={getPublicAssetUrl(`/學校圖檔/吉祥物/xinxin_right_hand_v7.png?v=${MASCOT_VERSION}`)}
           alt="right hand"
           className="absolute"
           style={{
@@ -993,7 +994,7 @@ export default function Landing({ setViewState, setPrivacyModalVisible }: Landin
       <div className="mb-6 flex flex-col items-center justify-center">
         <div className="w-24 h-24 bg-white rounded-3xl p-3 shadow-md flex items-center justify-center border border-indigo-100/50 mb-3 relative overflow-hidden">
           <img
-            src={encodeURI("/學校圖檔/學校logo/LOGOCO_不起格.png")}
+            src={getPublicAssetUrl("/學校圖檔/學校logo/LOGOCO_不起格.png")}
             alt="天主教善導小學 校徽"
             className="w-20 h-24 object-contain"
             onError={(e) => {

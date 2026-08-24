@@ -1,5 +1,6 @@
 import React from 'react';
 import { Activity, HelpCircle, LogOut } from 'lucide-react';
+import { getPublicAssetUrl } from '../../utils/assetHelper';
 
 interface HeaderProps {
   viewState: string;
@@ -21,7 +22,7 @@ export default function Header({
       <div className="flex items-center space-x-3.5">
         <div className="relative flex-shrink-0 w-11 h-11 bg-indigo-50 rounded-xl overflow-hidden shadow-sm flex items-center justify-center border border-indigo-100">
           <img
-            src={encodeURI("/學校圖檔/學校logo/LOGOCO_不起格.png")}
+            src={getPublicAssetUrl("/學校圖檔/學校logo/LOGOCO_不起格.png")}
             alt="天主教善導小學 校徽"
             className="w-9 h-9 object-contain"
             onError={(e) => {
