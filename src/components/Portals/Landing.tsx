@@ -755,9 +755,9 @@ export default function Landing({ setViewState, setPrivacyModalVisible }: Landin
   // Persistent eye state machine tracking references to prevent race conditions and locking
   const expressiveIndexRef = useRef(0);
   const isExpressiveActiveRef = useRef(false);
-  const expressiveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const idleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const blinkTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const expressiveTimeoutRef = useRef<any>(null);
+  const idleTimeoutRef = useRef<any>(null);
+  const blinkTimeoutRef = useRef<any>(null);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);

@@ -27,7 +27,7 @@ export const FourRsStation: React.FC<FourRsStationProps> = ({ initialExpanded = 
 
   // Breathing Coach Timer Loop
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: any = null;
     if (isBreathing) {
       interval = setInterval(() => {
         setBreathingSeconds((prev) => {
