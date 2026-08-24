@@ -104,9 +104,9 @@ export const PushNotificationPanel: React.FC<PushNotificationPanelProps> = ({ cu
         );
       }
       const snap = await getDocs(q);
-      const subs = snap.docs.map((d) => ({
+      const subs: any[] = snap.docs.map((d) => ({
         id: d.id,
-        ...d.data()
+        ...(d.data() as any)
       }));
       setMySubscriptions(subs);
 
