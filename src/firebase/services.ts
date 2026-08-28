@@ -9,8 +9,82 @@ import {
   User,
   UserCredential
 } from 'firebase/auth';
-import { auth } from './config';
+import { auth, db } from './config';
+import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 import { OperationType, FirestoreErrorInfo } from '../types';
+
+export type MascotId = 'xinxin' | 'enen';
+
+export interface CampusMascotSettings {
+  activeMascot: MascotId;
+  updatedAt: string;
+  updatedBy?: string;
+}
+
+/**
+ * Get currently active campus mascot from Firestore / localStorage
+ */
+export const getActiveMascot = async (): Promise<MascotId> => {
+  try {
+    const docRef = doc(db, 'systemSettings', 'campusMascot');
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      const data = snap.data() as CampusMascotSettings;
+      if (data.activeMascot === 'xinxin' || data.activeMascot === 'enen') {
+        localStorage.setItem('gccps_active_mascot', data.activeMascot);
+        return data.activeMascot;
+      }
+    }
+  } catch (err) {
+    console.warn('Could not fetch mascot from Firestore, using local fallback:', err);
+  }
+  const local = localStorage.getItem('gccps_active_mascot');
+  return (local === 'xinxin' || local === 'enen') ? (local as MascotId) : 'enen';
+};
+
+/**
+ * Set currently active campus mascot in Firestore and localStorage
+ */
+export const setActiveMascot = async (mascotId: MascotId, userEmail?: string): Promise<void> => {
+  localStorage.setItem('gccps_active_mascot', mascotId);
+  try {
+    const docRef = doc(db, 'systemSettings', 'campusMascot');
+    await setDoc(docRef, {
+      activeMascot: mascotId,
+      updatedAt: new Date().toISOString(),
+      updatedBy: userEmail || auth.currentUser?.email || 'Teacher'
+    }, { merge: true });
+  } catch (err) {
+    console.error('Failed to update active mascot in Firestore:', err);
+  }
+};
+
+/**
+ * Subscribe in real-time to active campus mascot updates
+ */
+export const subscribeActiveMascot = (callback: (mascotId: MascotId) => void) => {
+  try {
+    const docRef = doc(db, 'systemSettings', 'campusMascot');
+    return onSnapshot(docRef, (snap) => {
+      if (snap.exists()) {
+        const data = snap.data() as CampusMascotSettings;
+        if (data.activeMascot === 'xinxin' || data.activeMascot === 'enen') {
+          localStorage.setItem('gccps_active_mascot', data.activeMascot);
+          callback(data.activeMascot);
+        }
+      }
+    }, (err) => {
+      console.warn('Mascot subscription error, falling back to local storage:', err);
+      const local = localStorage.getItem('gccps_active_mascot');
+      callback((local === 'xinxin' || local === 'enen') ? (local as MascotId) : 'enen');
+    });
+  } catch (e) {
+    const local = localStorage.getItem('gccps_active_mascot');
+    callback((local === 'xinxin' || local === 'enen') ? (local as MascotId) : 'enen');
+    return () => {};
+  }
+};
+
 
 /**
  * Maps Firebase Auth error codes to user-friendly messages in Traditional Chinese.

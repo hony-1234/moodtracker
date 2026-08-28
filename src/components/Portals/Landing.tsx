@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, useMotionTemplate } from 'motion/react';
 import { Shield, Sparkles, Heart, Volume2, VolumeX } from 'lucide-react';
 import { getPublicAssetUrl } from '../../utils/assetHelper';
+import { SkeletalEnEn } from './SkeletalEnEn';
+import { subscribeActiveMascot, MascotId } from '../../firebase/services';
 
 interface LandingProps {
   setViewState: (view: 'LANDING' | 'STUDENT_LOGIN' | 'STUDENT_DASHBOARD' | 'TEACHER_LOGIN' | 'TEACHER_DASHBOARD' | 'TEACHER_P1_3_BATCH') => void;
@@ -733,10 +735,18 @@ export class SoundSynth {
 
 export default function Landing({ setViewState, setPrivacyModalVisible }: LandingProps) {
   // States for 2.5D Mascot Card
+  const [activeMascot, setActiveMascot] = useState<MascotId>('enen');
   const [isHovered, setIsHovered] = useState(false);
   const [isWiggling, setIsWiggling] = useState(false);
   const [eyeState, setEyeState] = useState<EyeState>('normal');
   const [isMuted, setIsMuted] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = subscribeActiveMascot((m) => {
+      setActiveMascot(m);
+    });
+    return () => unsubscribe();
+  }, []);
 
   // Particle state for click feedback
   interface VisualParticle {
@@ -1126,7 +1136,7 @@ export default function Landing({ setViewState, setPrivacyModalVisible }: Landin
             <div className="z-10 flex flex-col items-center gap-1">
               <div className="inline-flex items-center gap-1.5 bg-violet-600/10 backdrop-blur-xs px-3 py-1 rounded-full border border-violet-200/50 shadow-3xs text-[10px] font-black text-violet-700">
                 <Sparkles className="w-3.5 h-3.5 animate-pulse text-violet-500" />
-                <span>今日校園大使</span>
+                <span>{activeMascot === 'enen' ? '今日校園大使：恩恩' : '今日校園大使：信信'}</span>
               </div>
             </div>
 
@@ -1160,15 +1170,27 @@ export default function Landing({ setViewState, setPrivacyModalVisible }: Landin
 
 
             {/* Character Mascot Layer */}
-            <SkeletalXinXin 
-              isWiggling={isWiggling} 
-              mascotX={mascotX} 
-              mascotY={mascotY} 
-              mouseX={x}
-              mouseY={y}
-              isHovered={isHovered}
-              eyeState={eyeState}
-            />
+            {activeMascot === 'enen' ? (
+              <SkeletalEnEn 
+                isWiggling={isWiggling} 
+                mascotX={mascotX} 
+                mascotY={mascotY} 
+                mouseX={x}
+                mouseY={y}
+                isHovered={isHovered}
+                eyeState={eyeState}
+              />
+            ) : (
+              <SkeletalXinXin 
+                isWiggling={isWiggling} 
+                mascotX={mascotX} 
+                mascotY={mascotY} 
+                mouseX={x}
+                mouseY={y}
+                isHovered={isHovered}
+                eyeState={eyeState}
+              />
+            )}
 
             {/* Click CTA Indicator */}
             <div className="z-10 bg-white/80 backdrop-blur-xs px-4 py-2 rounded-2xl border border-violet-100 shadow-3xs text-xs font-black text-violet-700 transition-colors hover:bg-white">

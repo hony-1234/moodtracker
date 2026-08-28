@@ -18,7 +18,7 @@ export default function Header({
   handleLogout,
 }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-[#E2E8F0] px-4 md:px-8 py-3.5 flex items-center justify-between">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E2E8F0]/80 px-4 md:px-8 py-3.5 flex items-center justify-between shadow-2xs">
       <div className="flex items-center space-x-3.5">
         <div className="relative flex-shrink-0 w-11 h-11 bg-indigo-50 rounded-xl overflow-hidden shadow-sm flex items-center justify-center border border-indigo-100">
           <img

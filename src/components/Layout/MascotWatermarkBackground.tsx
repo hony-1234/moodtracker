@@ -2,37 +2,20 @@ import React from 'react';
 import { getPublicAssetUrl } from '../../utils/assetHelper';
 
 export default function MascotWatermarkBackground() {
-  const images = [
-    getPublicAssetUrl('/學校圖檔/吉祥物/信信-01.png'),
-    getPublicAssetUrl('/學校圖檔/吉祥物/些些_correct.png'),
-    getPublicAssetUrl('/學校圖檔/吉祥物/尊重鳥圖(5).png'),
-    getPublicAssetUrl('/學校圖檔/吉祥物/恩恩退地-01.png'),
-    getPublicAssetUrl('/學校圖檔/吉祥物/堅堅_correct.png')
-  ];
-
   return (
-    <div className="fixed inset-0 z-[-10] pointer-events-none select-none overflow-hidden opacity-[0.06] sm:opacity-[0.08]">
-      {/* 
-        We create a slightly larger grid container, offset and rotated by -12 degrees 
-        to create a high-end, school-branded watermark wallpaper effect.
-      */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-x-16 gap-y-24 sm:gap-x-24 sm:gap-y-36 p-12 w-[130vw] h-[130vh] -rotate-12 -translate-x-[15vw] -translate-y-[15vh]">
-        {Array.from({ length: 25 }).map((_, index) => {
-          const imgUrl = images[index % images.length];
-          return (
-            <div key={index} className="flex items-center justify-center">
-              <img 
-                src={imgUrl} 
-                alt="" 
-                className="w-20 h-20 sm:w-28 sm:h-28 object-contain filter drop-shadow-xs" 
-                onError={(e) => {
-                  (e.target as HTMLElement).style.display = 'none';
-                }}
-              />
-            </div>
-          );
-        })}
-      </div>
+    <div className="fixed inset-0 z-[-10] pointer-events-none select-none overflow-hidden">
+      {/* Primary Campus Illustration Backdrop */}
+      <img
+        src={getPublicAssetUrl('/學校圖檔/school_backdrop.jpg')}
+        alt="天主教善導小學 校園全景底圖"
+        className="w-full h-full object-cover object-center filter brightness-[1.01] contrast-[1.02]"
+        onError={(e) => {
+          (e.target as HTMLElement).style.display = 'none';
+        }}
+      />
+      {/* Soft translucent wash overlay to ensure all text and cards maintain peak clarity */}
+      <div className="absolute inset-0 bg-white/10 backdrop-blur-[0.5px]" />
     </div>
   );
 }
+

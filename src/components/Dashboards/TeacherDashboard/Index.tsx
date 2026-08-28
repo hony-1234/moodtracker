@@ -3,8 +3,10 @@ import { AnimatePresence, motion } from 'motion/react';
 import { 
   Shield, Sliders, Trash2, AlertCircle, CheckCircle, 
   AlertTriangle, FileText, Activity, Key, Clock, 
-  Download, Upload, Bell
+  Download, Upload, Bell, Sparkles
 } from 'lucide-react';
+import { getPublicAssetUrl } from '../../../utils/assetHelper';
+import { getActiveMascot, setActiveMascot, subscribeActiveMascot, MascotId } from '../../../firebase/services';
 
 // Child components
 import { ReportList } from './ReportList';
@@ -190,6 +192,24 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
     }
   }, [gmailCredentials]);
 
+  // Mascot state
+  const [currentMascot, setCurrentMascot] = useState<MascotId>('enen');
+  const [mascotUpdateMsg, setMascotUpdateMsg] = useState<string | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = subscribeActiveMascot((m) => {
+      setCurrentMascot(m);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleSelectMascot = async (mascotId: MascotId) => {
+    setCurrentMascot(mascotId);
+    await setActiveMascot(mascotId, currentUser?.email || 'Teacher');
+    setMascotUpdateMsg(mascotId === 'enen' ? '✨ 已成功切換今日校園大使為「恩恩天使」！全校首頁即時生效' : '🔥 已成功切換今日校園大使為「信信火焰」！全校首頁即時生效');
+    setTimeout(() => setMascotUpdateMsg(null), 4000);
+  };
+
   return (
     <motion.div
       key="teacher_dashboard"
@@ -260,9 +280,9 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
         return null;
       })()}
 
-      {/* === GCCPS SAFETY MONITOR: TODAY'S TRACKING === */}
+      {/* === GCCPS SAFETY MONITOR: TODAY'S TRACKING & CAMPUS MASCOT (全校心情登記追蹤及安全中心) === */}
       {selectedClass === 'GCCPS' && (
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4 font-sans">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-5 font-sans">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <h3 className="text-sm font-black text-slate-800 flex items-center gap-2">
@@ -270,7 +290,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                 👑 全校心情登記追蹤及安全中心 (今日：{todayStr})
               </h3>
               <p className="text-xs text-slate-400 mt-1 font-semibold">
-                實時排查今日尚無登記心情記錄的班別，以提醒導師跟進登錄。
+                實時排查今日尚無登記心情記錄的班別，以提醒導師跟進登錄，並管理校園全局設定。
               </p>
             </div>
             
@@ -318,6 +338,112 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
               完美！全校 24 個學制班級今日均已順利、全員完成心情登記同步！
             </div>
           )}
+
+          {/* Integrated Campus Mascot Controller inside Safety Centre */}
+          <div className="border-t border-slate-150 pt-5 space-y-3">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+              <div>
+                <h4 className="text-xs font-black text-slate-800 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-violet-600 animate-pulse" />
+                  🌟 今日校園大使選擇與設定 (Campus Live 2D Mascot)
+                </h4>
+                <p className="text-[11px] text-slate-500 mt-0.5 font-semibold">
+                  全校管理端可在此即時切換學生登入首頁展示的 Live 2.5D 動態校園大使角色。
+                </p>
+              </div>
+              {mascotUpdateMsg && (
+                <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full animate-fade-in shadow-3xs">
+                  {mascotUpdateMsg}
+                </span>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
+              {/* Mascot Option 1: 恩恩天使 */}
+              <div className={`p-3.5 rounded-2xl border-2 transition-all flex items-center gap-3.5 ${
+                currentMascot === 'enen' 
+                  ? 'border-pink-500 bg-pink-50/60 shadow-sm ring-2 ring-pink-400/20' 
+                  : 'border-slate-200 bg-white hover:border-slate-300'
+              }`}>
+                <div className="w-16 h-16 rounded-xl bg-white border border-slate-200 p-1 shrink-0 overflow-hidden flex items-center justify-center shadow-2xs">
+                  <img 
+                    src={getPublicAssetUrl("/學校圖檔/吉祥物/enen_full.png")} 
+                    alt="恩恩天使" 
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h5 className="text-xs font-black text-slate-800">恩恩 (EnEn) - 善導恩寵天使</h5>
+                    {currentMascot === 'enen' && (
+                      <span className="bg-pink-600 text-white text-[9.5px] font-black px-2 py-0.5 rounded-full">
+                        當前上線中
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-2 font-medium">
+                    ✨ 靈動天使拍翼、麵包聖體光芒守護、靈巧眨眼與歡快搖擺，象徵愛德與感恩。
+                  </p>
+                  <div className="mt-2">
+                    {currentMascot === 'enen' ? (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-lg bg-pink-100 text-pink-800 border border-pink-200 shadow-3xs">
+                        <CheckCircle className="w-3 h-3 text-pink-600" /> 已設為校園大使
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => handleSelectMascot('enen')}
+                        className="text-[11px] font-bold px-3 py-1 rounded-lg bg-white hover:bg-pink-50 text-pink-700 border border-pink-300 hover:border-pink-400 transition cursor-pointer active:scale-95 shadow-3xs flex items-center gap-1.5"
+                      >
+                        <span>🔄 切換為此大使</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Mascot Option 2: 信信火焰 */}
+              <div className={`p-3.5 rounded-2xl border-2 transition-all flex items-center gap-3.5 ${
+                currentMascot === 'xinxin' 
+                  ? 'border-amber-500 bg-amber-50/60 shadow-sm ring-2 ring-amber-400/20' 
+                  : 'border-slate-200 bg-white hover:border-slate-300'
+              }`}>
+                <div className="w-16 h-16 rounded-xl bg-white border border-slate-200 p-1 shrink-0 overflow-hidden flex items-center justify-center shadow-2xs">
+                  <img 
+                    src={getPublicAssetUrl("/學校圖檔/吉祥物/信信-01.png")} 
+                    alt="信信火焰" 
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h5 className="text-xs font-black text-slate-800">信信 (XinXin) - 堅毅信念火焰</h5>
+                    {currentMascot === 'xinxin' && (
+                      <span className="bg-amber-600 text-white text-[9.5px] font-black px-2 py-0.5 rounded-full">
+                        當前上線中
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-2 font-medium">
+                    🔥 堅毅信念之火、手部互動肢體、立體重力感應眼神，象徵信德與勇氣。
+                  </p>
+                  <div className="mt-2">
+                    {currentMascot === 'xinxin' ? (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-lg bg-amber-100 text-amber-800 border border-amber-200 shadow-3xs">
+                        <CheckCircle className="w-3 h-3 text-amber-600" /> 已設為校園大使
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => handleSelectMascot('xinxin')}
+                        className="text-[11px] font-bold px-3 py-1 rounded-lg bg-white hover:bg-amber-50 text-amber-700 border border-amber-300 hover:border-amber-400 transition cursor-pointer active:scale-95 shadow-3xs flex items-center gap-1.5"
+                      >
+                        <span>🔄 切換為此大使</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
