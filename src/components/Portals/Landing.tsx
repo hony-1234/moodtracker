@@ -994,7 +994,7 @@ export default function Landing({ setViewState, setPrivacyModalVisible }: Landin
       <div className="mb-6 flex flex-col items-center justify-center">
         <div className="w-24 h-24 bg-white rounded-3xl p-3 shadow-md flex items-center justify-center border border-indigo-100/50 mb-3 relative overflow-hidden">
           <img
-            src={getPublicAssetUrl("/學校圖檔/學校logo/LOGOCO_不起格.png")}
+            src={getPublicAssetUrl("/學校圖檔/學校logo/school_logo.png")}
             alt="天主教善導小學 校徽"
             className="w-20 h-24 object-contain"
             onError={(e) => {

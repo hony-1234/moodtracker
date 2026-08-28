@@ -121,7 +121,7 @@ export default function TeacherLogin({
       <div className="bg-amber-600 px-6 py-6 text-white text-center flex flex-col items-center">
         <div className="w-16 h-16 bg-white rounded-2xl p-1.5 shadow-md flex items-center justify-center border border-white/10 mb-2 relative overflow-hidden">
           <img
-            src={getPublicAssetUrl("/學校圖檔/學校logo/LOGOCO_不起格.png")}
+            src={getPublicAssetUrl("/學校圖檔/學校logo/school_logo.png")}
             alt="天主教善導小學 校徽"
             className="w-14 h-16 object-contain"
             onError={(e) => {
