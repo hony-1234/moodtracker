@@ -6,7 +6,22 @@ import { defineConfig } from 'vite';
 export default defineConfig(() => {
   return {
     base: './',
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      {
+        name: 'clear-site-data-middleware',
+        configureServer(server) {
+          server.middlewares.use((req, res, next) => {
+            // If requested with ?clean or ?clear_sw or /clean-sw, tell browser to purge all service workers and caches
+            if (req.url && (req.url.includes('clean') || req.url.includes('clear_sw') || req.url.includes('reset'))) {
+              res.setHeader('Clear-Site-Data', '"cache", "storage"');
+            }
+            next();
+          });
+        },
+      },
+      react(),
+      tailwindcss()
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
@@ -36,6 +51,9 @@ export default defineConfig(() => {
       },
     },
     server: {
+      port: 5173,
+      host: '0.0.0.0',
+      cors: true,
       proxy: {
         '/api': {
           target: 'https://moodtracker-app-d6b42.web.app',

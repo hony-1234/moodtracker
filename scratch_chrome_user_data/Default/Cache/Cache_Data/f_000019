@@ -1,0 +1,283 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/@fs/C:\\Users\\Jerry\\.gemini\\antigravity\\scratch\\moodtracker\\src\\components\\Dashboards\\StudentDashboard\\ReportCard.tsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=83d097c1"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer
+} from "/node_modules/.vite/deps/recharts.js?v=83d097c1";
+import { MOOD_EMOJIS, getMoodColor } from "/src/constants/moodConstants.ts";
+import { getUnixTime, getDisplayDate } from "/src/utils/dateHelpers.ts";
+export const ReportCard = ({
+  reports,
+  selectedClass,
+  activeStudentNumber,
+  showStudentReport,
+  setShowStudentReport,
+  hideToggleButton = false
+}) => {
+  return /* @__PURE__ */ jsxDEV("div", { className: `${hideToggleButton ? "mt-2 pt-0" : "mt-8 pt-6 border-t border-slate-100"} text-left font-sans`, children: [
+    !hideToggleButton && /* @__PURE__ */ jsxDEV("div", { className: "flex justify-center mb-6", children: /* @__PURE__ */ jsxDEV(
+      "button",
+      {
+        type: "button",
+        onClick: () => setShowStudentReport(!showStudentReport),
+        className: "bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-6 py-3 rounded-xl font-bold text-sm tracking-wide transition-all shadow-3xs cursor-pointer",
+        children: showStudentReport ? "🙈 隱藏我的個人心情成長報告" : "📊 查看個人情緒成長報告 & 心聲回顧"
+      },
+      void 0,
+      false,
+      {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+        lineNumber: 35,
+        columnNumber: 11
+      },
+      this
+    ) }, void 0, false, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+      lineNumber: 34,
+      columnNumber: 7
+    }, this),
+    (showStudentReport || hideToggleButton) && (() => {
+      const last30Entries = reports.filter((r) => {
+        const rClass = (r.class || r.班別 || "").toUpperCase();
+        const rStudentNo = String(r.studentNumber || r.學號 || "");
+        const rDate = getUnixTime(r);
+        return rClass === selectedClass.toUpperCase() && rStudentNo === String(activeStudentNumber) && rDate >= Date.now() - 30 * 24 * 60 * 60 * 1e3;
+      }).sort((a, b) => getUnixTime(a) - getUnixTime(b));
+      const studentComments = last30Entries.map((r) => ({
+        date: getDisplayDate(r),
+        comment: String(r.comment || r.有事情想向老師分享 || "").trim(),
+        mood: parseInt(r.moodScore || r.心情指數 || "5")
+      })).filter((item) => item.comment !== "");
+      let avgMood = 0;
+      const validLast30 = last30Entries.map((r) => {
+        const val = r.moodScore || r.心情指數;
+        return val === "N/A" ? null : parseInt(val);
+      }).filter((v) => v !== null && !isNaN(v));
+      if (validLast30.length > 0) {
+        const sum = validLast30.reduce((acc, score) => acc + score, 0);
+        avgMood = parseFloat((sum / validLast30.length).toFixed(1));
+      }
+      return /* @__PURE__ */ jsxDEV("div", { className: "space-y-6", children: [
+        /* @__PURE__ */ jsxDEV("div", { className: "bg-amber-50/70 border border-amber-100 rounded-xl p-5", children: [
+          /* @__PURE__ */ jsxDEV("h4", { className: "text-sm font-black text-amber-800 mb-2", children: "💡 溫馨心情絮語" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+            lineNumber: 80,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "text-xs text-amber-700 leading-relaxed font-semibold", children: last30Entries.length >= 3 ? /* @__PURE__ */ jsxDEV("span", { children: [
+            "🍎 ",
+            /* @__PURE__ */ jsxDEV("b", { children: "「做的很好，你已經持續記錄一致的心情！」" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+              lineNumber: 83,
+              columnNumber: 26
+            }, this),
+            " 一點一滴記下自己的感受是照顧心靈的最佳方式。有些情緒可能微風細雨，有些則狂風暴雨。請記得：每種心情都是合理的，你永遠值得溫柔以待！"
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+            lineNumber: 83,
+            columnNumber: 17
+          }, this) : /* @__PURE__ */ jsxDEV("span", { children: "✨ 感謝你今天的記錄！寫下真實的感受是自我關懷最美好的起步。不管世界如何喧囂，這裡永遠都是你傾訴心聲的安靜港灣。放慢腳步，每一天你都在成長！" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+            lineNumber: 85,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+            lineNumber: 81,
+            columnNumber: 15
+          }, this),
+          avgMood > 0 && /* @__PURE__ */ jsxDEV("div", { className: "mt-3 text-xs font-bold text-amber-800", children: [
+            "🏫 最近 7 次登記平均心情高達：",
+            /* @__PURE__ */ jsxDEV("span", { className: "text-emerald-300 bg-emerald-950 px-1.5 py-0.5 rounded font-black", children: [
+              avgMood,
+              " 分"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+              lineNumber: 90,
+              columnNumber: 37
+            }, this),
+            " (滿分 10 分)",
+            avgMood >= 6 && " —— 近日心情明媚開朗，繼續保持這份正能量哦！",
+            avgMood < 6 && avgMood >= 4 && " —— 內心好像有一點微風掠過，適時做做深呼吸放鬆一下吧。",
+            avgMood < 4 && " —— 近期感到有點沉重嗎？老師和社工随時在，我們特別想聽聽你的心聲。"
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+            lineNumber: 89,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+          lineNumber: 79,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { children: [
+          /* @__PURE__ */ jsxDEV("h4", { className: "text-sm font-black text-slate-700 mb-2 flex items-center justify-between", children: [
+            /* @__PURE__ */ jsxDEV("span", { children: "📈 心情指數走勢 (最近 30 天)" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+              lineNumber: 101,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { className: "text-[10px] text-slate-400 font-semibold font-sans", children: "歷史登記波形" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+              lineNumber: 102,
+              columnNumber: 17
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+            lineNumber: 100,
+            columnNumber: 15
+          }, this),
+          last30Entries.length === 0 ? /* @__PURE__ */ jsxDEV("div", { className: "text-center py-6 bg-slate-50 rounded-xl text-xs text-slate-400 font-medium font-semibold font-sans", children: "暫無近 30 日歷史心情紀錄，再次登錄填發後開始累積！" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+            lineNumber: 105,
+            columnNumber: 15
+          }, this) : /* @__PURE__ */ jsxDEV("div", { className: "h-48 bg-slate-50 p-4 rounded-xl border border-slate-100", children: /* @__PURE__ */ jsxDEV(ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxDEV(LineChart, { data: last30Entries.map((e) => ({
+            date: getDisplayDate(e).split("/").slice(1).join("/"),
+            mood: parseInt(e.moodScore || e.心情指數 || "5")
+          })), children: [
+            /* @__PURE__ */ jsxDEV(CartesianGrid, { strokeDasharray: "3 3", stroke: "#e2e8f0" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+              lineNumber: 115,
+              columnNumber: 23
+            }, this),
+            /* @__PURE__ */ jsxDEV(XAxis, { dataKey: "date", stroke: "#94a3b8", fontSize: 10 }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+              lineNumber: 116,
+              columnNumber: 23
+            }, this),
+            /* @__PURE__ */ jsxDEV(YAxis, { domain: [0, 10], stroke: "#94a3b8", fontSize: 10 }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+              lineNumber: 117,
+              columnNumber: 23
+            }, this),
+            /* @__PURE__ */ jsxDEV(Tooltip, { contentStyle: { borderRadius: "12px", fontSize: "12px" } }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+              lineNumber: 118,
+              columnNumber: 23
+            }, this),
+            /* @__PURE__ */ jsxDEV(Line, { type: "monotone", dataKey: "mood", stroke: "#1c5a80", strokeWidth: 3, dot: { r: 4 }, activeDot: { r: 6 } }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+              lineNumber: 119,
+              columnNumber: 23
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+            lineNumber: 111,
+            columnNumber: 21
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+            lineNumber: 110,
+            columnNumber: 19
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+            lineNumber: 109,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+          lineNumber: 99,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { children: [
+          /* @__PURE__ */ jsxDEV("h4", { className: "text-sm font-black text-slate-700 mb-2", children: "💬 歷史悄悄話留言備份" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+            lineNumber: 128,
+            columnNumber: 15
+          }, this),
+          studentComments.length === 0 ? /* @__PURE__ */ jsxDEV("div", { className: "text-center py-6 bg-slate-50 rounded-xl text-xs text-slate-400 font-medium italic font-semibold font-sans", children: "最近無向老師提交過悄悄話，不需擔心，每一筆正常登記都記錄完備。" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+            lineNumber: 130,
+            columnNumber: 15
+          }, this) : /* @__PURE__ */ jsxDEV("div", { className: "space-y-2 max-h-40 overflow-y-auto pr-1", children: studentComments.map(
+            (item, idx) => /* @__PURE__ */ jsxDEV("div", { className: "p-3 bg-slate-50 border border-slate-100 rounded-lg text-xs leading-relaxed", children: [
+              /* @__PURE__ */ jsxDEV("div", { className: "flex justify-between items-center mb-1 font-sans", children: [
+                /* @__PURE__ */ jsxDEV("span", { className: "font-extrabold text-slate-500", children: [
+                  item.date,
+                  " 的分享："
+                ] }, void 0, true, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+                  lineNumber: 138,
+                  columnNumber: 25
+                }, this),
+                /* @__PURE__ */ jsxDEV("span", { className: "font-black text-[10px]", style: { color: getMoodColor(item.mood) }, children: [
+                  "當時心情：",
+                  item.mood,
+                  " 分 ",
+                  MOOD_EMOJIS[item.mood]?.emoji
+                ] }, void 0, true, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+                  lineNumber: 139,
+                  columnNumber: 25
+                }, this)
+              ] }, void 0, true, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+                lineNumber: 137,
+                columnNumber: 23
+              }, this),
+              /* @__PURE__ */ jsxDEV("p", { className: "text-slate-700 font-semibold italic font-sans", children: [
+                "「 ",
+                item.comment,
+                " 」"
+              ] }, void 0, true, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+                lineNumber: 143,
+                columnNumber: 23
+              }, this)
+            ] }, idx, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+              lineNumber: 136,
+              columnNumber: 17
+            }, this)
+          ) }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+            lineNumber: 134,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+          lineNumber: 127,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+        lineNumber: 77,
+        columnNumber: 11
+      }, this);
+    })()
+  ] }, void 0, true, {
+    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx",
+    lineNumber: 32,
+    columnNumber: 5
+  }, this);
+};
+_c = ReportCard;
+var _c;
+$RefreshReg$(_c, "ReportCard");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) {
+  return RefreshRuntime.register(type, "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/ReportCard.tsx " + id);
+}
+function $RefreshSig$() {
+  return RefreshRuntime.createSignatureFunctionForTransform();
+}
+
+//# sourceMappingURL=data:application/json;base64,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QUFBO0FBQUEsaUJBRUEsSUFFQSx1QkFBQyxTQUFJLFdBQVUsMkNBQ1poQiwwQkFBZ0JDO0FBQUFBLFlBQUksQ0FBQ1MsTUFBTW1CLFFBQzFCLHVCQUFDLFNBQWMsV0FBVSw4RUFDdkI7QUFBQSxxQ0FBQyxTQUFJLFdBQVUsb0RBQ2I7QUFBQSx1Q0FBQyxVQUFLLFdBQVUsaUNBQWlDbkI7QUFBQUEsdUJBQUtSO0FBQUFBLGtCQUFLO0FBQUEscUJBQTNEO0FBQUE7QUFBQTtBQUFBO0FBQUEsdUJBQWdFO0FBQUEsZ0JBQ2hFLHVCQUFDLFVBQUssV0FBVSwwQkFBeUIsT0FBTyxFQUFFNEIsT0FBT3pELGFBQWFxQyxLQUFLSixJQUFJLEVBQUUsR0FBRztBQUFBO0FBQUEsa0JBQzVFSSxLQUFLSjtBQUFBQSxrQkFBSztBQUFBLGtCQUFJbEMsWUFBWXNDLEtBQUtKLElBQUksR0FBR3lCO0FBQUFBLHFCQUQ5QztBQUFBO0FBQUE7QUFBQTtBQUFBLHVCQUVBO0FBQUEsbUJBSkY7QUFBQTtBQUFBO0FBQUE7QUFBQSxxQkFLQTtBQUFBLGNBQ0EsdUJBQUMsT0FBRSxXQUFVLGlEQUFnRDtBQUFBO0FBQUEsZ0JBQUdyQixLQUFLUDtBQUFBQSxnQkFBUTtBQUFBLG1CQUE3RTtBQUFBO0FBQUE7QUFBQTtBQUFBLHFCQUErRTtBQUFBLGlCQVB2RTBCLEtBQVY7QUFBQTtBQUFBO0FBQUE7QUFBQSxtQkFRQTtBQUFBLFVBQ0QsS0FYSDtBQUFBO0FBQUE7QUFBQTtBQUFBLGlCQVlBO0FBQUEsYUFuQko7QUFBQTtBQUFBO0FBQUE7QUFBQSxlQXFCQTtBQUFBLFdBdkVGO0FBQUE7QUFBQTtBQUFBO0FBQUEsYUF3RUE7QUFBQSxJQUVKLEdBQUc7QUFBQSxPQXZITDtBQUFBO0FBQUE7QUFBQTtBQUFBLFNBd0hBO0FBRUo7QUFBRUcsS0FuSVd4RDtBQUFxQyxJQUFBd0Q7QUFBQSxhQUFBQSxJQUFBIiwibmFtZXMiOlsiTGluZUNoYXJ0IiwiTGluZSIsIlhBeGlzIiwiWUF4aXMiLCJDYXJ0ZXNpYW5HcmlkIiwiVG9vbHRpcCIsIlJlc3BvbnNpdmVDb250YWluZXIiLCJNT09EX0VNT0pJUyIsImdldE1vb2RDb2xvciIsImdldFVuaXhUaW1lIiwiZ2V0RGlzcGxheURhdGUiLCJSZXBvcnRDYXJkIiwicmVwb3J0cyIsInNlbGVjdGVkQ2xhc3MiLCJhY3RpdmVTdHVkZW50TnVtYmVyIiwic2hvd1N0dWRlbnRSZXBvcnQiLCJzZXRTaG93U3R1ZGVudFJlcG9ydCIsImhpZGVUb2dnbGVCdXR0b24iLCJsYXN0MzBFbnRyaWVzIiwiZmlsdGVyIiwiciIsInJDbGFzcyIsImNsYXNzIiwi54+t5YilIiwidG9VcHBlckNhc2UiLCJyU3R1ZGVudE5vIiwiU3RyaW5nIiwic3R1ZGVudE51bWJlciIsIuWtuOiZnyIsInJEYXRlIiwiRGF0ZSIsIm5vdyIsInNvcnQiLCJhIiwiYiIsInN0dWRlbnRDb21tZW50cyIsIm1hcCIsImRhdGUiLCJjb21tZW50Iiwi5pyJ5LqL5oOF5oOz5ZCR6ICB5bir5YiG5LqrIiwidHJpbSIsIm1vb2QiLCJwYXJzZUludCIsIm1vb2RTY29yZSIsIuW/g+aDheaMh+aVuCIsIml0ZW0iLCJhdmdNb29kIiwidmFsaWRMYXN0MzAiLCJ2YWwiLCJ2IiwiaXNOYU4iLCJsZW5ndGgiLCJzdW0iLCJyZWR1Y2UiLCJhY2MiLCJzY29yZSIsInBhcnNlRmxvYXQiLCJ0b0ZpeGVkIiwiZSIsInNwbGl0Iiwic2xpY2UiLCJqb2luIiwiYm9yZGVyUmFkaXVzIiwiZm9udFNpemUiLCJpZHgiLCJjb2xvciIsImVtb2ppIiwiX2MiXSwiaWdub3JlTGlzdCI6W10sInNvdXJjZXMiOlsiUmVwb3J0Q2FyZC50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcclxuaW1wb3J0IHsgXHJcbiAgTGluZUNoYXJ0LCBcclxuICBMaW5lLCBcclxuICBYQXhpcywgXHJcbiAgWUF4aXMsIFxyXG4gIENhcnRlc2lhbkdyaWQsIFxyXG4gIFRvb2x0aXAsIFxyXG4gIFJlc3BvbnNpdmVDb250YWluZXIgXHJcbn0gZnJvbSAncmVjaGFydHMnO1xyXG5pbXBvcnQgeyBNT09EX0VNT0pJUywgZ2V0TW9vZENvbG9yIH0gZnJvbSAnLi4vLi4vLi4vY29uc3RhbnRzL21vb2RDb25zdGFudHMnO1xyXG5pbXBvcnQgeyBnZXRVbml4VGltZSwgZ2V0RGlzcGxheURhdGUgfSBmcm9tICcuLi8uLi8uLi91dGlscy9kYXRlSGVscGVycyc7XHJcblxyXG5pbnRlcmZhY2UgUmVwb3J0Q2FyZFByb3BzIHtcclxuICByZXBvcnRzOiBhbnlbXTtcclxuICBzZWxlY3RlZENsYXNzOiBzdHJpbmc7XHJcbiAgYWN0aXZlU3R1ZGVudE51bWJlcjogc3RyaW5nIHwgbnVtYmVyO1xyXG4gIHNob3dTdHVkZW50UmVwb3J0OiBib29sZWFuO1xyXG4gIHNldFNob3dTdHVkZW50UmVwb3J0OiAoczogYm9vbGVhbikgPT4gdm9pZDtcclxuICBoaWRlVG9nZ2xlQnV0dG9uPzogYm9vbGVhbjtcclxufVxyXG5cclxuZXhwb3J0IGNvbnN0IFJlcG9ydENhcmQ6IFJlYWN0LkZDPFJlcG9ydENhcmRQcm9wcz4gPSAoe1xyXG4gIHJlcG9ydHMsXHJcbiAgc2VsZWN0ZWRDbGFzcyxcclxuICBhY3RpdmVTdHVkZW50TnVtYmVyLFxyXG4gIHNob3dTdHVkZW50UmVwb3J0LFxyXG4gIHNldFNob3dTdHVkZW50UmVwb3J0LFxyXG4gIGhpZGVUb2dnbGVCdXR0b24gPSBmYWxzZSxcclxufSkgPT4ge1xyXG4gIHJldHVybiAoXHJcbiAgICA8ZGl2IGNsYXNzTmFtZT17YCR7aGlkZVRvZ2dsZUJ1dHRvbiA/ICdtdC0yIHB0LTAnIDogJ210LTggcHQtNiBib3JkZXItdCBib3JkZXItc2xhdGUtMTAwJ30gdGV4dC1sZWZ0IGZvbnQtc2Fuc2B9PlxyXG4gICAgICB7IWhpZGVUb2dnbGVCdXR0b24gJiYgKFxyXG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleCBqdXN0aWZ5LWNlbnRlciBtYi02XCI+XHJcbiAgICAgICAgICA8YnV0dG9uXHJcbiAgICAgICAgICAgIHR5cGU9XCJidXR0b25cIlxyXG4gICAgICAgICAgICBvbkNsaWNrPXsoKSA9PiBzZXRTaG93U3R1ZGVudFJlcG9ydCghc2hvd1N0dWRlbnRSZXBvcnQpfVxyXG4gICAgICAgICAgICBjbGFzc05hbWU9XCJiZy1hbWJlci01MCBob3ZlcjpiZy1hbWJlci0xMDAgdGV4dC1hbWJlci03MDAgYm9yZGVyIGJvcmRlci1hbWJlci0yMDAgcHgtNiBweS0zIHJvdW5kZWQteGwgZm9udC1ib2xkIHRleHQtc20gdHJhY2tpbmctd2lkZSB0cmFuc2l0aW9uLWFsbCBzaGFkb3ctM3hzIGN1cnNvci1wb2ludGVyXCJcclxuICAgICAgICAgID5cclxuICAgICAgICAgICAge3Nob3dTdHVkZW50UmVwb3J0ID8gXCLwn5mIIOmaseiXj+aIkeeahOWAi+S6uuW/g+aDheaIkOmVt+WgseWRilwiIDogXCLwn5OKIOafpeeci+WAi+S6uuaDhee3kuaIkOmVt+WgseWRiiAmIOW/g+iBsuWbnumhp1wifVxyXG4gICAgICAgICAgPC9idXR0b24+XHJcbiAgICAgICAgPC9kaXY+XHJcbiAgICAgICl9XHJcblxyXG4gICAgICB7KHNob3dTdHVkZW50UmVwb3J0IHx8IGhpZGVUb2dnbGVCdXR0b24pICYmICgoKSA9PiB7XHJcbiAgICAgICAgY29uc3QgbGFzdDMwRW50cmllcyA9IHJlcG9ydHNcclxuICAgICAgICAgIC5maWx0ZXIoKHI6IGFueSkgPT4ge1xyXG4gICAgICAgICAgICBjb25zdCByQ2xhc3MgPSAoci5jbGFzcyB8fCByLuePreWIpSB8fCAnJykudG9VcHBlckNhc2UoKTtcclxuICAgICAgICAgICAgY29uc3QgclN0dWRlbnRObyA9IFN0cmluZyhyLnN0dWRlbnROdW1iZXIgfHwgci7lrbjomZ8gfHwgJycpO1xyXG4gICAgICAgICAgICBjb25zdCByRGF0ZSA9IGdldFVuaXhUaW1lKHIpO1xyXG4gICAgICAgICAgICByZXR1cm4gckNsYXNzID09PSBzZWxlY3RlZENsYXNzLnRvVXBwZXJDYXNlKCkgJiYgXHJcbiAgICAgICAgICAgICAgICAgICByU3R1ZGVudE5vID09PSBTdHJpbmcoYWN0aXZlU3R1ZGVudE51bWJlcikgJiZcclxuICAgICAgICAgICAgICAgICAgIHJEYXRlID49IERhdGUubm93KCkgLSAzMCAqIDI0ICogNjAgKiA2MCAqIDEwMDA7XHJcbiAgICAgICAgICB9KVxyXG4gICAgICAgICAgLnNvcnQoKGE6IGFueSwgYjogYW55KSA9PiBnZXRVbml4VGltZShhKSAtIGdldFVuaXhUaW1lKGIpKTtcclxuXHJcbiAgICAgICAgY29uc3Qgc3R1ZGVudENvbW1lbnRzID0gbGFzdDMwRW50cmllc1xyXG4gICAgICAgICAgLm1hcCgocjogYW55KSA9PiAoe1xyXG4gICAgICAgICAgICBkYXRlOiBnZXREaXNwbGF5RGF0ZShyKSxcclxuICAgICAgICAgICAgY29tbWVudDogU3RyaW5nKHIuY29tbWVudCB8fCByLuacieS6i+aDheaDs+WQkeiAgeW4q+WIhuS6qyB8fCAnJykudHJpbSgpLFxyXG4gICAgICAgICAgICBtb29kOiBwYXJzZUludChyLm1vb2RTY29yZSB8fCByLuW/g+aDheaMh+aVuCB8fCAnNScpXHJcbiAgICAgICAgICB9KSlcclxuICAgICAgICAgIC5maWx0ZXIoaXRlbSA9PiBpdGVtLmNvbW1lbnQgIT09ICcnKTtcclxuXHJcbiAgICAgICAgLy8gQ2FsY3VsYXRlIGF2ZXJhZ2UgbW9vZFxyXG4gICAgICAgIGxldCBhdmdNb29kID0gMDtcclxuICAgICAgICBjb25zdCB2YWxpZExhc3QzMCA9IGxhc3QzMEVudHJpZXMubWFwKChyOiBhbnkpID0+IHtcclxuICAgICAgICAgIGNvbnN0IHZhbCA9IHIubW9vZFNjb3JlIHx8IHIu5b+D5oOF5oyH5pW4O1xyXG4gICAgICAgICAgcmV0dXJuIHZhbCA9PT0gJ04vQScgPyBudWxsIDogcGFyc2VJbnQodmFsKTtcclxuICAgICAgICB9KS5maWx0ZXIoKHYpOiB2IGlzIG51bWJlciA9PiB2ICE9PSBudWxsICYmICFpc05hTih2KSk7XHJcbiAgICAgICAgaWYgKHZhbGlkTGFzdDMwLmxlbmd0aCA+IDApIHtcclxuICAgICAgICAgIGNvbnN0IHN1bSA9IHZhbGlkTGFzdDMwLnJlZHVjZSgoYWNjLCBzY29yZSkgPT4gYWNjICsgc2NvcmUsIDApO1xyXG4gICAgICAgICAgYXZnTW9vZCA9IHBhcnNlRmxvYXQoKHN1bSAvIHZhbGlkTGFzdDMwLmxlbmd0aCkudG9GaXhlZCgxKSk7XHJcbiAgICAgICAgfVxyXG5cclxuICAgICAgICByZXR1cm4gKFxyXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJzcGFjZS15LTZcIj5cclxuICAgICAgICAgICAgey8qIDEuIFN1cHBvcnRpdmUgQ29tbWVudHMgc2VjdGlvbiAqL31cclxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJiZy1hbWJlci01MC83MCBib3JkZXIgYm9yZGVyLWFtYmVyLTEwMCByb3VuZGVkLXhsIHAtNVwiPlxyXG4gICAgICAgICAgICAgIDxoNCBjbGFzc05hbWU9XCJ0ZXh0LXNtIGZvbnQtYmxhY2sgdGV4dC1hbWJlci04MDAgbWItMlwiPvCfkqEg5rqr6aao5b+D5oOF57Wu6KqePC9oND5cclxuICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXhzIHRleHQtYW1iZXItNzAwIGxlYWRpbmctcmVsYXhlZCBmb250LXNlbWlib2xkXCI+XHJcbiAgICAgICAgICAgICAgICB7bGFzdDMwRW50cmllcy5sZW5ndGggPj0gMyA/IChcclxuICAgICAgICAgICAgICAgICAgPHNwYW4+8J+NjiA8Yj7jgIzlgZrnmoTlvojlpb3vvIzkvaDlt7LntpPmjIHnuozoqJjpjITkuIDoh7TnmoTlv4Pmg4XvvIHjgI08L2I+IOS4gOm7nuS4gOa7tOiomOS4i+iHquW3seeahOaEn+WPl+aYr+eFp+mhp+W/g+mdiOeahOacgOS9s+aWueW8j+OAguacieS6m+aDhee3kuWPr+iDveW+rumiqOe0sOmbqO+8jOacieS6m+WJh+eLgumiqOaatOmbqOOAguiri+iomOW+l++8muavj+eoruW/g+aDhemDveaYr+WQiOeQhueahO+8jOS9oOawuOmBoOWAvOW+l+a6q+aflOS7peW+he+8gTwvc3Bhbj5cclxuICAgICAgICAgICAgICAgICkgOiAoXHJcbiAgICAgICAgICAgICAgICAgIDxzcGFuPuKcqCDmhJ/orJ3kvaDku4rlpKnnmoToqJjpjITvvIHlr6vkuIvnnJ/lr6bnmoTmhJ/lj5fmmK/oh6rmiJHpl5zmh7fmnIDnvo7lpb3nmoTotbfmraXjgILkuI3nrqHkuJbnlYzlpoLkvZXllqflm4LvvIzpgJnoo6HmsLjpgaDpg73mmK/kvaDlgr7oqLTlv4PogbLnmoTlronpnZzmuK/ngaPjgILmlL7mhaLohbPmraXvvIzmr4/kuIDlpKnkvaDpg73lnKjmiJDplbfvvIE8L3NwYW4+XHJcbiAgICAgICAgICAgICAgICApfVxyXG4gICAgICAgICAgICAgIDwvcD5cclxuICAgICAgICAgICAgICB7YXZnTW9vZCA+IDAgJiYgKFxyXG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJtdC0zIHRleHQteHMgZm9udC1ib2xkIHRleHQtYW1iZXItODAwXCI+XHJcbiAgICAgICAgICAgICAgICAgIPCfj6sg5pyA6L+RIDcg5qyh55m76KiY5bmz5Z2H5b+D5oOF6auY6YGU77yaPHNwYW4gY2xhc3NOYW1lPVwidGV4dC1lbWVyYWxkLTMwMCBiZy1lbWVyYWxkLTk1MCBweC0xLjUgcHktMC41IHJvdW5kZWQgZm9udC1ibGFja1wiPnthdmdNb29kfSDliIY8L3NwYW4+ICjmu7/liIYgMTAg5YiGKSBcclxuICAgICAgICAgICAgICAgICAge2F2Z01vb2QgPj0gNiAmJiBcIiDigJTigJQg6L+R5pel5b+D5oOF5piO5aqa6ZaL5pyX77yM57m857qM5L+d5oyB6YCZ5Lu95q2j6IO96YeP5ZOm77yBXCJ9XHJcbiAgICAgICAgICAgICAgICAgIHthdmdNb29kIDwgNiAmJiBhdmdNb29kID49IDQgJiYgXCIg4oCU4oCUIOWFp+W/g+WlveWDj+acieS4gOm7nuW+rumiqOaOoOmBju+8jOmBqeaZguWBmuWBmua3seWRvOWQuOaUvumshuS4gOS4i+WQp+OAglwifVxyXG4gICAgICAgICAgICAgICAgICB7YXZnTW9vZCA8IDQgJiYgXCIg4oCU4oCUIOi/keacn+aEn+WIsOaciem7nuayiemHjeWXju+8n+iAgeW4q+WSjOekvuW3pemaj+aZguWcqO+8jOaIkeWAkeeJueWIpeaDs+iBveiBveS9oOeahOW/g+iBsuOAglwifVxyXG4gICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgICAgKX1cclxuICAgICAgICAgICAgPC9kaXY+XHJcblxyXG4gICAgICAgICAgICB7LyogMi4gNy1EYXkgVHJlbmQgVmlzdWFsIHJlcHJlc2VudGF0aW9uICovfVxyXG4gICAgICAgICAgICA8ZGl2PlxyXG4gICAgICAgICAgICAgIDxoNCBjbGFzc05hbWU9XCJ0ZXh0LXNtIGZvbnQtYmxhY2sgdGV4dC1zbGF0ZS03MDAgbWItMiBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWJldHdlZW5cIj5cclxuICAgICAgICAgICAgICAgIDxzcGFuPvCfk4gg5b+D5oOF5oyH5pW46LWw5YuiICjmnIDov5EgMzAg5aSpKTwvc3Bhbj5cclxuICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cInRleHQtWzEwcHhdIHRleHQtc2xhdGUtNDAwIGZvbnQtc2VtaWJvbGQgZm9udC1zYW5zXCI+5q235Y+y55m76KiY5rOi5b2iPC9zcGFuPlxyXG4gICAgICAgICAgICAgIDwvaDQ+XHJcbiAgICAgICAgICAgICAge2xhc3QzMEVudHJpZXMubGVuZ3RoID09PSAwID8gKFxyXG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZXh0LWNlbnRlciBweS02IGJnLXNsYXRlLTUwIHJvdW5kZWQteGwgdGV4dC14cyB0ZXh0LXNsYXRlLTQwMCBmb250LW1lZGl1bSBmb250LXNlbWlib2xkIGZvbnQtc2Fuc1wiPlxyXG4gICAgICAgICAgICAgICAgICDmmqvnhKHov5EgMzAg5pel5q235Y+y5b+D5oOF57SA6YyE77yM5YaN5qyh55m76YyE5aGr55m85b6M6ZaL5aeL57Sv56mN77yBXHJcbiAgICAgICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgICAgICApIDogKFxyXG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJoLTQ4IGJnLXNsYXRlLTUwIHAtNCByb3VuZGVkLXhsIGJvcmRlciBib3JkZXItc2xhdGUtMTAwXCI+XHJcbiAgICAgICAgICAgICAgICAgIDxSZXNwb25zaXZlQ29udGFpbmVyIHdpZHRoPVwiMTAwJVwiIGhlaWdodD1cIjEwMCVcIj5cclxuICAgICAgICAgICAgICAgICAgICA8TGluZUNoYXJ0IGRhdGE9e2xhc3QzMEVudHJpZXMubWFwKChlOiBhbnkpID0+ICh7XHJcbiAgICAgICAgICAgICAgICAgICAgICBkYXRlOiBnZXREaXNwbGF5RGF0ZShlKS5zcGxpdCgnLycpLnNsaWNlKDEpLmpvaW4oJy8nKSxcclxuICAgICAgICAgICAgICAgICAgICAgIG1vb2Q6IHBhcnNlSW50KGUubW9vZFNjb3JlIHx8IGUu5b+D5oOF5oyH5pW4IHx8ICc1JylcclxuICAgICAgICAgICAgICAgICAgICB9KSl9PlxyXG4gICAgICAgICAgICAgICAgICAgICAgPENhcnRlc2lhbkdyaWQgc3Ryb2tlRGFzaGFycmF5PVwiMyAzXCIgc3Ryb2tlPVwiI2UyZThmMFwiIC8+XHJcbiAgICAgICAgICAgICAgICAgICAgICA8WEF4aXMgZGF0YUtleT1cImRhdGVcIiBzdHJva2U9XCIjOTRhM2I4XCIgZm9udFNpemU9ezEwfSAvPlxyXG4gICAgICAgICAgICAgICAgICAgICAgPFlBeGlzIGRvbWFpbj17WzAsIDEwXX0gc3Ryb2tlPVwiIzk0YTNiOFwiIGZvbnRTaXplPXsxMH0gLz5cclxuICAgICAgICAgICAgICAgICAgICAgIDxUb29sdGlwIGNvbnRlbnRTdHlsZT17eyBib3JkZXJSYWRpdXM6ICcxMnB4JywgZm9udFNpemU6ICcxMnB4JyB9fSAvPlxyXG4gICAgICAgICAgICAgICAgICAgICAgPExpbmUgdHlwZT1cIm1vbm90b25lXCIgZGF0YUtleT1cIm1vb2RcIiBzdHJva2U9XCIjMWM1YTgwXCIgc3Ryb2tlV2lkdGg9ezN9IGRvdD17eyByOiA0IH19IGFjdGl2ZURvdD17eyByOiA2IH19IC8+XHJcbiAgICAgICAgICAgICAgICAgICAgPC9MaW5lQ2hhcnQ+XHJcbiAgICAgICAgICAgICAgICAgIDwvUmVzcG9uc2l2ZUNvbnRhaW5lcj5cclxuICAgICAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICAgICl9XHJcbiAgICAgICAgICAgIDwvZGl2PlxyXG5cclxuICAgICAgICAgICAgey8qIDMuIFByZXZpb3VzIGNvbW1lbnRzIGxvZ3MgKi99XHJcbiAgICAgICAgICAgIDxkaXY+XHJcbiAgICAgICAgICAgICAgPGg0IGNsYXNzTmFtZT1cInRleHQtc20gZm9udC1ibGFjayB0ZXh0LXNsYXRlLTcwMCBtYi0yXCI+8J+SrCDmrbflj7LmgoTmgoToqbHnlZnoqIDlgpnku708L2g0PlxyXG4gICAgICAgICAgICAgIHtzdHVkZW50Q29tbWVudHMubGVuZ3RoID09PSAwID8gKFxyXG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZXh0LWNlbnRlciBweS02IGJnLXNsYXRlLTUwIHJvdW5kZWQteGwgdGV4dC14cyB0ZXh0LXNsYXRlLTQwMCBmb250LW1lZGl1bSBpdGFsaWMgZm9udC1zZW1pYm9sZCBmb250LXNhbnNcIj5cclxuICAgICAgICAgICAgICAgICAg5pyA6L+R54Sh5ZCR6ICB5bir5o+Q5Lqk6YGO5oKE5oKE6Kmx77yM5LiN6ZyA5pOU5b+D77yM5q+P5LiA562G5q2j5bi455m76KiY6YO96KiY6YyE5a6M5YKZ44CCXHJcbiAgICAgICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgICAgICApIDogKFxyXG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJzcGFjZS15LTIgbWF4LWgtNDAgb3ZlcmZsb3cteS1hdXRvIHByLTFcIj5cclxuICAgICAgICAgICAgICAgICAge3N0dWRlbnRDb21tZW50cy5tYXAoKGl0ZW0sIGlkeCkgPT4gKFxyXG4gICAgICAgICAgICAgICAgICAgIDxkaXYga2V5PXtpZHh9IGNsYXNzTmFtZT1cInAtMyBiZy1zbGF0ZS01MCBib3JkZXIgYm9yZGVyLXNsYXRlLTEwMCByb3VuZGVkLWxnIHRleHQteHMgbGVhZGluZy1yZWxheGVkXCI+XHJcbiAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXgganVzdGlmeS1iZXR3ZWVuIGl0ZW1zLWNlbnRlciBtYi0xIGZvbnQtc2Fuc1wiPlxyXG4gICAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJmb250LWV4dHJhYm9sZCB0ZXh0LXNsYXRlLTUwMFwiPntpdGVtLmRhdGV9IOeahOWIhuS6q++8mjwvc3Bhbj5cclxuICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiZm9udC1ibGFjayB0ZXh0LVsxMHB4XVwiIHN0eWxlPXt7IGNvbG9yOiBnZXRNb29kQ29sb3IoaXRlbS5tb29kKSB9fT5cclxuICAgICAgICAgICAgICAgICAgICAgICAgICDnlbbmmYLlv4Pmg4XvvJp7aXRlbS5tb29kfSDliIYge01PT0RfRU1PSklTW2l0ZW0ubW9vZF0/LmVtb2ppfVxyXG4gICAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+XHJcbiAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInRleHQtc2xhdGUtNzAwIGZvbnQtc2VtaWJvbGQgaXRhbGljIGZvbnQtc2Fuc1wiPuOAjCB7aXRlbS5jb21tZW50fSDjgI08L3A+XHJcbiAgICAgICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgICAgICAgICkpfVxyXG4gICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgICAgKX1cclxuICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICApO1xyXG4gICAgICB9KSgpfVxyXG4gICAgPC9kaXY+XHJcbiAgKTtcclxufTtcclxuIl0sImZpbGUiOiJDOi9Vc2Vycy9KZXJyeS8uZ2VtaW5pL2FudGlncmF2aXR5L3NjcmF0Y2gvbW9vZHRyYWNrZXIvc3JjL2NvbXBvbmVudHMvRGFzaGJvYXJkcy9TdHVkZW50RGFzaGJvYXJkL1JlcG9ydENhcmQudHN4In0=

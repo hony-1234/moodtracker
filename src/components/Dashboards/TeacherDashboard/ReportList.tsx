@@ -3,6 +3,7 @@ import { Shield, Search, AlertCircle, CheckCircle, AlertTriangle, Activity } fro
 import { getWarningLevel, getWarningWeight } from '../../../utils/sensitivityEngine';
 import { getMoodColor, MOOD_EMOJIS } from '../../../constants/moodConstants';
 import { getDisplayDate } from '../../../utils/dateHelpers';
+import { findStudentByClassAndNumber } from '../../../data/studentsRoster';
 
 interface StudentDirectoryItem {
   studentNo: string;
@@ -279,10 +280,23 @@ export const ReportList: React.FC<ReportListProps> = ({
                 >
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-3 mb-3 border-b border-dashed border-slate-200">
                     <div>
-                      <span className="text-sm font-black text-[#0F172A]">
-                        學號：{item.studentNumber || item.學號 || "未知"} 號同學
-                        {selectedClass === 'GCCPS' && <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full ml-1 font-extrabold">{item.class || item.班別 || "未知"} 班</span>}
-                      </span>
+                      {(() => {
+                        const rClass = item.class || item.班別 || selectedClass;
+                        const rNo = item.studentNumber || item.學號 || '';
+                        const roster = findStudentByClassAndNumber(rClass, rNo);
+                        return (
+                          <span className="text-sm font-black text-[#0F172A]">
+                            {selectedClass === 'GCCPS' ? `${rClass} 班 ` : ''}
+                            {rNo ? `${rNo} 號 ` : ''}
+                            {roster ? `${roster.chineseName} (${roster.englishName})` : (item.studentName || '同學')}
+                            {roster?.studentId && (
+                              <span className="text-xs bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-mono font-bold ml-1.5">
+                                {roster.studentId}
+                              </span>
+                            )}
+                          </span>
+                        );
+                      })()}
                       {(item.studentEmail || item.email) && (
                         <span className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-md ml-1.5 font-mono font-bold inline-flex items-center gap-1" title="學生 Gmail 帳號">
                           📧 {item.studentEmail || item.email}

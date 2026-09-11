@@ -1,0 +1,758 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=83d097c1"; const Fragment = __vite__cjsImport0_react_jsxDevRuntime["Fragment"]; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+var _s = $RefreshSig$();
+import __vite__cjsImport1_react from "/node_modules/.vite/deps/react.js?v=83d097c1"; const useMemo = __vite__cjsImport1_react["useMemo"];
+import { motion } from "/node_modules/.vite/deps/motion_react.js?v=83d097c1";
+import { Clock, CheckCircle, ArrowLeft, Users, Sparkles, MessageSquare } from "/node_modules/.vite/deps/lucide-react.js?v=83d097c1";
+import { MOOD_EMOJIS, getMoodColor } from "/src/constants/moodConstants.ts";
+import { formatDateObj } from "/src/utils/dateHelpers.ts";
+import { getPublicAssetUrl } from "/src/utils/assetHelper.ts";
+import { getStudentsByClass } from "/src/data/studentsRoster.ts";
+export const P13BatchGrader = ({
+  selectedClass,
+  setSelectedClass,
+  ALL_CLASSES,
+  batchScores,
+  handleP13CellGradeChange,
+  handleP13CellCommentChange,
+  handleP13BatchSubmit,
+  isP13Saved,
+  loading,
+  setViewState
+}) => {
+  _s();
+  const todayStr = formatDateObj(/* @__PURE__ */ new Date());
+  const rosterStudents = useMemo(() => {
+    if (!selectedClass) return [];
+    return getStudentsByClass(selectedClass);
+  }, [selectedClass]);
+  const displayStudents = useMemo(() => {
+    if (rosterStudents.length > 0) return rosterStudents;
+    return Array.from({ length: 30 }, (_, idx) => ({
+      class: selectedClass || "TEST",
+      number: idx + 1,
+      chineseName: `學生 ${idx + 1}`,
+      englishName: `Student ${idx + 1}`,
+      studentId: `s${selectedClass || "00"}${String(idx + 1).padStart(2, "0")}`,
+      googleAppEmail: `s${selectedClass || "00"}${String(idx + 1).padStart(2, "0")}@mail.gccps.edu.hk`
+    }));
+  }, [rosterStudents, selectedClass]);
+  const { filledCount, avgScore } = useMemo(() => {
+    let count = 0;
+    let sum = 0;
+    displayStudents.forEach((st) => {
+      const sKey = String(st.number);
+      const score = batchScores[sKey]?.moodScore;
+      if (score !== void 0 && score !== null && score !== "" && score !== 0) {
+        count++;
+        const num = typeof score === "string" ? parseInt(score) : score;
+        if (!isNaN(num)) sum += num;
+      }
+    });
+    return {
+      filledCount: count,
+      avgScore: count > 0 ? (sum / count).toFixed(1) : null
+    };
+  }, [displayStudents, batchScores]);
+  const handleQuickFillAll = (targetScore) => {
+    displayStudents.forEach((st) => {
+      const sKey = String(st.number);
+      const existing = batchScores[sKey]?.moodScore;
+      if (!existing || existing === 0) {
+        handleP13CellGradeChange(sKey, targetScore, batchScores[sKey]?.comment || "");
+      }
+    });
+  };
+  return /* @__PURE__ */ jsxDEV(
+    motion.div,
+    {
+      initial: { opacity: 0, scale: 0.98 },
+      animate: { opacity: 1, scale: 1 },
+      exit: { opacity: 0, scale: 1.02 },
+      transition: { duration: 0.2 },
+      className: "space-y-6 font-sans max-w-6xl mx-auto",
+      children: [
+        /* @__PURE__ */ jsxDEV("div", { className: "flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxDEV(
+            "button",
+            {
+              type: "button",
+              onClick: () => setViewState ? setViewState("STUDENT_LOGIN") : window.history.back(),
+              className: "inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-indigo-600 bg-white border border-slate-200 px-3.5 py-2 rounded-xl shadow-xs transition-all cursor-pointer",
+              children: [
+                /* @__PURE__ */ jsxDEV(ArrowLeft, { className: "w-4 h-4" }, void 0, false, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                  lineNumber: 101,
+                  columnNumber: 11
+                }, this),
+                /* @__PURE__ */ jsxDEV("span", { children: "返回學生終端 (Student Terminal)" }, void 0, false, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                  lineNumber: 102,
+                  columnNumber: 11
+                }, this)
+              ]
+            },
+            void 0,
+            true,
+            {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+              lineNumber: 96,
+              columnNumber: 9
+            },
+            this
+          ),
+          /* @__PURE__ */ jsxDEV("div", { className: "text-xs font-semibold text-slate-500", children: "天主教善導小學 · 學生身心健康追蹤平台" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+            lineNumber: 105,
+            columnNumber: 9
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+          lineNumber: 95,
+          columnNumber: 7
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "bg-white border border-[#E2E8F0] p-6 rounded-2xl shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4", children: [
+          /* @__PURE__ */ jsxDEV("div", { className: "flex items-start gap-4", children: [
+            /* @__PURE__ */ jsxDEV("div", { className: "w-16 h-16 rounded-2xl bg-indigo-50 border border-indigo-100 p-2 shrink-0 flex items-center justify-center shadow-xs", children: /* @__PURE__ */ jsxDEV(
+              "img",
+              {
+                src: getPublicAssetUrl("/學校圖檔/吉祥物/enen_reading.png"),
+                alt: "恩恩吉祥物",
+                className: "w-full h-full object-contain filter drop-shadow"
+              },
+              void 0,
+              false,
+              {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                lineNumber: 114,
+                columnNumber: 13
+              },
+              this
+            ) }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+              lineNumber: 113,
+              columnNumber: 11
+            }, this),
+            /* @__PURE__ */ jsxDEV("div", { children: [
+              /* @__PURE__ */ jsxDEV("div", { className: "flex flex-wrap items-center gap-2", children: [
+                /* @__PURE__ */ jsxDEV("span", { className: "bg-indigo-100 text-indigo-700 px-3 py-1 text-xs font-black rounded-full flex items-center gap-1", children: [
+                  /* @__PURE__ */ jsxDEV(Users, { className: "w-3.5 h-3.5" }, void 0, false, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                    lineNumber: 123,
+                    columnNumber: 17
+                  }, this),
+                  "選項 2：小一至小六 (P.1 - P.6) 老師全班代登記 (Teacher Insert)"
+                ] }, void 0, true, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                  lineNumber: 122,
+                  columnNumber: 15
+                }, this),
+                /* @__PURE__ */ jsxDEV("span", { className: "bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 text-xs font-bold rounded-full", children: "單一頁面快速輸入全班分數與備註" }, void 0, false, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                  lineNumber: 126,
+                  columnNumber: 15
+                }, this)
+              ] }, void 0, true, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                lineNumber: 121,
+                columnNumber: 13
+              }, this),
+              /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-3 mt-2.5", children: [
+                /* @__PURE__ */ jsxDEV("h3", { className: "text-2xl font-black text-[#0F172A] tracking-tight", children: [
+                  selectedClass,
+                  " 班 · 每日心情快速批次錄入"
+                ] }, void 0, true, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                  lineNumber: 132,
+                  columnNumber: 15
+                }, this),
+                setSelectedClass && ALL_CLASSES && /* @__PURE__ */ jsxDEV(
+                  "select",
+                  {
+                    value: selectedClass,
+                    onChange: (e) => setSelectedClass(e.target.value),
+                    className: "bg-indigo-50 border border-indigo-200 text-indigo-900 text-sm font-black rounded-xl px-3 py-1.5 focus:ring-2 focus:ring-indigo-300 focus:outline-none cursor-pointer",
+                    children: [
+                      /* @__PURE__ */ jsxDEV("optgroup", { label: "初小 (P.1 - P.3)", children: ["1A", "1B", "1C", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D"].map(
+                        (c) => /* @__PURE__ */ jsxDEV("option", { value: c, children: [
+                          "切換班別：",
+                          c,
+                          " 班"
+                        ] }, c, true, {
+                          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                          lineNumber: 145,
+                          columnNumber: 19
+                        }, this)
+                      ) }, void 0, false, {
+                        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                        lineNumber: 143,
+                        columnNumber: 17
+                      }, this),
+                      /* @__PURE__ */ jsxDEV("optgroup", { label: "高小 (P.4 - P.6)", children: ["4A", "4B", "4C", "4D", "5A", "5B", "5C", "5D", "6A", "6B", "6C", "6D"].map(
+                        (c) => /* @__PURE__ */ jsxDEV("option", { value: c, children: [
+                          "切換班別：",
+                          c,
+                          " 班"
+                        ] }, c, true, {
+                          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                          lineNumber: 150,
+                          columnNumber: 19
+                        }, this)
+                      ) }, void 0, false, {
+                        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                        lineNumber: 148,
+                        columnNumber: 17
+                      }, this),
+                      /* @__PURE__ */ jsxDEV("optgroup", { label: "測試", children: /* @__PURE__ */ jsxDEV("option", { value: "TEST", children: "TEST 測試班級" }, void 0, false, {
+                        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                        lineNumber: 154,
+                        columnNumber: 19
+                      }, this) }, void 0, false, {
+                        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                        lineNumber: 153,
+                        columnNumber: 17
+                      }, this)
+                    ]
+                  },
+                  void 0,
+                  true,
+                  {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                    lineNumber: 138,
+                    columnNumber: 15
+                  },
+                  this
+                )
+              ] }, void 0, true, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                lineNumber: 131,
+                columnNumber: 13
+              }, this),
+              /* @__PURE__ */ jsxDEV("div", { className: "flex flex-wrap items-center gap-4 text-xs text-slate-500 mt-2 font-medium", children: [
+                /* @__PURE__ */ jsxDEV("span", { className: "flex items-center gap-1", children: [
+                  /* @__PURE__ */ jsxDEV(Clock, { className: "w-3.5 h-3.5 text-indigo-500" }, void 0, false, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                    lineNumber: 162,
+                    columnNumber: 15
+                  }, this),
+                  "登記日期：",
+                  /* @__PURE__ */ jsxDEV("strong", { className: "text-slate-800", children: todayStr }, void 0, false, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                    lineNumber: 163,
+                    columnNumber: 20
+                  }, this)
+                ] }, void 0, true, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                  lineNumber: 161,
+                  columnNumber: 13
+                }, this),
+                /* @__PURE__ */ jsxDEV("span", { children: "•" }, void 0, false, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                  lineNumber: 165,
+                  columnNumber: 13
+                }, this),
+                /* @__PURE__ */ jsxDEV("span", { children: [
+                  "全班學生：",
+                  /* @__PURE__ */ jsxDEV("strong", { className: "text-slate-800", children: [
+                    displayStudents.length,
+                    " 位"
+                  ] }, void 0, true, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                    lineNumber: 166,
+                    columnNumber: 24
+                  }, this)
+                ] }, void 0, true, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                  lineNumber: 166,
+                  columnNumber: 13
+                }, this),
+                /* @__PURE__ */ jsxDEV("span", { children: "•" }, void 0, false, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                  lineNumber: 167,
+                  columnNumber: 13
+                }, this),
+                /* @__PURE__ */ jsxDEV("span", { children: [
+                  "已輸入：",
+                  /* @__PURE__ */ jsxDEV("strong", { className: "text-indigo-600", children: [
+                    filledCount,
+                    " / ",
+                    displayStudents.length,
+                    " 位"
+                  ] }, void 0, true, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                    lineNumber: 168,
+                    columnNumber: 23
+                  }, this)
+                ] }, void 0, true, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                  lineNumber: 168,
+                  columnNumber: 13
+                }, this),
+                avgScore && /* @__PURE__ */ jsxDEV(Fragment, { children: [
+                  /* @__PURE__ */ jsxDEV("span", { children: "•" }, void 0, false, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                    lineNumber: 171,
+                    columnNumber: 17
+                  }, this),
+                  /* @__PURE__ */ jsxDEV("span", { children: [
+                    "班級今日平均心情：",
+                    /* @__PURE__ */ jsxDEV("strong", { className: "text-emerald-600 font-black", children: [
+                      avgScore,
+                      " 分"
+                    ] }, void 0, true, {
+                      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                      lineNumber: 172,
+                      columnNumber: 32
+                    }, this)
+                  ] }, void 0, true, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                    lineNumber: 172,
+                    columnNumber: 17
+                  }, this)
+                ] }, void 0, true, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                  lineNumber: 170,
+                  columnNumber: 15
+                }, this)
+              ] }, void 0, true, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                lineNumber: 160,
+                columnNumber: 11
+              }, this)
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+              lineNumber: 120,
+              columnNumber: 11
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+            lineNumber: 112,
+            columnNumber: 9
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-2.5 w-full md:w-auto", children: /* @__PURE__ */ jsxDEV(
+            "button",
+            {
+              type: "button",
+              onClick: handleP13BatchSubmit,
+              disabled: loading,
+              className: "w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white font-black text-sm px-6 py-3 rounded-xl transition-all shadow-md hover:shadow-lg hover:scale-102 cursor-pointer flex items-center justify-center gap-2",
+              children: /* @__PURE__ */ jsxDEV("span", { children: loading ? "正在保存中..." : `💾 儲存並同步 ${selectedClass} 班分數與留言` }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                lineNumber: 187,
+                columnNumber: 13
+              }, this)
+            },
+            void 0,
+            false,
+            {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+              lineNumber: 181,
+              columnNumber: 11
+            },
+            this
+          ) }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+            lineNumber: 180,
+            columnNumber: 9
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+          lineNumber: 111,
+          columnNumber: 7
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "bg-indigo-50/70 border border-indigo-100 rounded-xl px-5 py-3 flex flex-wrap items-center justify-between gap-3 text-xs", children: [
+          /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-2 text-indigo-900 font-bold", children: [
+            /* @__PURE__ */ jsxDEV(Sparkles, { className: "w-4 h-4 text-indigo-600" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+              lineNumber: 195,
+              columnNumber: 11
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { children: "⚡ 快捷輸入工具（為尚未打分的同學填入）：" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+              lineNumber: 196,
+              columnNumber: 11
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+            lineNumber: 194,
+            columnNumber: 9
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxDEV(
+              "button",
+              {
+                type: "button",
+                onClick: () => handleQuickFillAll(5),
+                className: "bg-white hover:bg-indigo-100 text-slate-700 font-bold px-3 py-1.5 rounded-lg border border-indigo-200 transition-all cursor-pointer shadow-3xs",
+                children: "😐 一鍵填 5 分 (普通平靜)"
+              },
+              void 0,
+              false,
+              {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                lineNumber: 199,
+                columnNumber: 11
+              },
+              this
+            ),
+            /* @__PURE__ */ jsxDEV(
+              "button",
+              {
+                type: "button",
+                onClick: () => handleQuickFillAll(7),
+                className: "bg-white hover:bg-indigo-100 text-emerald-700 font-bold px-3 py-1.5 rounded-lg border border-indigo-200 transition-all cursor-pointer shadow-3xs",
+                children: "😊 一鍵填 7 分 (開心積極)"
+              },
+              void 0,
+              false,
+              {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                lineNumber: 206,
+                columnNumber: 11
+              },
+              this
+            )
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+            lineNumber: 198,
+            columnNumber: 9
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+          lineNumber: 193,
+          columnNumber: 7
+        }, this),
+        isP13Saved && /* @__PURE__ */ jsxDEV(
+          motion.div,
+          {
+            initial: { opacity: 0, y: -8 },
+            animate: { opacity: 1, y: 0 },
+            className: "bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl flex items-center gap-2.5 text-sm font-bold shadow-xs",
+            children: [
+              /* @__PURE__ */ jsxDEV(CheckCircle, { className: "w-5 h-5 text-emerald-600 shrink-0" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                lineNumber: 223,
+                columnNumber: 11
+              }, this),
+              /* @__PURE__ */ jsxDEV("span", { children: [
+                "恭喜！",
+                selectedClass,
+                " 班在今日（",
+                todayStr,
+                "）的全班分數與留言已完美同步存入 Firebase 資料庫！可在全校心情報告中即時查看。"
+              ] }, void 0, true, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                lineNumber: 224,
+                columnNumber: 11
+              }, this)
+            ]
+          },
+          void 0,
+          true,
+          {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+            lineNumber: 218,
+            columnNumber: 7
+          },
+          this
+        ),
+        /* @__PURE__ */ jsxDEV("div", { className: "bg-white border border-slate-200 rounded-2xl p-6 shadow-sm", children: [
+          /* @__PURE__ */ jsxDEV("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4 mb-4", children: [
+            /* @__PURE__ */ jsxDEV("h4", { className: "text-base font-black text-[#1E293B] flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxDEV("span", { children: [
+                selectedClass,
+                " 班 全體學生登分清單"
+              ] }, void 0, true, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                lineNumber: 232,
+                columnNumber: 13
+              }, this),
+              /* @__PURE__ */ jsxDEV("span", { className: "text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold", children: [
+                "共 ",
+                displayStudents.length,
+                " 名"
+              ] }, void 0, true, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                lineNumber: 233,
+                columnNumber: 13
+              }, this)
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+              lineNumber: 231,
+              columnNumber: 11
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { className: "text-xs text-slate-400 font-medium", children: "點擊對應 1-10 分數按鈕即可即時打分，亦可在右側輸入備註或學生留言。" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+              lineNumber: 237,
+              columnNumber: 11
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+            lineNumber: 230,
+            columnNumber: 9
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "divide-y divide-slate-100", children: displayStudents.map((student) => {
+            const sIdxStr = String(student.number);
+            const scoreItem = batchScores[sIdxStr];
+            const score = scoreItem?.moodScore || 0;
+            const currentComment = scoreItem?.comment || "";
+            const recordExists = !!scoreItem?.id;
+            const isScoreEntered = score !== 0 && score !== void 0 && score !== "";
+            return /* @__PURE__ */ jsxDEV(
+              "div",
+              {
+                className: `py-3 px-3.5 flex flex-col lg:flex-row lg:items-center justify-between gap-3 transition-all rounded-xl font-sans ${score === "N/A" ? "bg-slate-50/80" : isScoreEntered ? "bg-indigo-50/20 hover:bg-indigo-50/30" : "hover:bg-slate-50"}`,
+                children: [
+                  /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-3 min-w-[200px]", children: [
+                    /* @__PURE__ */ jsxDEV("span", { className: `w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-xl text-xs font-black shadow-3xs ${score === "N/A" ? "bg-slate-400 text-white" : isScoreEntered ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600 border border-slate-200"}`, children: sIdxStr.padStart(2, "0") }, void 0, false, {
+                      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                      lineNumber: 264,
+                      columnNumber: 19
+                    }, this),
+                    /* @__PURE__ */ jsxDEV("div", { children: [
+                      /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-1.5", children: [
+                        /* @__PURE__ */ jsxDEV("span", { className: "text-sm font-black text-slate-800", children: student.chineseName }, void 0, false, {
+                          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                          lineNumber: 275,
+                          columnNumber: 23
+                        }, this),
+                        /* @__PURE__ */ jsxDEV("span", { className: "text-xs text-slate-500 font-semibold", children: student.englishName }, void 0, false, {
+                          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                          lineNumber: 276,
+                          columnNumber: 23
+                        }, this)
+                      ] }, void 0, true, {
+                        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                        lineNumber: 274,
+                        columnNumber: 21
+                      }, this),
+                      /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-2 mt-0.5", children: [
+                        /* @__PURE__ */ jsxDEV("span", { className: "text-[10px] font-mono font-bold text-slate-400 bg-slate-100 px-1.5 py-0.2 rounded", children: student.studentId }, void 0, false, {
+                          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                          lineNumber: 279,
+                          columnNumber: 23
+                        }, this),
+                        /* @__PURE__ */ jsxDEV("span", { className: `text-[10px] font-bold ${recordExists ? "text-emerald-600" : isScoreEntered ? "text-indigo-600" : "text-slate-400"}`, children: recordExists ? "✓ 今日已存檔" : isScoreEntered ? "● 已點選未儲存" : "○ 尚未登記" }, void 0, false, {
+                          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                          lineNumber: 282,
+                          columnNumber: 23
+                        }, this)
+                      ] }, void 0, true, {
+                        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                        lineNumber: 278,
+                        columnNumber: 21
+                      }, this)
+                    ] }, void 0, true, {
+                      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                      lineNumber: 273,
+                      columnNumber: 19
+                    }, this)
+                  ] }, void 0, true, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                    lineNumber: 263,
+                    columnNumber: 17
+                  }, this),
+                  /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1", children: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "N/A"].map((val) => {
+                    const isChosen = score === val || String(score) === String(val);
+                    const isNAKey = val === "N/A";
+                    return /* @__PURE__ */ jsxDEV(
+                      "button",
+                      {
+                        type: "button",
+                        onClick: () => handleP13CellGradeChange(sIdxStr, val, currentComment),
+                        style: {
+                          backgroundColor: isChosen ? isNAKey ? "#94A3B8" : getMoodColor(val) : "transparent",
+                          borderColor: isChosen ? isNAKey ? "#94A3B8" : getMoodColor(val) : "#E2E8F0",
+                          color: isChosen ? "#FFFFFF" : isNAKey ? "#64748B" : "#475569"
+                        },
+                        className: `h-8 flex-shrink-0 flex items-center justify-center rounded-lg text-xs font-black border-2 transition-all cursor-pointer hover:border-slate-400 active:scale-95 ${isNAKey ? "px-2.5 min-w-[42px]" : "w-8"} ${isChosen ? "shadow-xs font-black ring-2 ring-indigo-200" : ""}`,
+                        children: val
+                      },
+                      val,
+                      false,
+                      {
+                        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                        lineNumber: 295,
+                        columnNumber: 23
+                      },
+                      this
+                    );
+                  }) }, void 0, false, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                    lineNumber: 290,
+                    columnNumber: 17
+                  }, this),
+                  /* @__PURE__ */ jsxDEV("div", { className: "flex flex-col sm:flex-row items-start sm:items-center gap-2.5 min-w-[280px] lg:justify-end", children: [
+                    /* @__PURE__ */ jsxDEV("div", { className: "w-[125px] shrink-0 text-right", children: score === "N/A" ? /* @__PURE__ */ jsxDEV("div", { className: "inline-flex items-center gap-1 bg-slate-100 border border-slate-200 px-2 py-1 rounded-lg text-[11px] font-bold text-slate-500", children: [
+                      /* @__PURE__ */ jsxDEV("span", { children: "🚫" }, void 0, false, {
+                        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                        lineNumber: 320,
+                        columnNumber: 25
+                      }, this),
+                      /* @__PURE__ */ jsxDEV("span", { children: "缺席/離校" }, void 0, false, {
+                        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                        lineNumber: 321,
+                        columnNumber: 25
+                      }, this)
+                    ] }, void 0, true, {
+                      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                      lineNumber: 319,
+                      columnNumber: 21
+                    }, this) : isScoreEntered ? /* @__PURE__ */ jsxDEV("div", { className: "inline-flex items-center gap-1 bg-white border border-slate-200 px-2 py-1 rounded-lg text-[11px] font-bold shadow-3xs", children: [
+                      /* @__PURE__ */ jsxDEV("span", { children: MOOD_EMOJIS[score]?.emoji }, void 0, false, {
+                        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                        lineNumber: 325,
+                        columnNumber: 25
+                      }, this),
+                      /* @__PURE__ */ jsxDEV("span", { style: { color: getMoodColor(score) }, children: [
+                        score,
+                        "分 • ",
+                        MOOD_EMOJIS[score]?.desc.split(" / ")[0]
+                      ] }, void 0, true, {
+                        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                        lineNumber: 326,
+                        columnNumber: 25
+                      }, this)
+                    ] }, void 0, true, {
+                      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                      lineNumber: 324,
+                      columnNumber: 21
+                    }, this) : /* @__PURE__ */ jsxDEV("span", { className: "text-slate-300 text-xs italic font-semibold", children: "未評分" }, void 0, false, {
+                      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                      lineNumber: 331,
+                      columnNumber: 21
+                    }, this) }, void 0, false, {
+                      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                      lineNumber: 317,
+                      columnNumber: 19
+                    }, this),
+                    /* @__PURE__ */ jsxDEV("div", { className: "relative w-full sm:w-56", children: [
+                      /* @__PURE__ */ jsxDEV(MessageSquare, { className: "w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" }, void 0, false, {
+                        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                        lineNumber: 337,
+                        columnNumber: 21
+                      }, this),
+                      /* @__PURE__ */ jsxDEV(
+                        "input",
+                        {
+                          type: "text",
+                          placeholder: "填寫備註或留言 (選填)...",
+                          value: currentComment,
+                          onChange: (e) => {
+                            if (handleP13CellCommentChange) {
+                              handleP13CellCommentChange(sIdxStr, e.target.value);
+                            } else {
+                              handleP13CellGradeChange(sIdxStr, score, e.target.value);
+                            }
+                          },
+                          className: "w-full text-xs pl-8 pr-2.5 py-1.5 rounded-lg border border-slate-200 bg-white focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 focus:outline-none transition-all placeholder:text-slate-300 font-medium"
+                        },
+                        void 0,
+                        false,
+                        {
+                          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                          lineNumber: 338,
+                          columnNumber: 21
+                        },
+                        this
+                      )
+                    ] }, void 0, true, {
+                      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                      lineNumber: 336,
+                      columnNumber: 19
+                    }, this)
+                  ] }, void 0, true, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                    lineNumber: 315,
+                    columnNumber: 17
+                  }, this)
+                ]
+              },
+              sIdxStr,
+              true,
+              {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                lineNumber: 252,
+                columnNumber: 15
+              },
+              this
+            );
+          }) }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+            lineNumber: 242,
+            columnNumber: 9
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "mt-8 pt-6 border-t border-slate-100 flex flex-col md:flex-row justify-between gap-4 items-center font-sans", children: [
+            /* @__PURE__ */ jsxDEV("p", { className: "text-xs text-slate-400 font-medium max-w-xl", children: "💡 提示：點擊「儲存並同步」後，所有已評分學生的最新心情分數與留言將即時寫入系統。若分數低於或等於 3 分，系統會啟動關懷預警機制。" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+              lineNumber: 360,
+              columnNumber: 11
+            }, this),
+            /* @__PURE__ */ jsxDEV(
+              "button",
+              {
+                type: "button",
+                onClick: handleP13BatchSubmit,
+                disabled: loading,
+                className: "w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white font-black text-sm px-8 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg cursor-pointer",
+                children: loading ? "正在保存至 Firebase..." : `💾 確認並同步儲存 ${selectedClass} 班分數`
+              },
+              void 0,
+              false,
+              {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+                lineNumber: 363,
+                columnNumber: 11
+              },
+              this
+            )
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+            lineNumber: 359,
+            columnNumber: 9
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+          lineNumber: 229,
+          columnNumber: 7
+        }, this)
+      ]
+    },
+    "teacher_batch_insert",
+    true,
+    {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx",
+      lineNumber: 86,
+      columnNumber: 5
+    },
+    this
+  );
+};
+_s(P13BatchGrader, "2/Bbmh66O7iUPcV/9vGmMXvQSWE=");
+_c = P13BatchGrader;
+var _c;
+$RefreshReg$(_c, "P13BatchGrader");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) {
+  return RefreshRuntime.register(type, "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/TeacherDashboard/P13BatchGrader.tsx " + id);
+}
+function $RefreshSig$() {
+  return RefreshRuntime.createSignatureFunctionForTransform();
+}
+
+//# sourceMappingURL=data:application/json;base64,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K0NBQTZDLG1GQUExRDtBQUFBO0FBQUE7QUFBQTtBQUFBLG1CQUVBO0FBQUEsWUFDQTtBQUFBLGNBQUM7QUFBQTtBQUFBLGdCQUNDLE1BQUs7QUFBQSxnQkFDTCxTQUFTckQ7QUFBQUEsZ0JBQ1QsVUFBVUU7QUFBQUEsZ0JBQ1YsV0FBVTtBQUFBLGdCQUVUQSxvQkFBVSxzQkFBc0IsY0FBY1IsYUFBYTtBQUFBO0FBQUEsY0FOOUQ7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLFlBT0E7QUFBQSxlQVhGO0FBQUE7QUFBQTtBQUFBO0FBQUEsaUJBWUE7QUFBQSxhQTlJRjtBQUFBO0FBQUE7QUFBQTtBQUFBLGVBK0lBO0FBQUE7QUFBQTtBQUFBLElBN1JJO0FBQUEsSUFETjtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLEVBK1JBO0FBRUo7QUFBRVUsR0FqV1dYLGdCQUE2QztBQUFBLEtBQTdDQTtBQUE2QyxJQUFBMkU7QUFBQSxhQUFBQSxJQUFBIiwibmFtZXMiOlsidXNlTWVtbyIsIm1vdGlvbiIsIkNsb2NrIiwiQ2hlY2tDaXJjbGUiLCJBcnJvd0xlZnQiLCJVc2VycyIsIlNwYXJrbGVzIiwiTWVzc2FnZVNxdWFyZSIsIk1PT0RfRU1PSklTIiwiZ2V0TW9vZENvbG9yIiwiZm9ybWF0RGF0ZU9iaiIsImdldFB1YmxpY0Fzc2V0VXJsIiwiZ2V0U3R1ZGVudHNCeUNsYXNzIiwiUDEzQmF0Y2hHcmFkZXIiLCJzZWxlY3RlZENsYXNzIiwic2V0U2VsZWN0ZWRDbGFzcyIsIkFMTF9DTEFTU0VTIiwiYmF0Y2hTY29yZXMiLCJoYW5kbGVQMTNDZWxsR3JhZGVDaGFuZ2UiLCJoYW5kbGVQMTNDZWxsQ29tbWVudENoYW5nZSIsImhhbmRsZVAxM0JhdGNoU3VibWl0IiwiaXNQMTNTYXZlZCIsImxvYWRpbmciLCJzZXRWaWV3U3RhdGUiLCJfcyIsInRvZGF5U3RyIiwiRGF0ZSIsInJvc3RlclN0dWRlbnRzIiwiZGlzcGxheVN0dWRlbnRzIiwibGVuZ3RoIiwiQXJyYXkiLCJmcm9tIiwiXyIsImlkeCIsImNsYXNzIiwibnVtYmVyIiwiY2hpbmVzZU5hbWUiLCJlbmdsaXNoTmFtZSIsInN0dWRlbnRJZCIsIlN0cmluZyIsInBhZFN0YXJ0IiwiZ29vZ2xlQXBwRW1haWwiLCJmaWxsZWRDb3VudCIsImF2Z1Njb3JlIiwiY291bnQiLCJzdW0iLCJmb3JFYWNoIiwic3QiLCJzS2V5Iiwic2NvcmUiLCJtb29kU2NvcmUiLCJ1bmRlZmluZWQiLCJudW0iLCJwYXJzZUludCIsImlzTmFOIiwidG9GaXhlZCIsImhhbmRsZVF1aWNrRmlsbEFsbCIsInRhcmdldFNjb3JlIiwiZXhpc3RpbmciLCJjb21tZW50Iiwib3BhY2l0eSIsInNjYWxlIiwiZHVyYXRpb24iLCJ3aW5kb3ciLCJoaXN0b3J5IiwiYmFjayIsImUiLCJ0YXJnZXQiLCJ2YWx1ZSIsIm1hcCIsImMiLCJ5Iiwic3R1ZGVudCIsInNJZHhTdHIiLCJzY29yZUl0ZW0iLCJjdXJyZW50Q29tbWVudCIsInJlY29yZEV4aXN0cyIsImlkIiwiaXNTY29yZUVudGVyZWQiLCJ2YWwiLCJpc0Nob3NlbiIsImlzTkFLZXkiLCJiYWNrZ3JvdW5kQ29sb3IiLCJib3JkZXJDb2xvciIsImNvbG9yIiwiZW1vamkiLCJkZXNjIiwic3BsaXQiLCJfYyJdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlcyI6WyJQMTNCYXRjaEdyYWRlci50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0LCB7IHVzZU1lbW8gfSBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyBtb3Rpb24gfSBmcm9tICdtb3Rpb24vcmVhY3QnO1xuaW1wb3J0IHsgQ2xvY2ssIENoZWNrQ2lyY2xlLCBBcnJvd0xlZnQsIFVzZXJzLCBTcGFya2xlcywgTWVzc2FnZVNxdWFyZSB9IGZyb20gJ2x1Y2lkZS1yZWFjdCc7XG5pbXBvcnQgeyBNT09EX0VNT0pJUywgZ2V0TW9vZENvbG9yIH0gZnJvbSAnLi4vLi4vLi4vY29uc3RhbnRzL21vb2RDb25zdGFudHMnO1xuaW1wb3J0IHsgZm9ybWF0RGF0ZU9iaiB9IGZyb20gJy4uLy4uLy4uL3V0aWxzL2RhdGVIZWxwZXJzJztcbmltcG9ydCB7IGdldFB1YmxpY0Fzc2V0VXJsIH0gZnJvbSAnLi4vLi4vLi4vdXRpbHMvYXNzZXRIZWxwZXInO1xuaW1wb3J0IHsgZ2V0U3R1ZGVudHNCeUNsYXNzLCBTdHVkZW50UmVjb3JkIH0gZnJvbSAnLi4vLi4vLi4vZGF0YS9zdHVkZW50c1Jvc3Rlcic7XG5cbmludGVyZmFjZSBQMTNCYXRjaEdyYWRlclByb3BzIHtcbiAgc2VsZWN0ZWRDbGFzczogc3RyaW5nO1xuICBzZXRTZWxlY3RlZENsYXNzPzogKHZhbDogc3RyaW5nKSA9PiB2b2lkO1xuICBBTExfQ0xBU1NFUz86IHN0cmluZ1tdO1xuICBiYXRjaFNjb3JlczogUmVjb3JkPHN0cmluZywgeyBpZD86IHN0cmluZzsgbW9vZFNjb3JlOiBudW1iZXIgfCBzdHJpbmc7IGNvbW1lbnQ/OiBzdHJpbmcgfT47XG4gIGhhbmRsZVAxM0NlbGxHcmFkZUNoYW5nZTogKHN0dWRlbnRObzogc3RyaW5nLCB2YWw6IG51bWJlciB8ICdOL0EnLCBjb21tZW50Pzogc3RyaW5nKSA9PiB2b2lkO1xuICBoYW5kbGVQMTNDZWxsQ29tbWVudENoYW5nZT86IChzdHVkZW50Tm86IHN0cmluZywgY29tbWVudDogc3RyaW5nKSA9PiB2b2lkO1xuICBoYW5kbGVQMTNCYXRjaFN1Ym1pdDogKCkgPT4gdm9pZDtcbiAgaXNQMTNTYXZlZDogYm9vbGVhbjtcbiAgbG9hZGluZzogYm9vbGVhbjtcbiAgc2V0Vmlld1N0YXRlPzogKHZpZXc6IGFueSkgPT4gdm9pZDtcbn1cblxuZXhwb3J0IGNvbnN0IFAxM0JhdGNoR3JhZGVyOiBSZWFjdC5GQzxQMTNCYXRjaEdyYWRlclByb3BzPiA9ICh7XG4gIHNlbGVjdGVkQ2xhc3MsXG4gIHNldFNlbGVjdGVkQ2xhc3MsXG4gIEFMTF9DTEFTU0VTLFxuICBiYXRjaFNjb3JlcyxcbiAgaGFuZGxlUDEzQ2VsbEdyYWRlQ2hhbmdlLFxuICBoYW5kbGVQMTNDZWxsQ29tbWVudENoYW5nZSxcbiAgaGFuZGxlUDEzQmF0Y2hTdWJtaXQsXG4gIGlzUDEzU2F2ZWQsXG4gIGxvYWRpbmcsXG4gIHNldFZpZXdTdGF0ZSxcbn0pID0+IHtcbiAgY29uc3QgdG9kYXlTdHIgPSBmb3JtYXREYXRlT2JqKG5ldyBEYXRlKCkpO1xuXG4gIC8vIFJldHJpZXZlIGFjdHVhbCBzdHVkZW50IHJlY29yZHMgZnJvbSB0aGUgb2ZmaWNpYWwgR0NDUFMgcm9zdGVyXG4gIGNvbnN0IHJvc3RlclN0dWRlbnRzID0gdXNlTWVtbygoKSA9PiB7XG4gICAgaWYgKCFzZWxlY3RlZENsYXNzKSByZXR1cm4gW107XG4gICAgcmV0dXJuIGdldFN0dWRlbnRzQnlDbGFzcyhzZWxlY3RlZENsYXNzKTtcbiAgfSwgW3NlbGVjdGVkQ2xhc3NdKTtcblxuICAvLyBGYWxsYmFjayBpZiBjbGFzcyBoYXMgbm8gc3RhdGljIHJvc3RlciAoZS5nLiBURVNUIGNsYXNzKVxuICBjb25zdCBkaXNwbGF5U3R1ZGVudHM6IFN0dWRlbnRSZWNvcmRbXSA9IHVzZU1lbW8oKCkgPT4ge1xuICAgIGlmIChyb3N0ZXJTdHVkZW50cy5sZW5ndGggPiAwKSByZXR1cm4gcm9zdGVyU3R1ZGVudHM7XG4gICAgcmV0dXJuIEFycmF5LmZyb20oeyBsZW5ndGg6IDMwIH0sIChfLCBpZHgpID0+ICh7XG4gICAgICBjbGFzczogc2VsZWN0ZWRDbGFzcyB8fCAnVEVTVCcsXG4gICAgICBudW1iZXI6IGlkeCArIDEsXG4gICAgICBjaGluZXNlTmFtZTogYOWtuOeUnyAke2lkeCArIDF9YCxcbiAgICAgIGVuZ2xpc2hOYW1lOiBgU3R1ZGVudCAke2lkeCArIDF9YCxcbiAgICAgIHN0dWRlbnRJZDogYHMke3NlbGVjdGVkQ2xhc3MgfHwgJzAwJ30ke1N0cmluZyhpZHggKyAxKS5wYWRTdGFydCgyLCAnMCcpfWAsXG4gICAgICBnb29nbGVBcHBFbWFpbDogYHMke3NlbGVjdGVkQ2xhc3MgfHwgJzAwJ30ke1N0cmluZyhpZHggKyAxKS5wYWRTdGFydCgyLCAnMCcpfUBtYWlsLmdjY3BzLmVkdS5oa2BcbiAgICB9KSk7XG4gIH0sIFtyb3N0ZXJTdHVkZW50cywgc2VsZWN0ZWRDbGFzc10pO1xuXG4gIC8vIENhbGN1bGF0ZSBsaXZlIHN0YXRpc3RpY3NcbiAgY29uc3QgeyBmaWxsZWRDb3VudCwgYXZnU2NvcmUgfSA9IHVzZU1lbW8oKCkgPT4ge1xuICAgIGxldCBjb3VudCA9IDA7XG4gICAgbGV0IHN1bSA9IDA7XG4gICAgZGlzcGxheVN0dWRlbnRzLmZvckVhY2goc3QgPT4ge1xuICAgICAgY29uc3Qgc0tleSA9IFN0cmluZyhzdC5udW1iZXIpO1xuICAgICAgY29uc3Qgc2NvcmUgPSBiYXRjaFNjb3Jlc1tzS2V5XT8ubW9vZFNjb3JlO1xuICAgICAgaWYgKHNjb3JlICE9PSB1bmRlZmluZWQgJiYgc2NvcmUgIT09IG51bGwgJiYgc2NvcmUgIT09ICcnICYmIHNjb3JlICE9PSAwKSB7XG4gICAgICAgIGNvdW50Kys7XG4gICAgICAgIGNvbnN0IG51bSA9IHR5cGVvZiBzY29yZSA9PT0gJ3N0cmluZycgPyBwYXJzZUludChzY29yZSkgOiBzY29yZTtcbiAgICAgICAgaWYgKCFpc05hTihudW0pKSBzdW0gKz0gbnVtO1xuICAgICAgfVxuICAgIH0pO1xuICAgIHJldHVybiB7XG4gICAgICBmaWxsZWRDb3VudDogY291bnQsXG4gICAgICBhdmdTY29yZTogY291bnQgPiAwID8gKHN1bSAvIGNvdW50KS50b0ZpeGVkKDEpIDogbnVsbFxuICAgIH07XG4gIH0sIFtkaXNwbGF5U3R1ZGVudHMsIGJhdGNoU2NvcmVzXSk7XG5cbiAgLy8gUXVpY2sgYmF0Y2ggZmlsbCBoZWxwZXJzXG4gIGNvbnN0IGhhbmRsZVF1aWNrRmlsbEFsbCA9ICh0YXJnZXRTY29yZTogbnVtYmVyKSA9PiB7XG4gICAgZGlzcGxheVN0dWRlbnRzLmZvckVhY2goc3QgPT4ge1xuICAgICAgY29uc3Qgc0tleSA9IFN0cmluZyhzdC5udW1iZXIpO1xuICAgICAgY29uc3QgZXhpc3RpbmcgPSBiYXRjaFNjb3Jlc1tzS2V5XT8ubW9vZFNjb3JlO1xuICAgICAgaWYgKCFleGlzdGluZyB8fCBleGlzdGluZyA9PT0gMCkge1xuICAgICAgICBoYW5kbGVQMTNDZWxsR3JhZGVDaGFuZ2Uoc0tleSwgdGFyZ2V0U2NvcmUsIGJhdGNoU2NvcmVzW3NLZXldPy5jb21tZW50IHx8ICcnKTtcbiAgICAgIH1cbiAgICB9KTtcbiAgfTtcblxuICByZXR1cm4gKFxuICAgIDxtb3Rpb24uZGl2IFxuICAgICAga2V5PVwidGVhY2hlcl9iYXRjaF9pbnNlcnRcIlxuICAgICAgaW5pdGlhbD17eyBvcGFjaXR5OiAwLCBzY2FsZTogMC45OCB9fSBcbiAgICAgIGFuaW1hdGU9e3sgb3BhY2l0eTogMSwgc2NhbGU6IDEgfX0gXG4gICAgICBleGl0PXt7IG9wYWNpdHk6IDAsIHNjYWxlOiAxLjAyIH19IFxuICAgICAgdHJhbnNpdGlvbj17eyBkdXJhdGlvbjogMC4yIH19XG4gICAgICBjbGFzc05hbWU9XCJzcGFjZS15LTYgZm9udC1zYW5zIG1heC13LTZ4bCBteC1hdXRvXCJcbiAgICA+XG4gICAgICB7LyogTkFWSUdBVElPTiBCQVIgKi99XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktYmV0d2VlblwiPlxuICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgdHlwZT1cImJ1dHRvblwiXG4gICAgICAgICAgb25DbGljaz17KCkgPT4gc2V0Vmlld1N0YXRlID8gc2V0Vmlld1N0YXRlKCdTVFVERU5UX0xPR0lOJykgOiB3aW5kb3cuaGlzdG9yeS5iYWNrKCl9XG4gICAgICAgICAgY2xhc3NOYW1lPVwiaW5saW5lLWZsZXggaXRlbXMtY2VudGVyIGdhcC0xLjUgdGV4dC14cyBmb250LWJvbGQgdGV4dC1zbGF0ZS01MDAgaG92ZXI6dGV4dC1pbmRpZ28tNjAwIGJnLXdoaXRlIGJvcmRlciBib3JkZXItc2xhdGUtMjAwIHB4LTMuNSBweS0yIHJvdW5kZWQteGwgc2hhZG93LXhzIHRyYW5zaXRpb24tYWxsIGN1cnNvci1wb2ludGVyXCJcbiAgICAgICAgPlxuICAgICAgICAgIDxBcnJvd0xlZnQgY2xhc3NOYW1lPVwidy00IGgtNFwiIC8+XG4gICAgICAgICAgPHNwYW4+6L+U5Zue5a2455Sf57WC56uvIChTdHVkZW50IFRlcm1pbmFsKTwvc3Bhbj5cbiAgICAgICAgPC9idXR0b24+XG5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZXh0LXhzIGZvbnQtc2VtaWJvbGQgdGV4dC1zbGF0ZS01MDBcIj5cbiAgICAgICAgICDlpKnkuLvmlZnlloTlsI7lsI/lrbggwrcg5a2455Sf6Lqr5b+D5YGl5bq36L+96Lmk5bmz5Y+wXG4gICAgICAgIDwvZGl2PlxuICAgICAgPC9kaXY+XG5cbiAgICAgIHsvKiBIRUFERVIgQ0FSRCAqL31cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctd2hpdGUgYm9yZGVyIGJvcmRlci1bI0UyRThGMF0gcC02IHJvdW5kZWQtMnhsIHNoYWRvdy1zbSBmbGV4IGZsZXgtY29sIG1kOmZsZXgtcm93IGp1c3RpZnktYmV0d2VlbiBpdGVtcy1zdGFydCBtZDppdGVtcy1jZW50ZXIgZ2FwLTRcIj5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLXN0YXJ0IGdhcC00XCI+XG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ3LTE2IGgtMTYgcm91bmRlZC0yeGwgYmctaW5kaWdvLTUwIGJvcmRlciBib3JkZXItaW5kaWdvLTEwMCBwLTIgc2hyaW5rLTAgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgc2hhZG93LXhzXCI+XG4gICAgICAgICAgICA8aW1nIFxuICAgICAgICAgICAgICBzcmM9e2dldFB1YmxpY0Fzc2V0VXJsKCcv5a245qCh5ZyW5qqUL+WQieelpeeJqS9lbmVuX3JlYWRpbmcucG5nJyl9IFxuICAgICAgICAgICAgICBhbHQ9XCLmganmganlkInnpaXnialcIiBcbiAgICAgICAgICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIGgtZnVsbCBvYmplY3QtY29udGFpbiBmaWx0ZXIgZHJvcC1zaGFkb3dcIiBcbiAgICAgICAgICAgIC8+XG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgPGRpdj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleCBmbGV4LXdyYXAgaXRlbXMtY2VudGVyIGdhcC0yXCI+XG4gICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImJnLWluZGlnby0xMDAgdGV4dC1pbmRpZ28tNzAwIHB4LTMgcHktMSB0ZXh0LXhzIGZvbnQtYmxhY2sgcm91bmRlZC1mdWxsIGZsZXggaXRlbXMtY2VudGVyIGdhcC0xXCI+XG4gICAgICAgICAgICAgICAgPFVzZXJzIGNsYXNzTmFtZT1cInctMy41IGgtMy41XCIgLz5cbiAgICAgICAgICAgICAgICDpgbjpoIUgMu+8muWwj+S4gOiHs+Wwj+WFrSAoUC4xIC0gUC42KSDogIHluKvlhajnj63ku6PnmbvoqJggKFRlYWNoZXIgSW5zZXJ0KVxuICAgICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImJnLWVtZXJhbGQtNTAgdGV4dC1lbWVyYWxkLTcwMCBib3JkZXIgYm9yZGVyLWVtZXJhbGQtMjAwIHB4LTIuNSBweS0wLjUgdGV4dC14cyBmb250LWJvbGQgcm91bmRlZC1mdWxsXCI+XG4gICAgICAgICAgICAgICAg5Zau5LiA6aCB6Z2i5b+r6YCf6Ly45YWl5YWo54+t5YiG5pW46IiH5YKZ6Ki7XG4gICAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIGdhcC0zIG10LTIuNVwiPlxuICAgICAgICAgICAgICA8aDMgY2xhc3NOYW1lPVwidGV4dC0yeGwgZm9udC1ibGFjayB0ZXh0LVsjMEYxNzJBXSB0cmFja2luZy10aWdodFwiPlxuICAgICAgICAgICAgICAgIHtzZWxlY3RlZENsYXNzfSDnj60gwrcg5q+P5pel5b+D5oOF5b+r6YCf5om55qyh6YyE5YWlXG4gICAgICAgICAgICAgIDwvaDM+XG5cbiAgICAgICAgICAgIHsvKiBDTEFTUyBTRUxFQ1RPUiBJTiBIRUFERVIgKi99XG4gICAgICAgICAgICB7c2V0U2VsZWN0ZWRDbGFzcyAmJiBBTExfQ0xBU1NFUyAmJiAoXG4gICAgICAgICAgICAgIDxzZWxlY3RcbiAgICAgICAgICAgICAgICB2YWx1ZT17c2VsZWN0ZWRDbGFzc31cbiAgICAgICAgICAgICAgICBvbkNoYW5nZT17KGUpID0+IHNldFNlbGVjdGVkQ2xhc3MoZS50YXJnZXQudmFsdWUpfVxuICAgICAgICAgICAgICAgIGNsYXNzTmFtZT1cImJnLWluZGlnby01MCBib3JkZXIgYm9yZGVyLWluZGlnby0yMDAgdGV4dC1pbmRpZ28tOTAwIHRleHQtc20gZm9udC1ibGFjayByb3VuZGVkLXhsIHB4LTMgcHktMS41IGZvY3VzOnJpbmctMiBmb2N1czpyaW5nLWluZGlnby0zMDAgZm9jdXM6b3V0bGluZS1ub25lIGN1cnNvci1wb2ludGVyXCJcbiAgICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgIDxvcHRncm91cCBsYWJlbD1cIuWIneWwjyAoUC4xIC0gUC4zKVwiPlxuICAgICAgICAgICAgICAgICAge1snMUEnLCcxQicsJzFDJywnMkEnLCcyQicsJzJDJywnMkQnLCczQScsJzNCJywnM0MnLCczRCddLm1hcChjID0+IChcbiAgICAgICAgICAgICAgICAgICAgPG9wdGlvbiBrZXk9e2N9IHZhbHVlPXtjfT7liIfmj5vnj63liKXvvJp7Y30g54+tPC9vcHRpb24+XG4gICAgICAgICAgICAgICAgICApKX1cbiAgICAgICAgICAgICAgICA8L29wdGdyb3VwPlxuICAgICAgICAgICAgICAgIDxvcHRncm91cCBsYWJlbD1cIumrmOWwjyAoUC40IC0gUC42KVwiPlxuICAgICAgICAgICAgICAgICAge1snNEEnLCc0QicsJzRDJywnNEQnLCc1QScsJzVCJywnNUMnLCc1RCcsJzZBJywnNkInLCc2QycsJzZEJ10ubWFwKGMgPT4gKFxuICAgICAgICAgICAgICAgICAgICA8b3B0aW9uIGtleT17Y30gdmFsdWU9e2N9PuWIh+aPm+ePreWIpe+8mntjfSDnj608L29wdGlvbj5cbiAgICAgICAgICAgICAgICAgICkpfVxuICAgICAgICAgICAgICAgIDwvb3B0Z3JvdXA+XG4gICAgICAgICAgICAgICAgPG9wdGdyb3VwIGxhYmVsPVwi5ris6KmmXCI+XG4gICAgICAgICAgICAgICAgICA8b3B0aW9uIHZhbHVlPVwiVEVTVFwiPlRFU1Qg5ris6Kmm54+t57SaPC9vcHRpb24+XG4gICAgICAgICAgICAgICAgPC9vcHRncm91cD5cbiAgICAgICAgICAgICAgPC9zZWxlY3Q+XG4gICAgICAgICAgICApfVxuICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGZsZXgtd3JhcCBpdGVtcy1jZW50ZXIgZ2FwLTQgdGV4dC14cyB0ZXh0LXNsYXRlLTUwMCBtdC0yIGZvbnQtbWVkaXVtXCI+XG4gICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMVwiPlxuICAgICAgICAgICAgICA8Q2xvY2sgY2xhc3NOYW1lPVwidy0zLjUgaC0zLjUgdGV4dC1pbmRpZ28tNTAwXCIgLz5cbiAgICAgICAgICAgICAg55m76KiY5pel5pyf77yaPHN0cm9uZyBjbGFzc05hbWU9XCJ0ZXh0LXNsYXRlLTgwMFwiPnt0b2RheVN0cn08L3N0cm9uZz5cbiAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICAgIDxzcGFuPuKAojwvc3Bhbj5cbiAgICAgICAgICAgIDxzcGFuPuWFqOePreWtuOeUn++8mjxzdHJvbmcgY2xhc3NOYW1lPVwidGV4dC1zbGF0ZS04MDBcIj57ZGlzcGxheVN0dWRlbnRzLmxlbmd0aH0g5L2NPC9zdHJvbmc+PC9zcGFuPlxuICAgICAgICAgICAgPHNwYW4+4oCiPC9zcGFuPlxuICAgICAgICAgICAgPHNwYW4+5bey6Ly45YWl77yaPHN0cm9uZyBjbGFzc05hbWU9XCJ0ZXh0LWluZGlnby02MDBcIj57ZmlsbGVkQ291bnR9IC8ge2Rpc3BsYXlTdHVkZW50cy5sZW5ndGh9IOS9jTwvc3Ryb25nPjwvc3Bhbj5cbiAgICAgICAgICAgIHthdmdTY29yZSAmJiAoXG4gICAgICAgICAgICAgIDw+XG4gICAgICAgICAgICAgICAgPHNwYW4+4oCiPC9zcGFuPlxuICAgICAgICAgICAgICAgIDxzcGFuPuePree0muS7iuaXpeW5s+Wdh+W/g+aDhe+8mjxzdHJvbmcgY2xhc3NOYW1lPVwidGV4dC1lbWVyYWxkLTYwMCBmb250LWJsYWNrXCI+e2F2Z1Njb3JlfSDliIY8L3N0cm9uZz48L3NwYW4+XG4gICAgICAgICAgICAgIDwvPlxuICAgICAgICAgICAgKX1cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgPC9kaXY+XG4gICAgICA8L2Rpdj5cblxuICAgICAgey8qIFRPUCBBQ1RJT04gQlVUVE9OUyAqL31cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMi41IHctZnVsbCBtZDp3LWF1dG9cIj5cbiAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICAgICAgIG9uQ2xpY2s9e2hhbmRsZVAxM0JhdGNoU3VibWl0fVxuICAgICAgICAgICAgZGlzYWJsZWQ9e2xvYWRpbmd9XG4gICAgICAgICAgICBjbGFzc05hbWU9XCJ3LWZ1bGwgbWQ6dy1hdXRvIGJnLWluZGlnby02MDAgaG92ZXI6YmctaW5kaWdvLTcwMCBkaXNhYmxlZDpiZy1zbGF0ZS0zMDAgdGV4dC13aGl0ZSBmb250LWJsYWNrIHRleHQtc20gcHgtNiBweS0zIHJvdW5kZWQteGwgdHJhbnNpdGlvbi1hbGwgc2hhZG93LW1kIGhvdmVyOnNoYWRvdy1sZyBob3ZlcjpzY2FsZS0xMDIgY3Vyc29yLXBvaW50ZXIgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgZ2FwLTJcIlxuICAgICAgICAgID5cbiAgICAgICAgICAgIDxzcGFuPntsb2FkaW5nID8gXCLmraPlnKjkv53lrZjkuK0uLi5cIiA6IGDwn5K+IOWEsuWtmOS4puWQjOatpSAke3NlbGVjdGVkQ2xhc3N9IOePreWIhuaVuOiIh+eVmeiogGB9PC9zcGFuPlxuICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICA8L2Rpdj5cbiAgICAgIDwvZGl2PlxuXG4gICAgICB7LyogUVVJQ0sgQkFUQ0ggSEVMUEVSUyAqL31cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctaW5kaWdvLTUwLzcwIGJvcmRlciBib3JkZXItaW5kaWdvLTEwMCByb3VuZGVkLXhsIHB4LTUgcHktMyBmbGV4IGZsZXgtd3JhcCBpdGVtcy1jZW50ZXIganVzdGlmeS1iZXR3ZWVuIGdhcC0zIHRleHQteHNcIj5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMiB0ZXh0LWluZGlnby05MDAgZm9udC1ib2xkXCI+XG4gICAgICAgICAgPFNwYXJrbGVzIGNsYXNzTmFtZT1cInctNCBoLTQgdGV4dC1pbmRpZ28tNjAwXCIgLz5cbiAgICAgICAgICA8c3Bhbj7imqEg5b+r5o236Ly45YWl5bel5YW377yI54K65bCa5pyq5omT5YiG55qE5ZCM5a245aGr5YWl77yJ77yaPC9zcGFuPlxuICAgICAgICA8L2Rpdj5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMlwiPlxuICAgICAgICAgIDxidXR0b25cbiAgICAgICAgICAgIHR5cGU9XCJidXR0b25cIlxuICAgICAgICAgICAgb25DbGljaz17KCkgPT4gaGFuZGxlUXVpY2tGaWxsQWxsKDUpfVxuICAgICAgICAgICAgY2xhc3NOYW1lPVwiYmctd2hpdGUgaG92ZXI6YmctaW5kaWdvLTEwMCB0ZXh0LXNsYXRlLTcwMCBmb250LWJvbGQgcHgtMyBweS0xLjUgcm91bmRlZC1sZyBib3JkZXIgYm9yZGVyLWluZGlnby0yMDAgdHJhbnNpdGlvbi1hbGwgY3Vyc29yLXBvaW50ZXIgc2hhZG93LTN4c1wiXG4gICAgICAgICAgPlxuICAgICAgICAgICAg8J+YkCDkuIDpjbXloasgNSDliIYgKOaZrumAmuW5s+mdnClcbiAgICAgICAgICA8L2J1dHRvbj5cbiAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICAgICAgIG9uQ2xpY2s9eygpID0+IGhhbmRsZVF1aWNrRmlsbEFsbCg3KX1cbiAgICAgICAgICAgIGNsYXNzTmFtZT1cImJnLXdoaXRlIGhvdmVyOmJnLWluZGlnby0xMDAgdGV4dC1lbWVyYWxkLTcwMCBmb250LWJvbGQgcHgtMyBweS0xLjUgcm91bmRlZC1sZyBib3JkZXIgYm9yZGVyLWluZGlnby0yMDAgdHJhbnNpdGlvbi1hbGwgY3Vyc29yLXBvaW50ZXIgc2hhZG93LTN4c1wiXG4gICAgICAgICAgPlxuICAgICAgICAgICAg8J+YiiDkuIDpjbXloasgNyDliIYgKOmWi+W/g+epjealtSlcbiAgICAgICAgICA8L2J1dHRvbj5cbiAgICAgICAgPC9kaXY+XG4gICAgICA8L2Rpdj5cblxuICAgICAgey8qIFNVQ0NFU1MgQkFOTkVSICovfVxuICAgICAge2lzUDEzU2F2ZWQgJiYgKFxuICAgICAgICA8bW90aW9uLmRpdiBcbiAgICAgICAgICBpbml0aWFsPXt7IG9wYWNpdHk6IDAsIHk6IC04IH19XG4gICAgICAgICAgYW5pbWF0ZT17eyBvcGFjaXR5OiAxLCB5OiAwIH19XG4gICAgICAgICAgY2xhc3NOYW1lPVwiYmctZW1lcmFsZC01MCBib3JkZXIgYm9yZGVyLWVtZXJhbGQtMjAwIHRleHQtZW1lcmFsZC04MDAgcC00IHJvdW5kZWQteGwgZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTIuNSB0ZXh0LXNtIGZvbnQtYm9sZCBzaGFkb3cteHNcIlxuICAgICAgICA+XG4gICAgICAgICAgPENoZWNrQ2lyY2xlIGNsYXNzTmFtZT1cInctNSBoLTUgdGV4dC1lbWVyYWxkLTYwMCBzaHJpbmstMFwiIC8+XG4gICAgICAgICAgPHNwYW4+5oGt5Zac77yBe3NlbGVjdGVkQ2xhc3N9IOePreWcqOS7iuaXpe+8iHt0b2RheVN0cn3vvInnmoTlhajnj63liIbmlbjoiIfnlZnoqIDlt7Llroznvo7lkIzmraXlrZjlhaUgRmlyZWJhc2Ug6LOH5paZ5bqr77yB5Y+v5Zyo5YWo5qCh5b+D5oOF5aCx5ZGK5Lit5Y2z5pmC5p+l55yL44CCPC9zcGFuPlxuICAgICAgICA8L21vdGlvbi5kaXY+XG4gICAgICApfVxuXG4gICAgICB7LyogU1RVREVOVCBNQVRSSVggKFNJTkdMRSBQQUdFIEZPUiBBTEwgU1RVREVOVFMgT0YgVEhFIENMQVNTKSAqL31cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctd2hpdGUgYm9yZGVyIGJvcmRlci1zbGF0ZS0yMDAgcm91bmRlZC0yeGwgcC02IHNoYWRvdy1zbVwiPlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggZmxleC1jb2wgc206ZmxleC1yb3cgc206aXRlbXMtY2VudGVyIGp1c3RpZnktYmV0d2VlbiBnYXAtMiBib3JkZXItYiBib3JkZXItc2xhdGUtMTAwIHBiLTQgbWItNFwiPlxuICAgICAgICAgIDxoNCBjbGFzc05hbWU9XCJ0ZXh0LWJhc2UgZm9udC1ibGFjayB0ZXh0LVsjMUUyOTNCXSBmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMlwiPlxuICAgICAgICAgICAgPHNwYW4+e3NlbGVjdGVkQ2xhc3N9IOePrSDlhajpq5TlrbjnlJ/nmbvliIbmuIXllq48L3NwYW4+XG4gICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJ0ZXh0LXhzIGJnLXNsYXRlLTEwMCB0ZXh0LXNsYXRlLTYwMCBweC0yIHB5LTAuNSByb3VuZGVkLWZ1bGwgZm9udC1ib2xkXCI+XG4gICAgICAgICAgICAgIOWFsSB7ZGlzcGxheVN0dWRlbnRzLmxlbmd0aH0g5ZCNXG4gICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgICAgPC9oND5cbiAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJ0ZXh0LXhzIHRleHQtc2xhdGUtNDAwIGZvbnQtbWVkaXVtXCI+XG4gICAgICAgICAgICDpu57mk4rlsI3mh4kgMS0xMCDliIbmlbjmjInpiJXljbPlj6/ljbPmmYLmiZPliIbvvIzkuqblj6/lnKjlj7PlgbTovLjlhaXlgpnoqLvmiJblrbjnlJ/nlZnoqIDjgIJcbiAgICAgICAgICA8L3NwYW4+XG4gICAgICAgIDwvZGl2PlxuXG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZGl2aWRlLXkgZGl2aWRlLXNsYXRlLTEwMFwiPlxuICAgICAgICAgIHtkaXNwbGF5U3R1ZGVudHMubWFwKChzdHVkZW50KSA9PiB7XG4gICAgICAgICAgICBjb25zdCBzSWR4U3RyID0gU3RyaW5nKHN0dWRlbnQubnVtYmVyKTtcbiAgICAgICAgICAgIGNvbnN0IHNjb3JlSXRlbSA9IGJhdGNoU2NvcmVzW3NJZHhTdHJdO1xuICAgICAgICAgICAgY29uc3Qgc2NvcmUgPSBzY29yZUl0ZW0/Lm1vb2RTY29yZSB8fCAwO1xuICAgICAgICAgICAgY29uc3QgY3VycmVudENvbW1lbnQgPSBzY29yZUl0ZW0/LmNvbW1lbnQgfHwgJyc7XG4gICAgICAgICAgICBjb25zdCByZWNvcmRFeGlzdHMgPSAhIXNjb3JlSXRlbT8uaWQ7XG4gICAgICAgICAgICBjb25zdCBpc1Njb3JlRW50ZXJlZCA9IHNjb3JlICE9PSAwICYmIHNjb3JlICE9PSB1bmRlZmluZWQgJiYgc2NvcmUgIT09ICcnO1xuXG4gICAgICAgICAgICByZXR1cm4gKFxuICAgICAgICAgICAgICA8ZGl2IFxuICAgICAgICAgICAgICAgIGtleT17c0lkeFN0cn1cbiAgICAgICAgICAgICAgICBjbGFzc05hbWU9e2BweS0zIHB4LTMuNSBmbGV4IGZsZXgtY29sIGxnOmZsZXgtcm93IGxnOml0ZW1zLWNlbnRlciBqdXN0aWZ5LWJldHdlZW4gZ2FwLTMgdHJhbnNpdGlvbi1hbGwgcm91bmRlZC14bCBmb250LXNhbnMgJHtcbiAgICAgICAgICAgICAgICAgIHNjb3JlID09PSAnTi9BJyBcbiAgICAgICAgICAgICAgICAgICAgPyAnYmctc2xhdGUtNTAvODAnIFxuICAgICAgICAgICAgICAgICAgICA6IGlzU2NvcmVFbnRlcmVkIFxuICAgICAgICAgICAgICAgICAgICAgID8gJ2JnLWluZGlnby01MC8yMCBob3ZlcjpiZy1pbmRpZ28tNTAvMzAnIFxuICAgICAgICAgICAgICAgICAgICAgIDogJ2hvdmVyOmJnLXNsYXRlLTUwJ1xuICAgICAgICAgICAgICAgIH1gfVxuICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgey8qIDEuIExFRlQ6IFNUVURFTlQgSU5GTyAqL31cbiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIGdhcC0zIG1pbi13LVsyMDBweF1cIj5cbiAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT17YHctOSBoLTkgZmxleC1zaHJpbmstMCBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciByb3VuZGVkLXhsIHRleHQteHMgZm9udC1ibGFjayBzaGFkb3ctM3hzICR7XG4gICAgICAgICAgICAgICAgICAgIHNjb3JlID09PSAnTi9BJyBcbiAgICAgICAgICAgICAgICAgICAgICA/ICdiZy1zbGF0ZS00MDAgdGV4dC13aGl0ZScgXG4gICAgICAgICAgICAgICAgICAgICAgOiBpc1Njb3JlRW50ZXJlZCBcbiAgICAgICAgICAgICAgICAgICAgICAgID8gJ2JnLWluZGlnby02MDAgdGV4dC13aGl0ZScgXG4gICAgICAgICAgICAgICAgICAgICAgICA6ICdiZy1zbGF0ZS0xMDAgdGV4dC1zbGF0ZS02MDAgYm9yZGVyIGJvcmRlci1zbGF0ZS0yMDAnXG4gICAgICAgICAgICAgICAgICB9YH0+XG4gICAgICAgICAgICAgICAgICAgIHtzSWR4U3RyLnBhZFN0YXJ0KDIsICcwJyl9XG4gICAgICAgICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgICAgICAgICAgICA8ZGl2PlxuICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIGdhcC0xLjVcIj5cbiAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJ0ZXh0LXNtIGZvbnQtYmxhY2sgdGV4dC1zbGF0ZS04MDBcIj57c3R1ZGVudC5jaGluZXNlTmFtZX08L3NwYW4+XG4gICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwidGV4dC14cyB0ZXh0LXNsYXRlLTUwMCBmb250LXNlbWlib2xkXCI+e3N0dWRlbnQuZW5nbGlzaE5hbWV9PC9zcGFuPlxuICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMiBtdC0wLjVcIj5cbiAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJ0ZXh0LVsxMHB4XSBmb250LW1vbm8gZm9udC1ib2xkIHRleHQtc2xhdGUtNDAwIGJnLXNsYXRlLTEwMCBweC0xLjUgcHktMC4yIHJvdW5kZWRcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgIHtzdHVkZW50LnN0dWRlbnRJZH1cbiAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPXtgdGV4dC1bMTBweF0gZm9udC1ib2xkICR7cmVjb3JkRXhpc3RzID8gJ3RleHQtZW1lcmFsZC02MDAnIDogaXNTY29yZUVudGVyZWQgPyAndGV4dC1pbmRpZ28tNjAwJyA6ICd0ZXh0LXNsYXRlLTQwMCd9YH0+XG4gICAgICAgICAgICAgICAgICAgICAgICB7cmVjb3JkRXhpc3RzID8gJ+KckyDku4rml6Xlt7LlrZjmqpQnIDogaXNTY29yZUVudGVyZWQgPyAn4pePIOW3sum7numBuOacquWEsuWtmCcgOiAn4peLIOWwmuacqueZu+iomCd9XG4gICAgICAgICAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgICAgICAgey8qIDIuIENFTlRFUjogU0NPUkUgQlVUVE9OUyAoMS0xMCArIE4vQSkgKi99XG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMS41IG92ZXJmbG93LXgtYXV0byBuby1zY3JvbGxiYXIgcHktMVwiPlxuICAgICAgICAgICAgICAgICAgeyhbMSwgMiwgMywgNCwgNSwgNiwgNywgOCwgOSwgMTAsICdOL0EnXSBhcyBjb25zdCkubWFwKHZhbCA9PiB7XG4gICAgICAgICAgICAgICAgICAgIGNvbnN0IGlzQ2hvc2VuID0gc2NvcmUgPT09IHZhbCB8fCBTdHJpbmcoc2NvcmUpID09PSBTdHJpbmcodmFsKTtcbiAgICAgICAgICAgICAgICAgICAgY29uc3QgaXNOQUtleSA9IHZhbCA9PT0gJ04vQSc7XG4gICAgICAgICAgICAgICAgICAgIHJldHVybiAoXG4gICAgICAgICAgICAgICAgICAgICAgPGJ1dHRvblxuICAgICAgICAgICAgICAgICAgICAgICAga2V5PXt2YWx9XG4gICAgICAgICAgICAgICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICAgICAgICAgICAgICAgICAgIG9uQ2xpY2s9eygpID0+IGhhbmRsZVAxM0NlbGxHcmFkZUNoYW5nZShzSWR4U3RyLCB2YWwsIGN1cnJlbnRDb21tZW50KX1cbiAgICAgICAgICAgICAgICAgICAgICAgIHN0eWxlPXt7XG4gICAgICAgICAgICAgICAgICAgICAgICAgIGJhY2tncm91bmRDb2xvcjogaXNDaG9zZW4gPyAoaXNOQUtleSA/ICcjOTRBM0I4JyA6IGdldE1vb2RDb2xvcih2YWwpKSA6ICd0cmFuc3BhcmVudCcsXG4gICAgICAgICAgICAgICAgICAgICAgICAgIGJvcmRlckNvbG9yOiBpc0Nob3NlbiA/IChpc05BS2V5ID8gJyM5NEEzQjgnIDogZ2V0TW9vZENvbG9yKHZhbCkpIDogJyNFMkU4RjAnLFxuICAgICAgICAgICAgICAgICAgICAgICAgICBjb2xvcjogaXNDaG9zZW4gPyAnI0ZGRkZGRicgOiAoaXNOQUtleSA/ICcjNjQ3NDhCJyA6ICcjNDc1NTY5JylcbiAgICAgICAgICAgICAgICAgICAgICAgIH19XG4gICAgICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9e2BoLTggZmxleC1zaHJpbmstMCBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciByb3VuZGVkLWxnIHRleHQteHMgZm9udC1ibGFjayBib3JkZXItMiB0cmFuc2l0aW9uLWFsbCBjdXJzb3ItcG9pbnRlciBob3Zlcjpib3JkZXItc2xhdGUtNDAwIGFjdGl2ZTpzY2FsZS05NSAke1xuICAgICAgICAgICAgICAgICAgICAgICAgICBpc05BS2V5ID8gJ3B4LTIuNSBtaW4tdy1bNDJweF0nIDogJ3ctOCdcbiAgICAgICAgICAgICAgICAgICAgICAgIH0gJHtpc0Nob3NlbiA/ICdzaGFkb3cteHMgZm9udC1ibGFjayByaW5nLTIgcmluZy1pbmRpZ28tMjAwJyA6ICcnfWB9XG4gICAgICAgICAgICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgICAgICAgICAge3ZhbH1cbiAgICAgICAgICAgICAgICAgICAgICA8L2J1dHRvbj5cbiAgICAgICAgICAgICAgICAgICAgKTtcbiAgICAgICAgICAgICAgICAgIH0pfVxuICAgICAgICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgICAgICAgey8qIDMuIFJJR0hUOiBTRUxFQ1RFRCBNT09EIEJBREdFICYgUVVJQ0sgQ09NTUVOVCBJTlBVVCAqL31cbiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggZmxleC1jb2wgc206ZmxleC1yb3cgaXRlbXMtc3RhcnQgc206aXRlbXMtY2VudGVyIGdhcC0yLjUgbWluLXctWzI4MHB4XSBsZzpqdXN0aWZ5LWVuZFwiPlxuICAgICAgICAgICAgICAgICAgey8qIE1vb2Qgc3VtbWFyeSB0YWcgKi99XG4gICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInctWzEyNXB4XSBzaHJpbmstMCB0ZXh0LXJpZ2h0XCI+XG4gICAgICAgICAgICAgICAgICAgIHtzY29yZSA9PT0gJ04vQScgPyAoXG4gICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJpbmxpbmUtZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTEgYmctc2xhdGUtMTAwIGJvcmRlciBib3JkZXItc2xhdGUtMjAwIHB4LTIgcHktMSByb3VuZGVkLWxnIHRleHQtWzExcHhdIGZvbnQtYm9sZCB0ZXh0LXNsYXRlLTUwMFwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4+8J+aqzwvc3Bhbj5cbiAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuPue8uuW4rS/pm6LmoKE8L3NwYW4+XG4gICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICAgICkgOiBpc1Njb3JlRW50ZXJlZCA/IChcbiAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImlubGluZS1mbGV4IGl0ZW1zLWNlbnRlciBnYXAtMSBiZy13aGl0ZSBib3JkZXIgYm9yZGVyLXNsYXRlLTIwMCBweC0yIHB5LTEgcm91bmRlZC1sZyB0ZXh0LVsxMXB4XSBmb250LWJvbGQgc2hhZG93LTN4c1wiPlxuICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4+e01PT0RfRU1PSklTW3Njb3JlIGFzIG51bWJlcl0/LmVtb2ppfTwvc3Bhbj5cbiAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuIHN0eWxlPXt7IGNvbG9yOiBnZXRNb29kQ29sb3Ioc2NvcmUgYXMgbnVtYmVyKSB9fT5cbiAgICAgICAgICAgICAgICAgICAgICAgICAge3Njb3JlfeWIhiDigKIge01PT0RfRU1PSklTW3Njb3JlIGFzIG51bWJlcl0/LmRlc2Muc3BsaXQoJyAvICcpWzBdfVxuICAgICAgICAgICAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgICApIDogKFxuICAgICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cInRleHQtc2xhdGUtMzAwIHRleHQteHMgaXRhbGljIGZvbnQtc2VtaWJvbGRcIj7mnKroqZXliIY8L3NwYW4+XG4gICAgICAgICAgICAgICAgICAgICl9XG4gICAgICAgICAgICAgICAgICA8L2Rpdj5cblxuICAgICAgICAgICAgICAgICAgey8qIENvbW1lbnQgLyBUZWFjaGVyIE9ic2VydmF0aW9uIGlucHV0ICovfVxuICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJyZWxhdGl2ZSB3LWZ1bGwgc206dy01NlwiPlxuICAgICAgICAgICAgICAgICAgICA8TWVzc2FnZVNxdWFyZSBjbGFzc05hbWU9XCJ3LTMuNSBoLTMuNSB0ZXh0LXNsYXRlLTQwMCBhYnNvbHV0ZSBsZWZ0LTIuNSB0b3AtMi41XCIgLz5cbiAgICAgICAgICAgICAgICAgICAgPGlucHV0XG4gICAgICAgICAgICAgICAgICAgICAgdHlwZT1cInRleHRcIlxuICAgICAgICAgICAgICAgICAgICAgIHBsYWNlaG9sZGVyPVwi5aGr5a+r5YKZ6Ki75oiW55WZ6KiAICjpgbjloaspLi4uXCJcbiAgICAgICAgICAgICAgICAgICAgICB2YWx1ZT17Y3VycmVudENvbW1lbnR9XG4gICAgICAgICAgICAgICAgICAgICAgb25DaGFuZ2U9eyhlKSA9PiB7XG4gICAgICAgICAgICAgICAgICAgICAgICBpZiAoaGFuZGxlUDEzQ2VsbENvbW1lbnRDaGFuZ2UpIHtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgaGFuZGxlUDEzQ2VsbENvbW1lbnRDaGFuZ2Uoc0lkeFN0ciwgZS50YXJnZXQudmFsdWUpO1xuICAgICAgICAgICAgICAgICAgICAgICAgfSBlbHNlIHtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgaGFuZGxlUDEzQ2VsbEdyYWRlQ2hhbmdlKHNJZHhTdHIsIHNjb3JlLCBlLnRhcmdldC52YWx1ZSk7XG4gICAgICAgICAgICAgICAgICAgICAgICB9XG4gICAgICAgICAgICAgICAgICAgICAgfX1cbiAgICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9XCJ3LWZ1bGwgdGV4dC14cyBwbC04IHByLTIuNSBweS0xLjUgcm91bmRlZC1sZyBib3JkZXIgYm9yZGVyLXNsYXRlLTIwMCBiZy13aGl0ZSBmb2N1czpyaW5nLTIgZm9jdXM6cmluZy1pbmRpZ28tMTAwIGZvY3VzOmJvcmRlci1pbmRpZ28tNDAwIGZvY3VzOm91dGxpbmUtbm9uZSB0cmFuc2l0aW9uLWFsbCBwbGFjZWhvbGRlcjp0ZXh0LXNsYXRlLTMwMCBmb250LW1lZGl1bVwiXG4gICAgICAgICAgICAgICAgICAgIC8+XG4gICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICApO1xuICAgICAgICAgIH0pfVxuICAgICAgICA8L2Rpdj5cblxuICAgICAgICB7LyogQk9UVE9NIFNBVkUgQkFSICovfVxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cIm10LTggcHQtNiBib3JkZXItdCBib3JkZXItc2xhdGUtMTAwIGZsZXggZmxleC1jb2wgbWQ6ZmxleC1yb3cganVzdGlmeS1iZXR3ZWVuIGdhcC00IGl0ZW1zLWNlbnRlciBmb250LXNhbnNcIj5cbiAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXhzIHRleHQtc2xhdGUtNDAwIGZvbnQtbWVkaXVtIG1heC13LXhsXCI+XG4gICAgICAgICAgICDwn5KhIOaPkOekuu+8mum7nuaTiuOAjOWEsuWtmOS4puWQjOatpeOAjeW+jO+8jOaJgOacieW3suipleWIhuWtuOeUn+eahOacgOaWsOW/g+aDheWIhuaVuOiIh+eVmeiogOWwh+WNs+aZguWvq+WFpeezu+e1seOAguiLpeWIhuaVuOS9juaWvOaIluetieaWvCAzIOWIhu+8jOezu+e1seacg+WVn+WLlemXnOaHt+mgkOitpuapn+WItuOAglxuICAgICAgICAgIDwvcD5cbiAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICAgICAgIG9uQ2xpY2s9e2hhbmRsZVAxM0JhdGNoU3VibWl0fVxuICAgICAgICAgICAgZGlzYWJsZWQ9e2xvYWRpbmd9XG4gICAgICAgICAgICBjbGFzc05hbWU9XCJ3LWZ1bGwgbWQ6dy1hdXRvIGJnLWluZGlnby02MDAgaG92ZXI6YmctaW5kaWdvLTcwMCBkaXNhYmxlZDpiZy1zbGF0ZS0zMDAgdGV4dC13aGl0ZSBmb250LWJsYWNrIHRleHQtc20gcHgtOCBweS0zLjUgcm91bmRlZC14bCB0cmFuc2l0aW9uLWFsbCBzaGFkb3ctbWQgaG92ZXI6c2hhZG93LWxnIGN1cnNvci1wb2ludGVyXCJcbiAgICAgICAgICA+XG4gICAgICAgICAgICB7bG9hZGluZyA/IFwi5q2j5Zyo5L+d5a2Y6IezIEZpcmViYXNlLi4uXCIgOiBg8J+SviDnorroqo3kuKblkIzmraXlhLLlrZggJHtzZWxlY3RlZENsYXNzfSDnj63liIbmlbhgfVxuICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICA8L2Rpdj5cbiAgICAgIDwvZGl2PlxuICAgIDwvbW90aW9uLmRpdj5cbiAgKTtcbn07XG4iXSwiZmlsZSI6IkM6L1VzZXJzL0plcnJ5Ly5nZW1pbmkvYW50aWdyYXZpdHkvc2NyYXRjaC9tb29kdHJhY2tlci9zcmMvY29tcG9uZW50cy9EYXNoYm9hcmRzL1RlYWNoZXJEYXNoYm9hcmQvUDEzQmF0Y2hHcmFkZXIudHN4In0=

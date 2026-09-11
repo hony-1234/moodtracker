@@ -52,6 +52,16 @@ service cloud.firestore {
       allow read, write, delete: if isTeacher();
     }
 
+    // Student profiles and accounts
+    match /students/{document} {
+      allow read, write: if true;
+    }
+
+    // Student 4Rs diaries
+    match /studentDiaries/{document} {
+      allow read, write: if true;
+    }
+
     // FCM push notification subscriptions:
     // Allow clients to register and manage device subscriptions.
     match /fcm_subscriptions/{document} {

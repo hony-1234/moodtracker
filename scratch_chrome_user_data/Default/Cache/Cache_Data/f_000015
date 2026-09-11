@@ -1,0 +1,1125 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/Common/Modals.tsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=83d097c1"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import { Shield, Sliders, HelpCircle } from "/node_modules/.vite/deps/lucide-react.js?v=83d097c1";
+import { MOOD_EMOJIS, getMoodColor } from "/src/constants/moodConstants.ts";
+export const ActionModal = ({
+  visible,
+  onClose,
+  onSubmit,
+  actionText,
+  setActionText,
+  loading
+}) => {
+  if (!visible) return null;
+  return /* @__PURE__ */ jsxDEV("div", { className: "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4", children: /* @__PURE__ */ jsxDEV("div", { className: "bg-white border border-slate-100 shadow-2xl rounded-2xl max-w-lg w-full p-6 space-y-4", children: [
+    /* @__PURE__ */ jsxDEV("div", { children: [
+      /* @__PURE__ */ jsxDEV("h3", { className: "text-lg font-black text-slate-900", children: "記錄跟進處理詳情" }, void 0, false, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 29,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("p", { className: "text-xs text-slate-500 font-semibold mt-1", children: "請填寫您對於該名學生情緒警示的具體處置作法、會談成果或介入方式：" }, void 0, false, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 30,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+      lineNumber: 28,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV("form", { onSubmit, className: "space-y-4", children: [
+      /* @__PURE__ */ jsxDEV(
+        "textarea",
+        {
+          placeholder: "例如：已安排今天午休安排面談、已協助社工約談，家長亦完全知悉並承诺跟進...",
+          className: "w-full min-h-[120px] p-3 border border-slate-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-red-100 text-xs text-slate-700 font-bold",
+          value: actionText,
+          onChange: (e) => setActionText(e.target.value),
+          autoFocus: true,
+          required: true
+        },
+        void 0,
+        false,
+        {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 34,
+          columnNumber: 11
+        },
+        this
+      ),
+      /* @__PURE__ */ jsxDEV("div", { className: "flex justify-end gap-3 pt-2", children: [
+        /* @__PURE__ */ jsxDEV(
+          "button",
+          {
+            type: "button",
+            onClick: onClose,
+            className: "bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer",
+            children: "取消"
+          },
+          void 0,
+          false,
+          {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 44,
+            columnNumber: 13
+          },
+          this
+        ),
+        /* @__PURE__ */ jsxDEV(
+          "button",
+          {
+            type: "submit",
+            disabled: loading,
+            className: "bg-red-600 hover:bg-rose-700 text-white px-5 py-2 rounded-xl text-xs font-bold shadow-md transition-all cursor-pointer",
+            children: loading ? "處理中..." : "錄入處置並解除警報"
+          },
+          void 0,
+          false,
+          {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 51,
+            columnNumber: 13
+          },
+          this
+        )
+      ] }, void 0, true, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 43,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+      lineNumber: 33,
+      columnNumber: 9
+    }, this)
+  ] }, void 0, true, {
+    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+    lineNumber: 27,
+    columnNumber: 7
+  }, this) }, void 0, false, {
+    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+    lineNumber: 26,
+    columnNumber: 5
+  }, this);
+};
+_c = ActionModal;
+export const PrivacyPolicyModal = ({ visible, onClose }) => {
+  if (!visible) return null;
+  return /* @__PURE__ */ jsxDEV("div", { className: "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4", id: "privacy-policy-modal", children: /* @__PURE__ */ jsxDEV("div", { className: "bg-white border border-slate-100 shadow-2xl rounded-3xl max-w-2xl w-full flex flex-col max-h-[90vh] overflow-hidden", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "bg-gradient-to-r from-emerald-600 to-teal-700 px-6 py-5 text-white flex justify-between items-center flex-shrink-0", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "flex items-center space-x-2", children: [
+        /* @__PURE__ */ jsxDEV(Shield, { className: "w-5 h-5 text-emerald-100" }, void 0, false, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 80,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("h3", { className: "text-base font-black tracking-tight", children: "校園學童個人資料保護與隱私政策" }, void 0, false, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 81,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 79,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV(
+        "button",
+        {
+          type: "button",
+          onClick: onClose,
+          className: "text-white/80 hover:text-white hover:bg-white/10 p-1.5 rounded-lg transition-all text-xs font-bold cursor-pointer",
+          children: "✕ 關閉"
+        },
+        void 0,
+        false,
+        {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 83,
+          columnNumber: 11
+        },
+        this
+      )
+    ] }, void 0, true, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+      lineNumber: 78,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "p-6 overflow-y-auto space-y-5 text-slate-700 text-xs md:text-[13px] leading-relaxed select-text font-medium", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "border-l-4 border-emerald-500 bg-emerald-50/50 p-3.5 rounded-r-xl", children: /* @__PURE__ */ jsxDEV("p", { className: "font-bold text-emerald-800", children: "為確保天主教善導小學校園輔導之資訊安全與法律合規，平台在架構設計上嚴格遵守香港《個人資料（私隱）條例》（PDPO）核心原則。本平台所載之操作，均旨在以最大程度保障心理健康、防範重度情緒風險同時保護學童私隱。" }, void 0, false, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 95,
+        columnNumber: 13
+      }, this) }, void 0, false, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 94,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "space-y-4", children: [
+        /* @__PURE__ */ jsxDEV("div", { children: [
+          /* @__PURE__ */ jsxDEV("h4", { className: "font-extrabold text-slate-900 flex items-center gap-1.5 text-sm mb-1", children: [
+            /* @__PURE__ */ jsxDEV("span", { className: "text-emerald-600", children: "一、" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 103,
+              columnNumber: 17
+            }, this),
+            " 數據收集與去識別化原則"
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 102,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "text-slate-600", children: "本平台僅收集學生之班級、學號（P.4-P.6）及每日心情指數、文字悄悄話留言，旨在提供即時心理危機輔導預警。" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 105,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("ul", { className: "list-disc pl-5 mt-1 space-y-1 text-slate-500 text-xs font-semibold", children: [
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "去識別化設計：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 109,
+                columnNumber: 21
+              }, this),
+              "數據庫內完全不儲存學生的物理姓名、出生日期或身份證明號碼。僅通過班級與學號進行關聯。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 109,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "初小安全代錄碼：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 110,
+                columnNumber: 21
+              }, this),
+              "小一至小三學童之心情點數均由教師在學生通道批量代錄，此過程中完全不提交任何學童文字留言，保障年幼學童私隱。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 110,
+              columnNumber: 17
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 108,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 101,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { children: [
+          /* @__PURE__ */ jsxDEV("h4", { className: "font-extrabold text-slate-900 flex items-center gap-1.5 text-sm mb-1", children: [
+            /* @__PURE__ */ jsxDEV("span", { className: "text-emerald-600", children: "二、" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 116,
+              columnNumber: 17
+            }, this),
+            " 雲端儲存與資訊保安架構"
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 115,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "text-slate-600", children: "所有心情數據與留言直接同步儲存於 Google Cloud Firestore 安全伺服器。" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 118,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("ul", { className: "list-disc pl-5 mt-1 space-y-1 text-slate-500 text-xs font-semibold", children: [
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "全程傳輸加密：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 122,
+                columnNumber: 21
+              }, this),
+              "數據庫聯機通道使用嚴格的 SSL/TLS 高強度安全加密協定，屏蔽一切外部嗅探。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 122,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "安全密碼保護：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 123,
+                columnNumber: 21
+              }, this),
+              "高年級（P.4-P.6）除通用的班級密碼外，教師可在管理中心獨立設定與隨機配置「學生個人個別專屬登入密碼」，防止班級內其他學童惡意代登或窥探心情日誌。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 123,
+              columnNumber: 17
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 121,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 114,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { children: [
+          /* @__PURE__ */ jsxDEV("h4", { className: "font-extrabold text-slate-900 flex items-center gap-1.5 text-sm mb-1", children: [
+            /* @__PURE__ */ jsxDEV("span", { className: "text-emerald-600", children: "三、" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 129,
+              columnNumber: 17
+            }, this),
+            " 資料合理保留期限與安全銷毀"
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 128,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "text-slate-600", children: "我們尊重學童的「被遺忘權」，並實施對應的安全保留週期限制：" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 131,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("ul", { className: "list-disc pl-5 mt-1 space-y-1 text-slate-500 text-xs font-semibold", children: [
+            /* @__PURE__ */ jsxDEV("li", { children: "本系統之數據僅於當前學年內保留，以便進行學期末心理健康分析。" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 135,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: "在暑期新舊年級交替接盤前，平台管理者將會同導師配合一鍵安全擦除全校的歷史日誌，做不可逆的銷毀處置。" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 136,
+              columnNumber: 17
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 134,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 127,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { children: [
+          /* @__PURE__ */ jsxDEV("h4", { className: "font-extrabold text-slate-900 flex items-center gap-1.5 text-sm mb-1", children: [
+            /* @__PURE__ */ jsxDEV("span", { className: "text-emerald-600", children: "四、" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 142,
+              columnNumber: 17
+            }, this),
+            " 導師安全權力查閱與稽核"
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 141,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "text-slate-600", children: "系統後台嚴格限定各班導師只能過濾、檢視其專屬班別之學生日誌，完全隔離跨班級越權查看。" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 144,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("ul", { className: "list-disc pl-5 mt-1 space-y-1 text-slate-500 text-xs font-semibold", children: [
+            /* @__PURE__ */ jsxDEV("li", { children: "所有教師及管理者的登入行為均由系統自動儲存至一鍵不可人為修改的「安全稽核日誌」模組中。" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 148,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: "每次登入均有記錄其設備資訊（Device Agent）與即時連線時間，確保無非授權的後門存取。" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 149,
+              columnNumber: 17
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 147,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 140,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { children: [
+          /* @__PURE__ */ jsxDEV("h4", { className: "font-extrabold text-slate-900 flex items-center gap-1.5 text-sm mb-1", children: [
+            /* @__PURE__ */ jsxDEV("span", { className: "text-emerald-600", children: "五、" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 155,
+              columnNumber: 17
+            }, this),
+            " 家長與用戶專屬合法權益"
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 154,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "text-slate-600", children: "依據《個人資料（私隱）條例》，家長擁有代表學童提出資料查詢、更正或安全清除之法權。" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 157,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "text-slate-500 text-xs mt-1 font-semibold", children: "如家長希望查詢、修改、或個別要求立刻、永久擦除其孩子在系統中存放的任何心情字眼，請聯絡天主教善導小學專責輔導老師，我們將會指派平台系統管理人員在24小時內完成安全的物理數據抹除。" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 160,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 153,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 100,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+      lineNumber: 93,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "bg-slate-50 px-6 py-4 flex justify-between items-center border-t border-slate-100 flex-shrink-0 font-sans", children: [
+      /* @__PURE__ */ jsxDEV("span", { className: "text-[10px] text-slate-400 font-bold", children: "版本歷史規格: v2.4 (2026/05 更新)" }, void 0, false, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 169,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV(
+        "button",
+        {
+          type: "button",
+          onClick: onClose,
+          className: "bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-xl text-xs font-black shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-emerald-100 cursor-pointer",
+          children: "我已閱讀並完全同意"
+        },
+        void 0,
+        false,
+        {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 170,
+          columnNumber: 11
+        },
+        this
+      )
+    ] }, void 0, true, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+      lineNumber: 168,
+      columnNumber: 9
+    }, this)
+  ] }, void 0, true, {
+    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+    lineNumber: 76,
+    columnNumber: 7
+  }, this) }, void 0, false, {
+    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+    lineNumber: 75,
+    columnNumber: 5
+  }, this);
+};
+_c2 = PrivacyPolicyModal;
+export const UpdateSummaryModal = ({
+  visible,
+  onClose,
+  todayStr,
+  todayReportsByClassSummary
+}) => {
+  if (!visible) return null;
+  return /* @__PURE__ */ jsxDEV("div", { className: "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4", children: /* @__PURE__ */ jsxDEV("div", { className: "bg-white border border-slate-100 shadow-2xl rounded-3xl max-w-3xl w-full flex flex-col max-h-[90vh] overflow-hidden", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "bg-gradient-to-r from-emerald-600 to-teal-700 px-6 py-5 text-white flex justify-between items-center flex-shrink-0", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "flex items-center space-x-2", children: [
+        /* @__PURE__ */ jsxDEV(Sliders, { className: "w-5 h-5 text-emerald-100" }, void 0, false, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 212,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("h3", { className: "text-base font-black tracking-tight font-sans", children: "📊 今日全校各班級心情登記進度與統計摘要" }, void 0, false, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 213,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 211,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV(
+        "button",
+        {
+          type: "button",
+          onClick: onClose,
+          className: "text-white/80 hover:text-white hover:bg-white/10 p-1.5 rounded-lg transition-all text-xs font-bold cursor-pointer",
+          children: "✕ 關閉"
+        },
+        void 0,
+        false,
+        {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 215,
+          columnNumber: 11
+        },
+        this
+      )
+    ] }, void 0, true, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+      lineNumber: 210,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "p-6 overflow-y-auto space-y-4", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "bg-slate-50 border border-slate-200 p-4 rounded-xl flex items-center justify-between text-xs font-bold text-slate-700", children: [
+        /* @__PURE__ */ jsxDEV("span", { children: [
+          "今日日期：",
+          todayStr
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 227,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("span", { children: "系統狀態：實時連線（Google Firestore 雲端同步中）" }, void 0, false, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 228,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 226,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "border border-slate-150 rounded-xl overflow-hidden shadow-2xs", children: /* @__PURE__ */ jsxDEV("table", { className: "w-full text-left border-collapse text-xs", children: [
+        /* @__PURE__ */ jsxDEV("thead", { children: /* @__PURE__ */ jsxDEV("tr", { className: "bg-slate-100 border-b border-slate-200 text-slate-600 font-extrabold", children: [
+          /* @__PURE__ */ jsxDEV("th", { className: "px-4 py-3 font-sans", children: "班級名稱" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 235,
+            columnNumber: 19
+          }, this),
+          /* @__PURE__ */ jsxDEV("th", { className: "px-4 py-3 font-sans", children: "登記進度與狀態" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 236,
+            columnNumber: 19
+          }, this),
+          /* @__PURE__ */ jsxDEV("th", { className: "px-4 py-3 text-center font-sans", children: "今日已填報人數" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 237,
+            columnNumber: 19
+          }, this),
+          /* @__PURE__ */ jsxDEV("th", { className: "px-4 py-3 text-left font-sans text-xs", children: "缺交座號" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 238,
+            columnNumber: 19
+          }, this),
+          /* @__PURE__ */ jsxDEV("th", { className: "px-4 py-3 text-center font-sans", children: "今日平均情緒分值" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 239,
+            columnNumber: 19
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 234,
+          columnNumber: 17
+        }, this) }, void 0, false, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 233,
+          columnNumber: 15
+        }, this),
+        /* @__PURE__ */ jsxDEV("tbody", { className: "divide-y divide-slate-100 font-sans", children: todayReportsByClassSummary.map(
+          ({ cls, count, avg, missing }) => /* @__PURE__ */ jsxDEV("tr", { className: "hover:bg-slate-50/50 transition-colors", children: [
+            /* @__PURE__ */ jsxDEV("td", { className: "px-4 py-3 font-black text-slate-800", children: [
+              cls,
+              " 班"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 245,
+              columnNumber: 21
+            }, this),
+            /* @__PURE__ */ jsxDEV("td", { className: "px-4 py-3", children: count > 0 ? /* @__PURE__ */ jsxDEV("span", { className: "inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 font-extrabold text-[10px] px-2 py-0.5 rounded-full", children: "● 已同步登記" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 248,
+              columnNumber: 21
+            }, this) : /* @__PURE__ */ jsxDEV("span", { className: "inline-flex items-center gap-1 bg-amber-100 text-amber-800 font-extrabold text-[10px] px-2 py-0.5 rounded-full", children: "○ 尚未登分更新" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 252,
+              columnNumber: 21
+            }, this) }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 246,
+              columnNumber: 21
+            }, this),
+            /* @__PURE__ */ jsxDEV("td", { className: "px-4 py-3 text-center font-bold text-slate-700", children: [
+              count,
+              " 位學童"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 257,
+              columnNumber: 21
+            }, this),
+            /* @__PURE__ */ jsxDEV("td", { className: "px-4 py-3 text-left font-bold text-xs text-rose-500", children: missing && missing.length > 0 ? missing.join(", ") : /* @__PURE__ */ jsxDEV("span", { className: "text-emerald-500", children: "全勤" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 261,
+              columnNumber: 77
+            }, this) }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 260,
+              columnNumber: 21
+            }, this),
+            /* @__PURE__ */ jsxDEV("td", { className: "px-4 py-3 text-center font-bold", children: avg !== null ? /* @__PURE__ */ jsxDEV(
+              "span",
+              {
+                style: { color: getMoodColor(avg) },
+                className: "font-extrabold",
+                children: [
+                  avg,
+                  " 分 (",
+                  MOOD_EMOJIS[Math.round(avg)]?.emoji,
+                  " ",
+                  MOOD_EMOJIS[Math.round(avg)]?.desc.split(" / ")[0],
+                  ")"
+                ]
+              },
+              void 0,
+              true,
+              {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 265,
+                columnNumber: 21
+              },
+              this
+            ) : /* @__PURE__ */ jsxDEV("span", { className: "text-slate-400 italic font-semibold", children: "-" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 272,
+              columnNumber: 21
+            }, this) }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 263,
+              columnNumber: 21
+            }, this)
+          ] }, cls, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 244,
+            columnNumber: 17
+          }, this)
+        ) }, void 0, false, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 242,
+          columnNumber: 15
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 232,
+        columnNumber: 13
+      }, this) }, void 0, false, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 231,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+      lineNumber: 225,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "bg-slate-50 px-6 py-4 flex justify-end border-t border-slate-100 flex-shrink-0", children: /* @__PURE__ */ jsxDEV(
+      "button",
+      {
+        type: "button",
+        onClick: onClose,
+        className: "bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl transition-all cursor-pointer font-sans",
+        children: "我知道了"
+      },
+      void 0,
+      false,
+      {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 284,
+        columnNumber: 11
+      },
+      this
+    ) }, void 0, false, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+      lineNumber: 283,
+      columnNumber: 9
+    }, this)
+  ] }, void 0, true, {
+    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+    lineNumber: 208,
+    columnNumber: 7
+  }, this) }, void 0, false, {
+    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+    lineNumber: 207,
+    columnNumber: 5
+  }, this);
+};
+_c3 = UpdateSummaryModal;
+export const SystemGuideModal = ({ visible, onClose }) => {
+  if (!visible) return null;
+  return /* @__PURE__ */ jsxDEV("div", { className: "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4", children: /* @__PURE__ */ jsxDEV("div", { className: "bg-white border border-slate-100 shadow-2xl rounded-3xl max-w-2xl w-full flex flex-col max-h-[90vh] overflow-hidden", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "bg-gradient-to-r from-amber-500 to-orange-600 px-6 py-5 text-white flex justify-between items-center flex-shrink-0", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "flex items-center space-x-2", children: [
+        /* @__PURE__ */ jsxDEV(HelpCircle, { className: "w-5 h-5 text-amber-100" }, void 0, false, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 312,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("h3", { className: "text-base font-black tracking-tight font-sans", children: "💡 「心情加油站 • 校園版」系統使用指南" }, void 0, false, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 313,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 311,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV(
+        "button",
+        {
+          type: "button",
+          onClick: onClose,
+          className: "text-white/80 hover:text-white hover:bg-white/10 p-1.5 rounded-lg transition-all text-xs font-bold cursor-pointer font-sans",
+          children: "✕ 關閉"
+        },
+        void 0,
+        false,
+        {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 315,
+          columnNumber: 11
+        },
+        this
+      )
+    ] }, void 0, true, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+      lineNumber: 310,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "p-6 overflow-y-auto space-y-5 text-slate-700 text-xs md:text-[13px] leading-relaxed font-semibold font-sans", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "bg-amber-50 border border-amber-200 p-3.5 rounded-xl text-amber-900 font-bold", children: "歡迎使用天主教善導小學「心情加油站」心理健康管理平台。本系統致力於保障學生心聲得到及時且安全的傾聽與對話。以下為各校方、學生、與導師角色的完整操作說明。" }, void 0, false, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 326,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "space-y-4", children: [
+        /* @__PURE__ */ jsxDEV("div", { className: "border-b border-slate-100 pb-3", children: [
+          /* @__PURE__ */ jsxDEV("h4", { className: "font-extrabold text-slate-900 text-xs md:text-sm flex items-center gap-1.5 text-amber-600 mb-1", children: [
+            /* @__PURE__ */ jsxDEV("span", { children: "1." }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 334,
+              columnNumber: 17
+            }, this),
+            " 🎒 學生每日心情登記 (小四至小六適用)"
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 333,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "text-slate-600 font-medium", children: "中高年級同學可以自主查閱及登錄情緒，步驟如下：" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 336,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("ul", { className: "list-disc pl-5 mt-1 space-y-1 text-slate-500 text-xs font-semibold", children: [
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "第一步：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 340,
+                columnNumber: 21
+              }, this),
+              "在系統登入首頁，選擇「🎒 進入學生個人情緒登記通道」。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 340,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "第二步：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 341,
+                columnNumber: 21
+              }, this),
+              "下拉選單選擇您的「班別」（如 4A、5C），並輸入您班級的「密鑰」登入。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 341,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "第三步：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 342,
+                columnNumber: 21
+              }, this),
+              "輸入您在班級的「座號」（座號範圍 1 - 35 或 TEST 測試）。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 342,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "第四步：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 343,
+                columnNumber: 21
+              }, this),
+              "設定您今天的心情分值：提供 1 至 10 的刻度（1為極度難過，10為完美愉快）。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 343,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "第五步：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 344,
+                columnNumber: 21
+              }, this),
+              "在悄悄話留言框內，向導師傾訴您的心聲（該段內容僅有您的專任班導師能看見）。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 344,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "完成：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 345,
+                columnNumber: 21
+              }, this),
+              "點擊「安全儲存並登出」，分數與隱私留言即可極速上傳至雲端。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 345,
+              columnNumber: 17
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 339,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 332,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "border-b border-slate-100 pb-3", children: [
+          /* @__PURE__ */ jsxDEV("h4", { className: "font-extrabold text-slate-900 text-xs md:text-sm flex items-center gap-1.5 text-amber-600 mb-1", children: [
+            /* @__PURE__ */ jsxDEV("span", { children: "2." }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 352,
+              columnNumber: 17
+            }, this),
+            " 🎒 小一至小三學童 (由導師代錄代填)"
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 351,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "text-slate-600 font-medium", children: "初小年級學童不具備寫字或操作能力，因此系統免除了他們的打字操作：" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 354,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("ul", { className: "list-disc pl-5 mt-1 space-y-1 text-slate-500 text-xs font-semibold", children: [
+            /* @__PURE__ */ jsxDEV("li", { children: "初小班級（1A 至 3D）的心情點數由其「班導師」每天於代錄面板中批量代為填入。" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 358,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: "代錄過程不儲存任何文字悄悄話，數據純粹、完全合規，全程保障年幼學童私隱。" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 359,
+              columnNumber: 17
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 357,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 350,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "border-b border-slate-100 pb-3", children: [
+          /* @__PURE__ */ jsxDEV("h4", { className: "font-extrabold text-slate-900 text-xs md:text-sm flex items-center gap-1.5 text-amber-600 mb-1", children: [
+            /* @__PURE__ */ jsxDEV("span", { children: "3." }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 366,
+              columnNumber: 17
+            }, this),
+            " 🏫 班主任與導師日常控制端 (教師權限)"
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 365,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "text-slate-600 font-medium", children: "導師可以安全查看今日班級登記、或進行初小代錄：" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 368,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("ul", { className: "list-disc pl-5 mt-1 space-y-1 text-slate-500 text-xs font-semibold", children: [
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "代錄：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 372,
+                columnNumber: 21
+              }, this),
+              "若登入 1A 至 3D，系統將自動開啟 35 個座號的多按鈕交互矩陣。導師只需詢問小朋友心情（1-10分），在對應座號點擊分值，最後點擊「💾 儲存並同步今日全班分數」即可極速本地存檔並傳送到雲端！"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 372,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "分析與警報：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 373,
+                columnNumber: 21
+              }, this),
+              "查看連續 3 天低於 3 分的預警、精準過濾留言，錄下跟進處理細節並在系統標記。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 373,
+              columnNumber: 17
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 371,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 364,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "border-b border-slate-100 pb-3", children: [
+          /* @__PURE__ */ jsxDEV("h4", { className: "font-extrabold text-slate-900 text-xs md:text-sm flex items-center gap-1.5 text-amber-600 mb-1", children: [
+            /* @__PURE__ */ jsxDEV("span", { children: "4." }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 380,
+              columnNumber: 17
+            }, this),
+            " 🛡️ 全校安全監控及班級登分追蹤 (全校安全官)"
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 379,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "text-slate-600 font-medium", children: [
+            "利用 ",
+            /* @__PURE__ */ jsxDEV("strong", { children: "GCCPS 全校安全監控中心" }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 383,
+              columnNumber: 20
+            }, this),
+            "，學校高管、社工或校長能獲取最高全局維度："
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 382,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("ul", { className: "list-disc pl-5 mt-1 space-y-1 text-slate-500 text-xs font-semibold", children: [
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "登分追蹤：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 386,
+                columnNumber: 21
+              }, this),
+              "即時定位 today 哪些班級尚未填報任何心情點數，以便提示對應班級導師。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 386,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "進度綜合彙報：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 387,
+                columnNumber: 21
+              }, this),
+              "一鍵點開進度總表，橫向排比 24 個班級的今日登錄人數與全校各班平均心情分。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 387,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "敏感言論：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 388,
+                columnNumber: 21
+              }, this),
+              "標紅亮燈所有可能包含自殘、霸凌或敏感意識言論的條目，保障全校安全一鍵可控。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 388,
+              columnNumber: 17
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 385,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 378,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "pb-1", children: [
+          /* @__PURE__ */ jsxDEV("h4", { className: "font-extrabold text-slate-900 text-xs md:text-sm flex items-center gap-1.5 text-amber-600 mb-1", children: [
+            /* @__PURE__ */ jsxDEV("span", { children: "5." }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 395,
+              columnNumber: 17
+            }, this),
+            " 🌱 學生專屬「4Rs 心靈充電站」 (心理健康素養)"
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 394,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "text-slate-600 font-medium", children: "配合教育局「4Rs 精神健康約章」，本平台為登記後的學童提供專屬互動調適工具：" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 397,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("ul", { className: "list-disc pl-5 mt-1 space-y-1 text-slate-500 text-xs font-semibold", children: [
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "Rest (休息)：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 401,
+                columnNumber: 21
+              }, this),
+              "宣導良好的 9-11 小時睡眠作息及建立睡前無螢幕放鬆儀式。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 401,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "Relaxation (放鬆)：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 402,
+                columnNumber: 21
+              }, this),
+              "提供互動計時「深呼吸放鬆教練」，配合動態縮放圓圈、波紋動畫引導深度減壓。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 402,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "Relationship (關係)：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 403,
+                columnNumber: 21
+              }, this),
+              "引導日常「小微笑與感恩任務」，建立孩子、同儕、家庭與導師間的正向關懷網。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 403,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "Resilience (抗逆)：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 404,
+                columnNumber: 21
+              }, this),
+              "設計「正向思維翻翻卡」，模擬學業或社交挫折，點擊卡片 3D 旋轉後即可獲得輔導關懷的建設性重構視角。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 404,
+              columnNumber: 17
+            }, this),
+            /* @__PURE__ */ jsxDEV("li", { children: [
+              /* @__PURE__ */ jsxDEV("strong", { children: "智能偵測：" }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+                lineNumber: 405,
+                columnNumber: 21
+              }, this),
+              "當心情登記為 4 分或以下，系統會在提交後自動解鎖並展開充電站，給予孩子即時的心靈支持。"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+              lineNumber: 405,
+              columnNumber: 17
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+            lineNumber: 400,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+          lineNumber: 393,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 330,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+      lineNumber: 325,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "bg-slate-50 px-6 py-4 flex justify-end border-t border-slate-100 flex-shrink-0", children: /* @__PURE__ */ jsxDEV(
+      "button",
+      {
+        type: "button",
+        onClick: onClose,
+        className: "bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl transition-all cursor-pointer font-sans",
+        children: "我已了解，開始操作"
+      },
+      void 0,
+      false,
+      {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+        lineNumber: 413,
+        columnNumber: 11
+      },
+      this
+    ) }, void 0, false, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+      lineNumber: 412,
+      columnNumber: 9
+    }, this)
+  ] }, void 0, true, {
+    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+    lineNumber: 308,
+    columnNumber: 7
+  }, this) }, void 0, false, {
+    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx",
+    lineNumber: 307,
+    columnNumber: 5
+  }, this);
+};
+_c4 = SystemGuideModal;
+var _c, _c2, _c3, _c4;
+$RefreshReg$(_c, "ActionModal");
+$RefreshReg$(_c2, "PrivacyPolicyModal");
+$RefreshReg$(_c3, "UpdateSummaryModal");
+$RefreshReg$(_c4, "SystemGuideModal");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) {
+  return RefreshRuntime.register(type, "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Common/Modals.tsx " + id);
+}
+function $RefreshSig$() {
+  return RefreshRuntime.createSignatureFunctionForTransform();
+}
+
+//# sourceMappingURL=data:application/json;base64,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O0FBQUEsbUJBQXNFO0FBQUEsZUFMeEU7QUFBQTtBQUFBO0FBQUE7QUFBQSxpQkFNQTtBQUFBLGFBYkY7QUFBQTtBQUFBO0FBQUE7QUFBQSxlQWNBO0FBQUEsV0E3RUY7QUFBQTtBQUFBO0FBQUE7QUFBQSxhQThFQTtBQUFBLFNBbkZGO0FBQUE7QUFBQTtBQUFBO0FBQUEsV0FvRkE7QUFBQSxJQUdBLHVCQUFDLFNBQUksV0FBVSxrRkFDYjtBQUFBLE1BQUM7QUFBQTtBQUFBLFFBQ0MsTUFBSztBQUFBLFFBQ0wsU0FBU0E7QUFBQUEsUUFDVCxXQUFVO0FBQUEsUUFBa0k7QUFBQTtBQUFBLE1BSDlJO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQSxJQU1BLEtBUEY7QUFBQTtBQUFBO0FBQUE7QUFBQSxXQVFBO0FBQUEsT0FoSEY7QUFBQTtBQUFBO0FBQUE7QUFBQSxTQWlIQSxLQWxIRjtBQUFBO0FBQUE7QUFBQTtBQUFBLFNBbUhBO0FBRUo7QUFBRTZCLE1BekhXRDtBQUFpRCxJQUFBcEIsSUFBQUUsS0FBQWlCLEtBQUFFO0FBQUEsYUFBQXJCLElBQUE7QUFBQSxhQUFBRSxLQUFBO0FBQUEsYUFBQWlCLEtBQUE7QUFBQSxhQUFBRSxLQUFBIiwibmFtZXMiOlsiU2hpZWxkIiwiU2xpZGVycyIsIkhlbHBDaXJjbGUiLCJNT09EX0VNT0pJUyIsImdldE1vb2RDb2xvciIsIkFjdGlvbk1vZGFsIiwidmlzaWJsZSIsIm9uQ2xvc2UiLCJvblN1Ym1pdCIsImFjdGlvblRleHQiLCJzZXRBY3Rpb25UZXh0IiwibG9hZGluZyIsImUiLCJ0YXJnZXQiLCJ2YWx1ZSIsIl9jIiwiUHJpdmFjeVBvbGljeU1vZGFsIiwiX2MyIiwiVXBkYXRlU3VtbWFyeU1vZGFsIiwidG9kYXlTdHIiLCJ0b2RheVJlcG9ydHNCeUNsYXNzU3VtbWFyeSIsIm1hcCIsImNscyIsImNvdW50IiwiYXZnIiwibWlzc2luZyIsImxlbmd0aCIsImpvaW4iLCJjb2xvciIsIk1hdGgiLCJyb3VuZCIsImVtb2ppIiwiZGVzYyIsInNwbGl0IiwiX2MzIiwiU3lzdGVtR3VpZGVNb2RhbCIsIl9jNCJdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlcyI6WyJNb2RhbHMudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyBGb3JtRXZlbnQgfSBmcm9tICdyZWFjdCc7XHJcbmltcG9ydCB7IFNoaWVsZCwgU2xpZGVycywgSGVscENpcmNsZSB9IGZyb20gJ2x1Y2lkZS1yZWFjdCc7XHJcbmltcG9ydCB7IE1PT0RfRU1PSklTLCBnZXRNb29kQ29sb3IgfSBmcm9tICcuLi8uLi9jb25zdGFudHMvbW9vZENvbnN0YW50cyc7XHJcblxyXG4vLyAtLS0gMS4gQUNUSU9OIE1PREFMIChSRUNPTkNJTEUgUE9QVVAgQUNUSU9OIExPRyBNT0RBTCkgLS0tXHJcbmludGVyZmFjZSBBY3Rpb25Nb2RhbFByb3BzIHtcclxuICB2aXNpYmxlOiBib29sZWFuO1xyXG4gIG9uQ2xvc2U6ICgpID0+IHZvaWQ7XHJcbiAgb25TdWJtaXQ6IChlOiBGb3JtRXZlbnQpID0+IHZvaWQ7XHJcbiAgYWN0aW9uVGV4dDogc3RyaW5nO1xyXG4gIHNldEFjdGlvblRleHQ6ICh0ZXh0OiBzdHJpbmcpID0+IHZvaWQ7XHJcbiAgbG9hZGluZzogYm9vbGVhbjtcclxufVxyXG5cclxuZXhwb3J0IGNvbnN0IEFjdGlvbk1vZGFsOiBSZWFjdC5GQzxBY3Rpb25Nb2RhbFByb3BzPiA9ICh7XHJcbiAgdmlzaWJsZSxcclxuICBvbkNsb3NlLFxyXG4gIG9uU3VibWl0LFxyXG4gIGFjdGlvblRleHQsXHJcbiAgc2V0QWN0aW9uVGV4dCxcclxuICBsb2FkaW5nLFxyXG59KSA9PiB7XHJcbiAgaWYgKCF2aXNpYmxlKSByZXR1cm4gbnVsbDtcclxuXHJcbiAgcmV0dXJuIChcclxuICAgIDxkaXYgY2xhc3NOYW1lPVwiZml4ZWQgaW5zZXQtMCB6LTUwIGJnLWJsYWNrLzYwIGJhY2tkcm9wLWJsdXItc20gZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgcC00XCI+XHJcbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctd2hpdGUgYm9yZGVyIGJvcmRlci1zbGF0ZS0xMDAgc2hhZG93LTJ4bCByb3VuZGVkLTJ4bCBtYXgtdy1sZyB3LWZ1bGwgcC02IHNwYWNlLXktNFwiPlxyXG4gICAgICAgIDxkaXY+XHJcbiAgICAgICAgICA8aDMgY2xhc3NOYW1lPVwidGV4dC1sZyBmb250LWJsYWNrIHRleHQtc2xhdGUtOTAwXCI+6KiY6YyE6Lef6YCy6JmV55CG6Kmz5oOFPC9oMz5cclxuICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInRleHQteHMgdGV4dC1zbGF0ZS01MDAgZm9udC1zZW1pYm9sZCBtdC0xXCI+6KuL5aGr5a+r5oKo5bCN5pa86Kmy5ZCN5a2455Sf5oOF57eS6K2m56S655qE5YW36auU6JmV572u5L2c5rOV44CB5pyD6KuH5oiQ5p6c5oiW5LuL5YWl5pa55byP77yaPC9wPlxyXG4gICAgICAgIDwvZGl2PlxyXG5cclxuICAgICAgICA8Zm9ybSBvblN1Ym1pdD17b25TdWJtaXR9IGNsYXNzTmFtZT1cInNwYWNlLXktNFwiPlxyXG4gICAgICAgICAgPHRleHRhcmVhXHJcbiAgICAgICAgICAgIHBsYWNlaG9sZGVyPVwi5L6L5aaC77ya5bey5a6J5o6S5LuK5aSp5Y2I5LyR5a6J5o6S6Z2i6KuH44CB5bey5Y2U5Yqp56S+5bel57SE6KuH77yM5a626ZW35Lqm5a6M5YWo55+l5oKJ5Lim5om/6K+66Lef6YCyLi4uXCJcclxuICAgICAgICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIG1pbi1oLVsxMjBweF0gcC0zIGJvcmRlciBib3JkZXItc2xhdGUtMjAwIHJvdW5kZWQteGwgcmVzaXplLW5vbmUgZm9jdXM6b3V0bGluZS1ub25lIGZvY3VzOnJpbmctMiBmb2N1czpyaW5nLXJlZC0xMDAgdGV4dC14cyB0ZXh0LXNsYXRlLTcwMCBmb250LWJvbGRcIlxyXG4gICAgICAgICAgICB2YWx1ZT17YWN0aW9uVGV4dH1cclxuICAgICAgICAgICAgb25DaGFuZ2U9eyhlKSA9PiBzZXRBY3Rpb25UZXh0KGUudGFyZ2V0LnZhbHVlKX1cclxuICAgICAgICAgICAgYXV0b0ZvY3VzXHJcbiAgICAgICAgICAgIHJlcXVpcmVkXHJcbiAgICAgICAgICAvPlxyXG5cclxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleCBqdXN0aWZ5LWVuZCBnYXAtMyBwdC0yXCI+XHJcbiAgICAgICAgICAgIDxidXR0b25cclxuICAgICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcclxuICAgICAgICAgICAgICBvbkNsaWNrPXtvbkNsb3NlfVxyXG4gICAgICAgICAgICAgIGNsYXNzTmFtZT1cImJnLXNsYXRlLTEwMCBob3ZlcjpiZy1zbGF0ZS0yMDAgdGV4dC1zbGF0ZS02MDAgcHgtNCBweS0yIHJvdW5kZWQteGwgdGV4dC14cyBmb250LWJvbGQgdHJhbnNpdGlvbi1hbGwgY3Vyc29yLXBvaW50ZXJcIlxyXG4gICAgICAgICAgICA+XHJcbiAgICAgICAgICAgICAg5Y+W5raIXHJcbiAgICAgICAgICAgIDwvYnV0dG9uPlxyXG4gICAgICAgICAgICA8YnV0dG9uXHJcbiAgICAgICAgICAgICAgdHlwZT1cInN1Ym1pdFwiXHJcbiAgICAgICAgICAgICAgZGlzYWJsZWQ9e2xvYWRpbmd9XHJcbiAgICAgICAgICAgICAgY2xhc3NOYW1lPVwiYmctcmVkLTYwMCBob3ZlcjpiZy1yb3NlLTcwMCB0ZXh0LXdoaXRlIHB4LTUgcHktMiByb3VuZGVkLXhsIHRleHQteHMgZm9udC1ib2xkIHNoYWRvdy1tZCB0cmFuc2l0aW9uLWFsbCBjdXJzb3ItcG9pbnRlclwiXHJcbiAgICAgICAgICAgID5cclxuICAgICAgICAgICAgICB7bG9hZGluZyA/IFwi6JmV55CG5LitLi4uXCIgOiBcIumMhOWFpeiZlee9ruS4puino+mZpOitpuWgsVwifVxyXG4gICAgICAgICAgICA8L2J1dHRvbj5cclxuICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgIDwvZm9ybT5cclxuICAgICAgPC9kaXY+XHJcbiAgICA8L2Rpdj5cclxuICApO1xyXG59O1xyXG5cclxuLy8gLS0tIDIuIFBSSVZBQ1kgUE9MSUNZIE1PREFMIC0tLVxyXG5pbnRlcmZhY2UgUHJpdmFjeVBvbGljeU1vZGFsUHJvcHMge1xyXG4gIHZpc2libGU6IGJvb2xlYW47XHJcbiAgb25DbG9zZTogKCkgPT4gdm9pZDtcclxufVxyXG5cclxuZXhwb3J0IGNvbnN0IFByaXZhY3lQb2xpY3lNb2RhbDogUmVhY3QuRkM8UHJpdmFjeVBvbGljeU1vZGFsUHJvcHM+ID0gKHsgdmlzaWJsZSwgb25DbG9zZSB9KSA9PiB7XHJcbiAgaWYgKCF2aXNpYmxlKSByZXR1cm4gbnVsbDtcclxuXHJcbiAgcmV0dXJuIChcclxuICAgIDxkaXYgY2xhc3NOYW1lPVwiZml4ZWQgaW5zZXQtMCB6LTUwIGJnLWJsYWNrLzYwIGJhY2tkcm9wLWJsdXIteHMgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgcC00XCIgaWQ9XCJwcml2YWN5LXBvbGljeS1tb2RhbFwiPlxyXG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImJnLXdoaXRlIGJvcmRlciBib3JkZXItc2xhdGUtMTAwIHNoYWRvdy0yeGwgcm91bmRlZC0zeGwgbWF4LXctMnhsIHctZnVsbCBmbGV4IGZsZXgtY29sIG1heC1oLVs5MHZoXSBvdmVyZmxvdy1oaWRkZW5cIj5cclxuICAgICAgICB7LyogTW9kYWwgSGVhZGVyICovfVxyXG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctZ3JhZGllbnQtdG8tciBmcm9tLWVtZXJhbGQtNjAwIHRvLXRlYWwtNzAwIHB4LTYgcHktNSB0ZXh0LXdoaXRlIGZsZXgganVzdGlmeS1iZXR3ZWVuIGl0ZW1zLWNlbnRlciBmbGV4LXNocmluay0wXCI+XHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIHNwYWNlLXgtMlwiPlxyXG4gICAgICAgICAgICA8U2hpZWxkIGNsYXNzTmFtZT1cInctNSBoLTUgdGV4dC1lbWVyYWxkLTEwMFwiIC8+XHJcbiAgICAgICAgICAgIDxoMyBjbGFzc05hbWU9XCJ0ZXh0LWJhc2UgZm9udC1ibGFjayB0cmFja2luZy10aWdodFwiPuagoeWckuWtuOerpeWAi+S6uuizh+aWmeS/neitt+iIh+maseengeaUv+etljwvaDM+XHJcbiAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgIDxidXR0b25cclxuICAgICAgICAgICAgdHlwZT1cImJ1dHRvblwiXHJcbiAgICAgICAgICAgIG9uQ2xpY2s9e29uQ2xvc2V9XHJcbiAgICAgICAgICAgIGNsYXNzTmFtZT1cInRleHQtd2hpdGUvODAgaG92ZXI6dGV4dC13aGl0ZSBob3ZlcjpiZy13aGl0ZS8xMCBwLTEuNSByb3VuZGVkLWxnIHRyYW5zaXRpb24tYWxsIHRleHQteHMgZm9udC1ib2xkIGN1cnNvci1wb2ludGVyXCJcclxuICAgICAgICAgID5cclxuICAgICAgICAgICAg4pyVIOmXnOmWiVxyXG4gICAgICAgICAgPC9idXR0b24+XHJcbiAgICAgICAgPC9kaXY+XHJcblxyXG4gICAgICAgIHsvKiBNb2RhbCBDb250ZW50IC0gU2Nyb2xsYWJsZSBmb3IgaVBhZC9Nb2JpbGUgc3VwcG9ydCAqL31cclxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInAtNiBvdmVyZmxvdy15LWF1dG8gc3BhY2UteS01IHRleHQtc2xhdGUtNzAwIHRleHQteHMgbWQ6dGV4dC1bMTNweF0gbGVhZGluZy1yZWxheGVkIHNlbGVjdC10ZXh0IGZvbnQtbWVkaXVtXCI+XHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImJvcmRlci1sLTQgYm9yZGVyLWVtZXJhbGQtNTAwIGJnLWVtZXJhbGQtNTAvNTAgcC0zLjUgcm91bmRlZC1yLXhsXCI+XHJcbiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cImZvbnQtYm9sZCB0ZXh0LWVtZXJhbGQtODAwXCI+XHJcbiAgICAgICAgICAgICAg54K656K65L+d5aSp5Li75pWZ5ZaE5bCO5bCP5a245qCh5ZyS6LyU5bCO5LmL6LOH6KiK5a6J5YWo6IiH5rOV5b6L5ZCI6KaP77yM5bmz5Y+w5Zyo5p625qeL6Kit6KiI5LiK5Zq05qC86YG15a6I6aaZ5riv44CK5YCL5Lq66LOH5paZ77yI56eB6Zqx77yJ5qKd5L6L44CL77yIUERQT++8ieaguOW/g+WOn+WJh+OAguacrOW5s+WPsOaJgOi8ieS5i+aTjeS9nO+8jOWdh+aXqOWcqOS7peacgOWkp+eoi+W6puS/nemanOW/g+eQhuWBpeW6t+OAgemYsuevhOmHjeW6puaDhee3kumiqOmaquWQjOaZguS/neitt+WtuOerpeengemaseOAglxyXG4gICAgICAgICAgICA8L3A+XHJcbiAgICAgICAgICA8L2Rpdj5cclxuXHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInNwYWNlLXktNFwiPlxyXG4gICAgICAgICAgICA8ZGl2PlxyXG4gICAgICAgICAgICAgIDxoNCBjbGFzc05hbWU9XCJmb250LWV4dHJhYm9sZCB0ZXh0LXNsYXRlLTkwMCBmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMS41IHRleHQtc20gbWItMVwiPlxyXG4gICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwidGV4dC1lbWVyYWxkLTYwMFwiPuS4gOOAgTwvc3Bhbj4g5pW45pOa5pS26ZuG6IiH5Y676K2Y5Yil5YyW5Y6f5YmHXHJcbiAgICAgICAgICAgICAgPC9oND5cclxuICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXNsYXRlLTYwMFwiPlxyXG4gICAgICAgICAgICAgICAg5pys5bmz5Y+w5YOF5pS26ZuG5a2455Sf5LmL54+t57Sa44CB5a246Jmf77yIUC40LVAuNu+8ieWPiuavj+aXpeW/g+aDheaMh+aVuOOAgeaWh+Wtl+aChOaChOipseeVmeiogO+8jOaXqOWcqOaPkOS+m+WNs+aZguW/g+eQhuWNseapn+i8lOWwjumgkOitpuOAglxyXG4gICAgICAgICAgICAgIDwvcD5cclxuICAgICAgICAgICAgICA8dWwgY2xhc3NOYW1lPVwibGlzdC1kaXNjIHBsLTUgbXQtMSBzcGFjZS15LTEgdGV4dC1zbGF0ZS01MDAgdGV4dC14cyBmb250LXNlbWlib2xkXCI+XHJcbiAgICAgICAgICAgICAgICA8bGk+PHN0cm9uZz7ljrvorZjliKXljJboqK3oqIjvvJo8L3N0cm9uZz7mlbjmk5rluqvlhaflrozlhajkuI3lhLLlrZjlrbjnlJ/nmoTniannkIblp5PlkI3jgIHlh7rnlJ/ml6XmnJ/miJbouqvku73orYnmmI7omZ/norzjgILlg4XpgJrpgY7nj63ntJroiIflrbjomZ/pgLLooYzpl5zoga/jgII8L2xpPlxyXG4gICAgICAgICAgICAgICAgPGxpPjxzdHJvbmc+5Yid5bCP5a6J5YWo5Luj6YyE56K877yaPC9zdHJvbmc+5bCP5LiA6Iez5bCP5LiJ5a2456ul5LmL5b+D5oOF6bue5pW45Z2H55Sx5pWZ5bir5Zyo5a2455Sf6YCa6YGT5om56YeP5Luj6YyE77yM5q2k6YGO56iL5Lit5a6M5YWo5LiN5o+Q5Lqk5Lu75L2V5a2456ul5paH5a2X55WZ6KiA77yM5L+d6Zqc5bm05bm85a2456ul56eB6Zqx44CCPC9saT5cclxuICAgICAgICAgICAgICA8L3VsPlxyXG4gICAgICAgICAgICA8L2Rpdj5cclxuXHJcbiAgICAgICAgICAgIDxkaXY+XHJcbiAgICAgICAgICAgICAgPGg0IGNsYXNzTmFtZT1cImZvbnQtZXh0cmFib2xkIHRleHQtc2xhdGUtOTAwIGZsZXggaXRlbXMtY2VudGVyIGdhcC0xLjUgdGV4dC1zbSBtYi0xXCI+XHJcbiAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJ0ZXh0LWVtZXJhbGQtNjAwXCI+5LqM44CBPC9zcGFuPiDpm7Lnq6/lhLLlrZjoiIfos4foqIrkv53lronmnrbmp4tcclxuICAgICAgICAgICAgICA8L2g0PlxyXG4gICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInRleHQtc2xhdGUtNjAwXCI+XHJcbiAgICAgICAgICAgICAgICDmiYDmnInlv4Pmg4Xmlbjmk5roiIfnlZnoqIDnm7TmjqXlkIzmraXlhLLlrZjmlrwgR29vZ2xlIENsb3VkIEZpcmVzdG9yZSDlronlhajkvLrmnI3lmajjgIJcclxuICAgICAgICAgICAgICA8L3A+XHJcbiAgICAgICAgICAgICAgPHVsIGNsYXNzTmFtZT1cImxpc3QtZGlzYyBwbC01IG10LTEgc3BhY2UteS0xIHRleHQtc2xhdGUtNTAwIHRleHQteHMgZm9udC1zZW1pYm9sZFwiPlxyXG4gICAgICAgICAgICAgICAgPGxpPjxzdHJvbmc+5YWo56iL5YKz6Ly45Yqg5a+G77yaPC9zdHJvbmc+5pW45pOa5bqr6IGv5qmf6YCa6YGT5L2/55So5Zq05qC855qEIFNTTC9UTFMg6auY5by35bqm5a6J5YWo5Yqg5a+G5Y2U5a6a77yM5bGP6JS95LiA5YiH5aSW6YOo5ZeF5o6i44CCPC9saT5cclxuICAgICAgICAgICAgICAgIDxsaT48c3Ryb25nPuWuieWFqOWvhueivOS/neitt++8mjwvc3Ryb25nPumrmOW5tOe0mu+8iFAuNC1QLjbvvInpmaTpgJrnlKjnmoTnj63ntJrlr4bnorzlpJbvvIzmlZnluKvlj6/lnKjnrqHnkIbkuK3lv4Pnjajnq4voqK3lrproiIfpmqjmqZ/phY3nva7jgIzlrbjnlJ/lgIvkurrlgIvliKXlsIjlsaznmbvlhaXlr4bnorzjgI3vvIzpmLLmraLnj63ntJrlhaflhbbku5blrbjnq6Xmg6HmhI/ku6PnmbvmiJbnqqXmjqLlv4Pmg4Xml6XoqozjgII8L2xpPlxyXG4gICAgICAgICAgICAgIDwvdWw+XHJcbiAgICAgICAgICAgIDwvZGl2PlxyXG5cclxuICAgICAgICAgICAgPGRpdj5cclxuICAgICAgICAgICAgICA8aDQgY2xhc3NOYW1lPVwiZm9udC1leHRyYWJvbGQgdGV4dC1zbGF0ZS05MDAgZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTEuNSB0ZXh0LXNtIG1iLTFcIj5cclxuICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cInRleHQtZW1lcmFsZC02MDBcIj7kuInjgIE8L3NwYW4+IOizh+aWmeWQiOeQhuS/neeVmeacn+mZkOiIh+WuieWFqOmKt+avgFxyXG4gICAgICAgICAgICAgIDwvaDQ+XHJcbiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPVwidGV4dC1zbGF0ZS02MDBcIj5cclxuICAgICAgICAgICAgICAgIOaIkeWAkeWwiumHjeWtuOerpeeahOOAjOiiq+mBuuW/mOasiuOAje+8jOS4puWvpuaWveWwjeaHieeahOWuieWFqOS/neeVmemAseacn+mZkOWItu+8mlxyXG4gICAgICAgICAgICAgIDwvcD5cclxuICAgICAgICAgICAgICA8dWwgY2xhc3NOYW1lPVwibGlzdC1kaXNjIHBsLTUgbXQtMSBzcGFjZS15LTEgdGV4dC1zbGF0ZS01MDAgdGV4dC14cyBmb250LXNlbWlib2xkXCI+XHJcbiAgICAgICAgICAgICAgICA8bGk+5pys57O757Wx5LmL5pW45pOa5YOF5pa855W25YmN5a245bm05YWn5L+d55WZ77yM5Lul5L6/6YCy6KGM5a245pyf5pyr5b+D55CG5YGl5bq35YiG5p6Q44CCPC9saT5cclxuICAgICAgICAgICAgICAgIDxsaT7lnKjmmpHmnJ/mlrDoiIrlubTntJrkuqTmm7/mjqXnm6TliY3vvIzlubPlj7DnrqHnkIbogIXlsIfmnIPlkIzlsI7luKvphY3lkIjkuIDpjbXlronlhajmk6bpmaTlhajmoKHnmoTmrbflj7Lml6XoqozvvIzlgZrkuI3lj6/pgIbnmoTpirfmr4DomZXnva7jgII8L2xpPlxyXG4gICAgICAgICAgICAgIDwvdWw+XHJcbiAgICAgICAgICAgIDwvZGl2PlxyXG5cclxuICAgICAgICAgICAgPGRpdj5cclxuICAgICAgICAgICAgICA8aDQgY2xhc3NOYW1lPVwiZm9udC1leHRyYWJvbGQgdGV4dC1zbGF0ZS05MDAgZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTEuNSB0ZXh0LXNtIG1iLTFcIj5cclxuICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cInRleHQtZW1lcmFsZC02MDBcIj7lm5vjgIE8L3NwYW4+IOWwjuW4q+WuieWFqOasiuWKm+afpemWseiIh+eoveaguFxyXG4gICAgICAgICAgICAgIDwvaDQ+XHJcbiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPVwidGV4dC1zbGF0ZS02MDBcIj5cclxuICAgICAgICAgICAgICAgIOezu+e1seW+jOWPsOWatOagvOmZkOWumuWQhOePreWwjuW4q+WPquiDvemBjua/vuOAgeaqouimluWFtuWwiOWxrOePreWIpeS5i+WtuOeUn+aXpeiqjO+8jOWujOWFqOmalOmboui3qOePree0mui2iuasiuafpeeci+OAglxyXG4gICAgICAgICAgICAgIDwvcD5cclxuICAgICAgICAgICAgICA8dWwgY2xhc3NOYW1lPVwibGlzdC1kaXNjIHBsLTUgbXQtMSBzcGFjZS15LTEgdGV4dC1zbGF0ZS01MDAgdGV4dC14cyBmb250LXNlbWlib2xkXCI+XHJcbiAgICAgICAgICAgICAgICA8bGk+5omA5pyJ5pWZ5bir5Y+K566h55CG6ICF55qE55m75YWl6KGM54K65Z2H55Sx57O757Wx6Ieq5YuV5YSy5a2Y6Iez5LiA6Y215LiN5Y+v5Lq654K65L+u5pS555qE44CM5a6J5YWo56i95qC45pel6KqM44CN5qih57WE5Lit44CCPC9saT5cclxuICAgICAgICAgICAgICAgIDxsaT7mr4/mrKHnmbvlhaXlnYfmnInoqJjpjITlhbboqK3lgpnos4foqIrvvIhEZXZpY2UgQWdlbnTvvInoiIfljbPmmYLpgKPnt5rmmYLplpPvvIznorrkv53nhKHpnZ7mjojmrIrnmoTlvozploDlrZjlj5bjgII8L2xpPlxyXG4gICAgICAgICAgICAgIDwvdWw+XHJcbiAgICAgICAgICAgIDwvZGl2PlxyXG5cclxuICAgICAgICAgICAgPGRpdj5cclxuICAgICAgICAgICAgICA8aDQgY2xhc3NOYW1lPVwiZm9udC1leHRyYWJvbGQgdGV4dC1zbGF0ZS05MDAgZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTEuNSB0ZXh0LXNtIG1iLTFcIj5cclxuICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cInRleHQtZW1lcmFsZC02MDBcIj7kupTjgIE8L3NwYW4+IOWutumVt+iIh+eUqOaItuWwiOWxrOWQiOazleasiuebilxyXG4gICAgICAgICAgICAgIDwvaDQ+XHJcbiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPVwidGV4dC1zbGF0ZS02MDBcIj5cclxuICAgICAgICAgICAgICAgIOS+neaTmuOAiuWAi+S6uuizh+aWme+8iOengemase+8ieaineS+i+OAi++8jOWutumVt+aTgeacieS7o+ihqOWtuOerpeaPkOWHuuizh+aWmeafpeipouOAgeabtOato+aIluWuieWFqOa4hemZpOS5i+azleasiuOAglxyXG4gICAgICAgICAgICAgIDwvcD5cclxuICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXNsYXRlLTUwMCB0ZXh0LXhzIG10LTEgZm9udC1zZW1pYm9sZFwiPlxyXG4gICAgICAgICAgICAgICAg5aaC5a626ZW35biM5pyb5p+l6Kmi44CB5L+u5pS544CB5oiW5YCL5Yil6KaB5rGC56uL5Yi744CB5rC45LmF5pOm6Zmk5YW25a2p5a2Q5Zyo57O757Wx5Lit5a2Y5pS+55qE5Lu75L2V5b+D5oOF5a2X55y877yM6KuL6IGv57Wh5aSp5Li75pWZ5ZaE5bCO5bCP5a245bCI6LKs6LyU5bCO6ICB5bir77yM5oiR5YCR5bCH5pyD5oyH5rS+5bmz5Y+w57O757Wx566h55CG5Lq65ZOh5ZyoMjTlsI/mmYLlhaflrozmiJDlronlhajnmoTniannkIbmlbjmk5rmirnpmaTjgIJcclxuICAgICAgICAgICAgICA8L3A+XHJcbiAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgPC9kaXY+XHJcblxyXG4gICAgICAgIHsvKiBNb2RhbCBGb290ZXIgKi99XHJcbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJiZy1zbGF0ZS01MCBweC02IHB5LTQgZmxleCBqdXN0aWZ5LWJldHdlZW4gaXRlbXMtY2VudGVyIGJvcmRlci10IGJvcmRlci1zbGF0ZS0xMDAgZmxleC1zaHJpbmstMCBmb250LXNhbnNcIj5cclxuICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cInRleHQtWzEwcHhdIHRleHQtc2xhdGUtNDAwIGZvbnQtYm9sZFwiPueJiOacrOatt+WPsuimj+agvDogdjIuNCAoMjAyNi8wNSDmm7TmlrApPC9zcGFuPlxyXG4gICAgICAgICAgPGJ1dHRvblxyXG4gICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcclxuICAgICAgICAgICAgb25DbGljaz17b25DbG9zZX1cclxuICAgICAgICAgICAgY2xhc3NOYW1lPVwiYmctZW1lcmFsZC02MDAgaG92ZXI6YmctZW1lcmFsZC03MDAgdGV4dC13aGl0ZSBweC01IHB5LTIgcm91bmRlZC14bCB0ZXh0LXhzIGZvbnQtYmxhY2sgc2hhZG93LXNtIHRyYW5zaXRpb24tYWxsIGZvY3VzOm91dGxpbmUtbm9uZSBmb2N1czpyaW5nLTIgZm9jdXM6cmluZy1lbWVyYWxkLTEwMCBjdXJzb3ItcG9pbnRlclwiXHJcbiAgICAgICAgICA+XHJcbiAgICAgICAgICAgIOaIkeW3sumWseiugOS4puWujOWFqOWQjOaEj1xyXG4gICAgICAgICAgPC9idXR0b24+XHJcbiAgICAgICAgPC9kaXY+XHJcbiAgICAgIDwvZGl2PlxyXG4gICAgPC9kaXY+XHJcbiAgKTtcclxufTtcclxuXHJcbi8vIC0tLSAzLiBUT0RBWSdTIFVQREFURSBTVU1NQVJZIE1PREFMIChHQ0NQUykgLS0tXHJcbmludGVyZmFjZSBUb2RheVJlcG9ydHNCeUNsYXNzU3VtbWFyeUl0ZW0ge1xyXG4gIGNsczogc3RyaW5nO1xyXG4gIGNvdW50OiBudW1iZXI7XHJcbiAgYXZnOiBudW1iZXIgfCBudWxsO1xyXG4gIG1pc3Npbmc6IG51bWJlcltdO1xyXG59XHJcblxyXG5pbnRlcmZhY2UgVXBkYXRlU3VtbWFyeU1vZGFsUHJvcHMge1xyXG4gIHZpc2libGU6IGJvb2xlYW47XHJcbiAgb25DbG9zZTogKCkgPT4gdm9pZDtcclxuICB0b2RheVN0cjogc3RyaW5nO1xyXG4gIHRvZGF5UmVwb3J0c0J5Q2xhc3NTdW1tYXJ5OiBUb2RheVJlcG9ydHNCeUNsYXNzU3VtbWFyeUl0ZW1bXTtcclxufVxyXG5cclxuZXhwb3J0IGNvbnN0IFVwZGF0ZVN1bW1hcnlNb2RhbDogUmVhY3QuRkM8VXBkYXRlU3VtbWFyeU1vZGFsUHJvcHM+ID0gKHtcclxuICB2aXNpYmxlLFxyXG4gIG9uQ2xvc2UsXHJcbiAgdG9kYXlTdHIsXHJcbiAgdG9kYXlSZXBvcnRzQnlDbGFzc1N1bW1hcnksXHJcbn0pID0+IHtcclxuICBpZiAoIXZpc2libGUpIHJldHVybiBudWxsO1xyXG5cclxuICByZXR1cm4gKFxyXG4gICAgPGRpdiBjbGFzc05hbWU9XCJmaXhlZCBpbnNldC0wIHotNTAgYmctYmxhY2svNjAgYmFja2Ryb3AtYmx1ci14cyBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBwLTRcIj5cclxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJiZy13aGl0ZSBib3JkZXIgYm9yZGVyLXNsYXRlLTEwMCBzaGFkb3ctMnhsIHJvdW5kZWQtM3hsIG1heC13LTN4bCB3LWZ1bGwgZmxleCBmbGV4LWNvbCBtYXgtaC1bOTB2aF0gb3ZlcmZsb3ctaGlkZGVuXCI+XHJcbiAgICAgICAgey8qIE1vZGFsIEhlYWRlciAqL31cclxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImJnLWdyYWRpZW50LXRvLXIgZnJvbS1lbWVyYWxkLTYwMCB0by10ZWFsLTcwMCBweC02IHB5LTUgdGV4dC13aGl0ZSBmbGV4IGp1c3RpZnktYmV0d2VlbiBpdGVtcy1jZW50ZXIgZmxleC1zaHJpbmstMFwiPlxyXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLWNlbnRlciBzcGFjZS14LTJcIj5cclxuICAgICAgICAgICAgPFNsaWRlcnMgY2xhc3NOYW1lPVwidy01IGgtNSB0ZXh0LWVtZXJhbGQtMTAwXCIgLz5cclxuICAgICAgICAgICAgPGgzIGNsYXNzTmFtZT1cInRleHQtYmFzZSBmb250LWJsYWNrIHRyYWNraW5nLXRpZ2h0IGZvbnQtc2Fuc1wiPvCfk4og5LuK5pel5YWo5qCh5ZCE54+t57Sa5b+D5oOF55m76KiY6YCy5bqm6IiH57Wx6KiI5pGY6KaBPC9oMz5cclxuICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgPGJ1dHRvblxyXG4gICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcclxuICAgICAgICAgICAgb25DbGljaz17b25DbG9zZX1cclxuICAgICAgICAgICAgY2xhc3NOYW1lPVwidGV4dC13aGl0ZS84MCBob3Zlcjp0ZXh0LXdoaXRlIGhvdmVyOmJnLXdoaXRlLzEwIHAtMS41IHJvdW5kZWQtbGcgdHJhbnNpdGlvbi1hbGwgdGV4dC14cyBmb250LWJvbGQgY3Vyc29yLXBvaW50ZXJcIlxyXG4gICAgICAgICAgPlxyXG4gICAgICAgICAgICDinJUg6Zec6ZaJXHJcbiAgICAgICAgICA8L2J1dHRvbj5cclxuICAgICAgICA8L2Rpdj5cclxuXHJcbiAgICAgICAgey8qIE1vZGFsIENvbnRlbnQgLSBTY3JvbGxhYmxlIFRhYmxlICovfVxyXG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwicC02IG92ZXJmbG93LXktYXV0byBzcGFjZS15LTRcIj5cclxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctc2xhdGUtNTAgYm9yZGVyIGJvcmRlci1zbGF0ZS0yMDAgcC00IHJvdW5kZWQteGwgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1iZXR3ZWVuIHRleHQteHMgZm9udC1ib2xkIHRleHQtc2xhdGUtNzAwXCI+XHJcbiAgICAgICAgICAgIDxzcGFuPuS7iuaXpeaXpeacn++8mnt0b2RheVN0cn08L3NwYW4+XHJcbiAgICAgICAgICAgIDxzcGFuPuezu+e1seeLgOaFi++8muWvpuaZgumAo+e3mu+8iEdvb2dsZSBGaXJlc3RvcmUg6Zuy56uv5ZCM5q2l5Lit77yJPC9zcGFuPlxyXG4gICAgICAgICAgPC9kaXY+XHJcblxyXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJib3JkZXIgYm9yZGVyLXNsYXRlLTE1MCByb3VuZGVkLXhsIG92ZXJmbG93LWhpZGRlbiBzaGFkb3ctMnhzXCI+XHJcbiAgICAgICAgICAgIDx0YWJsZSBjbGFzc05hbWU9XCJ3LWZ1bGwgdGV4dC1sZWZ0IGJvcmRlci1jb2xsYXBzZSB0ZXh0LXhzXCI+XHJcbiAgICAgICAgICAgICAgPHRoZWFkPlxyXG4gICAgICAgICAgICAgICAgPHRyIGNsYXNzTmFtZT1cImJnLXNsYXRlLTEwMCBib3JkZXItYiBib3JkZXItc2xhdGUtMjAwIHRleHQtc2xhdGUtNjAwIGZvbnQtZXh0cmFib2xkXCI+XHJcbiAgICAgICAgICAgICAgICAgIDx0aCBjbGFzc05hbWU9XCJweC00IHB5LTMgZm9udC1zYW5zXCI+54+t57Sa5ZCN56ixPC90aD5cclxuICAgICAgICAgICAgICAgICAgPHRoIGNsYXNzTmFtZT1cInB4LTQgcHktMyBmb250LXNhbnNcIj7nmbvoqJjpgLLluqboiIfni4DmhYs8L3RoPlxyXG4gICAgICAgICAgICAgICAgICA8dGggY2xhc3NOYW1lPVwicHgtNCBweS0zIHRleHQtY2VudGVyIGZvbnQtc2Fuc1wiPuS7iuaXpeW3suWhq+WgseS6uuaVuDwvdGg+XHJcbiAgICAgICAgICAgICAgICAgIDx0aCBjbGFzc05hbWU9XCJweC00IHB5LTMgdGV4dC1sZWZ0IGZvbnQtc2FucyB0ZXh0LXhzXCI+57y65Lqk5bqn6JmfPC90aD5cclxuICAgICAgICAgICAgICAgICAgPHRoIGNsYXNzTmFtZT1cInB4LTQgcHktMyB0ZXh0LWNlbnRlciBmb250LXNhbnNcIj7ku4rml6XlubPlnYfmg4Xnt5LliIblgLw8L3RoPlxyXG4gICAgICAgICAgICAgICAgPC90cj5cclxuICAgICAgICAgICAgICA8L3RoZWFkPlxyXG4gICAgICAgICAgICAgIDx0Ym9keSBjbGFzc05hbWU9XCJkaXZpZGUteSBkaXZpZGUtc2xhdGUtMTAwIGZvbnQtc2Fuc1wiPlxyXG4gICAgICAgICAgICAgICAge3RvZGF5UmVwb3J0c0J5Q2xhc3NTdW1tYXJ5Lm1hcCgoeyBjbHMsIGNvdW50LCBhdmcsIG1pc3NpbmcgfSkgPT4gKFxyXG4gICAgICAgICAgICAgICAgICA8dHIga2V5PXtjbHN9IGNsYXNzTmFtZT1cImhvdmVyOmJnLXNsYXRlLTUwLzUwIHRyYW5zaXRpb24tY29sb3JzXCI+XHJcbiAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzTmFtZT1cInB4LTQgcHktMyBmb250LWJsYWNrIHRleHQtc2xhdGUtODAwXCI+e2Nsc30g54+tPC90ZD5cclxuICAgICAgICAgICAgICAgICAgICA8dGQgY2xhc3NOYW1lPVwicHgtNCBweS0zXCI+XHJcbiAgICAgICAgICAgICAgICAgICAgICB7Y291bnQgPiAwID8gKFxyXG4gICAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJpbmxpbmUtZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTEgYmctZW1lcmFsZC0xMDAgdGV4dC1lbWVyYWxkLTgwMCBmb250LWV4dHJhYm9sZCB0ZXh0LVsxMHB4XSBweC0yIHB5LTAuNSByb3VuZGVkLWZ1bGxcIj5cclxuICAgICAgICAgICAgICAgICAgICAgICAgICDil48g5bey5ZCM5q2l55m76KiYXHJcbiAgICAgICAgICAgICAgICAgICAgICAgIDwvc3Bhbj5cclxuICAgICAgICAgICAgICAgICAgICAgICkgOiAoXHJcbiAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImlubGluZS1mbGV4IGl0ZW1zLWNlbnRlciBnYXAtMSBiZy1hbWJlci0xMDAgdGV4dC1hbWJlci04MDAgZm9udC1leHRyYWJvbGQgdGV4dC1bMTBweF0gcHgtMiBweS0wLjUgcm91bmRlZC1mdWxsXCI+XHJcbiAgICAgICAgICAgICAgICAgICAgICAgICAg4peLIOWwmuacqueZu+WIhuabtOaWsFxyXG4gICAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+XHJcbiAgICAgICAgICAgICAgICAgICAgICApfVxyXG4gICAgICAgICAgICAgICAgICAgIDwvdGQ+XHJcbiAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzTmFtZT1cInB4LTQgcHktMyB0ZXh0LWNlbnRlciBmb250LWJvbGQgdGV4dC1zbGF0ZS03MDBcIj5cclxuICAgICAgICAgICAgICAgICAgICAgIHtjb3VudH0g5L2N5a2456ulXHJcbiAgICAgICAgICAgICAgICAgICAgPC90ZD5cclxuICAgICAgICAgICAgICAgICAgICA8dGQgY2xhc3NOYW1lPVwicHgtNCBweS0zIHRleHQtbGVmdCBmb250LWJvbGQgdGV4dC14cyB0ZXh0LXJvc2UtNTAwXCI+XHJcbiAgICAgICAgICAgICAgICAgICAgICB7bWlzc2luZyAmJiBtaXNzaW5nLmxlbmd0aCA+IDAgPyBtaXNzaW5nLmpvaW4oXCIsIFwiKSA6IDxzcGFuIGNsYXNzTmFtZT1cInRleHQtZW1lcmFsZC01MDBcIj7lhajli6Q8L3NwYW4+fVxyXG4gICAgICAgICAgICAgICAgICAgIDwvdGQ+XHJcbiAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzTmFtZT1cInB4LTQgcHktMyB0ZXh0LWNlbnRlciBmb250LWJvbGRcIj5cclxuICAgICAgICAgICAgICAgICAgICAgIHthdmcgIT09IG51bGwgPyAoXHJcbiAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuIFxyXG4gICAgICAgICAgICAgICAgICAgICAgICAgIHN0eWxlPXt7IGNvbG9yOiBnZXRNb29kQ29sb3IoYXZnKSB9fVxyXG4gICAgICAgICAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT1cImZvbnQtZXh0cmFib2xkXCJcclxuICAgICAgICAgICAgICAgICAgICAgICAgPlxyXG4gICAgICAgICAgICAgICAgICAgICAgICAgIHthdmd9IOWIhiAoe01PT0RfRU1PSklTW01hdGgucm91bmQoYXZnKV0/LmVtb2ppfSB7TU9PRF9FTU9KSVNbTWF0aC5yb3VuZChhdmcpXT8uZGVzYy5zcGxpdCgnIC8gJylbMF19KVxyXG4gICAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+XHJcbiAgICAgICAgICAgICAgICAgICAgICApIDogKFxyXG4gICAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJ0ZXh0LXNsYXRlLTQwMCBpdGFsaWMgZm9udC1zZW1pYm9sZFwiPi08L3NwYW4+XHJcbiAgICAgICAgICAgICAgICAgICAgICApfVxyXG4gICAgICAgICAgICAgICAgICAgIDwvdGQ+XHJcbiAgICAgICAgICAgICAgICAgIDwvdHI+XHJcbiAgICAgICAgICAgICAgICApKX1cclxuICAgICAgICAgICAgICA8L3Rib2R5PlxyXG4gICAgICAgICAgICA8L3RhYmxlPlxyXG4gICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgPC9kaXY+XHJcblxyXG4gICAgICAgIHsvKiBNb2RhbCBGb290ZXIgKi99XHJcbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJiZy1zbGF0ZS01MCBweC02IHB5LTQgZmxleCBqdXN0aWZ5LWVuZCBib3JkZXItdCBib3JkZXItc2xhdGUtMTAwIGZsZXgtc2hyaW5rLTBcIj5cclxuICAgICAgICAgIDxidXR0b25cclxuICAgICAgICAgICAgdHlwZT1cImJ1dHRvblwiXHJcbiAgICAgICAgICAgIG9uQ2xpY2s9e29uQ2xvc2V9XHJcbiAgICAgICAgICAgIGNsYXNzTmFtZT1cImJnLWVtZXJhbGQtNjAwIGhvdmVyOmJnLWVtZXJhbGQtNzAwIHRleHQtd2hpdGUgZm9udC1leHRyYWJvbGQgdGV4dC14cyBweC01IHB5LTIuNSByb3VuZGVkLXhsIHRyYW5zaXRpb24tYWxsIGN1cnNvci1wb2ludGVyIGZvbnQtc2Fuc1wiXHJcbiAgICAgICAgICA+XHJcbiAgICAgICAgICAgIOaIkeefpemBk+S6hlxyXG4gICAgICAgICAgPC9idXR0b24+XHJcbiAgICAgICAgPC9kaXY+XHJcbiAgICAgIDwvZGl2PlxyXG4gICAgPC9kaXY+XHJcbiAgKTtcclxufTtcclxuXHJcbi8vIC0tLSA0LiBTWVNURU0gSE9XIFRPIFVTRSBHVUlERSBNT0RBTCAtLS1cclxuaW50ZXJmYWNlIFN5c3RlbUd1aWRlTW9kYWxQcm9wcyB7XHJcbiAgdmlzaWJsZTogYm9vbGVhbjtcclxuICBvbkNsb3NlOiAoKSA9PiB2b2lkO1xyXG59XHJcblxyXG5leHBvcnQgY29uc3QgU3lzdGVtR3VpZGVNb2RhbDogUmVhY3QuRkM8U3lzdGVtR3VpZGVNb2RhbFByb3BzPiA9ICh7IHZpc2libGUsIG9uQ2xvc2UgfSkgPT4ge1xyXG4gIGlmICghdmlzaWJsZSkgcmV0dXJuIG51bGw7XHJcblxyXG4gIHJldHVybiAoXHJcbiAgICA8ZGl2IGNsYXNzTmFtZT1cImZpeGVkIGluc2V0LTAgei01MCBiZy1ibGFjay82MCBiYWNrZHJvcC1ibHVyLXhzIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIHAtNFwiPlxyXG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImJnLXdoaXRlIGJvcmRlciBib3JkZXItc2xhdGUtMTAwIHNoYWRvdy0yeGwgcm91bmRlZC0zeGwgbWF4LXctMnhsIHctZnVsbCBmbGV4IGZsZXgtY29sIG1heC1oLVs5MHZoXSBvdmVyZmxvdy1oaWRkZW5cIj5cclxuICAgICAgICB7LyogTW9kYWwgSGVhZGVyICovfVxyXG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctZ3JhZGllbnQtdG8tciBmcm9tLWFtYmVyLTUwMCB0by1vcmFuZ2UtNjAwIHB4LTYgcHktNSB0ZXh0LXdoaXRlIGZsZXgganVzdGlmeS1iZXR3ZWVuIGl0ZW1zLWNlbnRlciBmbGV4LXNocmluay0wXCI+XHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIHNwYWNlLXgtMlwiPlxyXG4gICAgICAgICAgICA8SGVscENpcmNsZSBjbGFzc05hbWU9XCJ3LTUgaC01IHRleHQtYW1iZXItMTAwXCIgLz5cclxuICAgICAgICAgICAgPGgzIGNsYXNzTmFtZT1cInRleHQtYmFzZSBmb250LWJsYWNrIHRyYWNraW5nLXRpZ2h0IGZvbnQtc2Fuc1wiPvCfkqEg44CM5b+D5oOF5Yqg5rK556uZIOKAoiDmoKHlnJLniYjjgI3ns7vntbHkvb/nlKjmjIfljZc8L2gzPlxyXG4gICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICA8YnV0dG9uXHJcbiAgICAgICAgICAgIHR5cGU9XCJidXR0b25cIlxyXG4gICAgICAgICAgICBvbkNsaWNrPXtvbkNsb3NlfVxyXG4gICAgICAgICAgICBjbGFzc05hbWU9XCJ0ZXh0LXdoaXRlLzgwIGhvdmVyOnRleHQtd2hpdGUgaG92ZXI6Ymctd2hpdGUvMTAgcC0xLjUgcm91bmRlZC1sZyB0cmFuc2l0aW9uLWFsbCB0ZXh0LXhzIGZvbnQtYm9sZCBjdXJzb3ItcG9pbnRlciBmb250LXNhbnNcIlxyXG4gICAgICAgICAgPlxyXG4gICAgICAgICAgICDinJUg6Zec6ZaJXHJcbiAgICAgICAgICA8L2J1dHRvbj5cclxuICAgICAgICA8L2Rpdj5cclxuXHJcbiAgICAgICAgey8qIE1vZGFsIENvbnRlbnQgKi99XHJcbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJwLTYgb3ZlcmZsb3cteS1hdXRvIHNwYWNlLXktNSB0ZXh0LXNsYXRlLTcwMCB0ZXh0LXhzIG1kOnRleHQtWzEzcHhdIGxlYWRpbmctcmVsYXhlZCBmb250LXNlbWlib2xkIGZvbnQtc2Fuc1wiPlxyXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJiZy1hbWJlci01MCBib3JkZXIgYm9yZGVyLWFtYmVyLTIwMCBwLTMuNSByb3VuZGVkLXhsIHRleHQtYW1iZXItOTAwIGZvbnQtYm9sZFwiPlxyXG4gICAgICAgICAgICDmraHov47kvb/nlKjlpKnkuLvmlZnlloTlsI7lsI/lrbjjgIzlv4Pmg4XliqDmsrnnq5njgI3lv4PnkIblgaXlurfnrqHnkIblubPlj7DjgILmnKzns7vntbHoh7Tlipvmlrzkv53pmpzlrbjnlJ/lv4PogbLlvpfliLDlj4rmmYLkuJTlronlhajnmoTlgr7ogb3oiIflsI3oqbHjgILku6XkuIvngrrlkITmoKHmlrnjgIHlrbjnlJ/jgIHoiIflsI7luKvop5LoibLnmoTlrozmlbTmk43kvZzoqqrmmI7jgIJcclxuICAgICAgICAgIDwvZGl2PlxyXG5cclxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3BhY2UteS00XCI+XHJcbiAgICAgICAgICAgIHsvKiBTZWN0aW9uIDEgKi99XHJcbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYm9yZGVyLWIgYm9yZGVyLXNsYXRlLTEwMCBwYi0zXCI+XHJcbiAgICAgICAgICAgICAgPGg0IGNsYXNzTmFtZT1cImZvbnQtZXh0cmFib2xkIHRleHQtc2xhdGUtOTAwIHRleHQteHMgbWQ6dGV4dC1zbSBmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMS41IHRleHQtYW1iZXItNjAwIG1iLTFcIj5cclxuICAgICAgICAgICAgICAgIDxzcGFuPjEuPC9zcGFuPiDwn46SIOWtuOeUn+avj+aXpeW/g+aDheeZu+iomCAo5bCP5Zub6Iez5bCP5YWt6YGp55SoKVxyXG4gICAgICAgICAgICAgIDwvaDQ+XHJcbiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPVwidGV4dC1zbGF0ZS02MDAgZm9udC1tZWRpdW1cIj5cclxuICAgICAgICAgICAgICAgIOS4remrmOW5tOe0muWQjOWtuOWPr+S7peiHquS4u+afpemWseWPiueZu+mMhOaDhee3ku+8jOatpempn+WmguS4i++8mlxyXG4gICAgICAgICAgICAgIDwvcD5cclxuICAgICAgICAgICAgICA8dWwgY2xhc3NOYW1lPVwibGlzdC1kaXNjIHBsLTUgbXQtMSBzcGFjZS15LTEgdGV4dC1zbGF0ZS01MDAgdGV4dC14cyBmb250LXNlbWlib2xkXCI+XHJcbiAgICAgICAgICAgICAgICA8bGk+PHN0cm9uZz7nrKzkuIDmraXvvJo8L3N0cm9uZz7lnKjns7vntbHnmbvlhaXpppbpoIHvvIzpgbjmk4fjgIzwn46SIOmAsuWFpeWtuOeUn+WAi+S6uuaDhee3kueZu+iomOmAmumBk+OAjeOAgjwvbGk+XHJcbiAgICAgICAgICAgICAgICA8bGk+PHN0cm9uZz7nrKzkuozmraXvvJo8L3N0cm9uZz7kuIvmi4npgbjllq7pgbjmk4fmgqjnmoTjgIznj63liKXjgI3vvIjlpoIgNEHjgIE1Q++8ie+8jOS4pui8uOWFpeaCqOePree0mueahOOAjOWvhumRsOOAjeeZu+WFpeOAgjwvbGk+XHJcbiAgICAgICAgICAgICAgICA8bGk+PHN0cm9uZz7nrKzkuInmraXvvJo8L3N0cm9uZz7ovLjlhaXmgqjlnKjnj63ntJrnmoTjgIzluqfomZ/jgI3vvIjluqfomZ/nr4TlnI0gMSAtIDM1IOaIliBURVNUIOa4rOippu+8ieOAgjwvbGk+XHJcbiAgICAgICAgICAgICAgICA8bGk+PHN0cm9uZz7nrKzlm5vmraXvvJo8L3N0cm9uZz7oqK3lrprmgqjku4rlpKnnmoTlv4Pmg4XliIblgLzvvJrmj5DkvpsgMSDoh7MgMTAg55qE5Yi75bqm77yIMeeCuualteW6pumbo+mBju+8jDEw54K65a6M576O5oSJ5b+r77yJ44CCPC9saT5cclxuICAgICAgICAgICAgICAgIDxsaT48c3Ryb25nPuesrOS6lOatpe+8mjwvc3Ryb25nPuWcqOaChOaChOipseeVmeiogOahhuWFp++8jOWQkeWwjuW4q+WCvuiotOaCqOeahOW/g+iBsu+8iOipsuauteWFp+WuueWDheacieaCqOeahOWwiOS7u+ePreWwjuW4q+iDveeci+imi++8ieOAgjwvbGk+XHJcbiAgICAgICAgICAgICAgICA8bGk+PHN0cm9uZz7lrozmiJDvvJo8L3N0cm9uZz7pu57mk4rjgIzlronlhajlhLLlrZjkuKbnmbvlh7rjgI3vvIzliIbmlbjoiIfpmrHnp4HnlZnoqIDljbPlj6/mpbXpgJ/kuIrlgrPoh7Ppm7Lnq6/jgII8L2xpPlxyXG4gICAgICAgICAgICAgIDwvdWw+XHJcbiAgICAgICAgICAgIDwvZGl2PlxyXG5cclxuICAgICAgICAgICAgey8qIFNlY3Rpb24gMiAqL31cclxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJib3JkZXItYiBib3JkZXItc2xhdGUtMTAwIHBiLTNcIj5cclxuICAgICAgICAgICAgICA8aDQgY2xhc3NOYW1lPVwiZm9udC1leHRyYWJvbGQgdGV4dC1zbGF0ZS05MDAgdGV4dC14cyBtZDp0ZXh0LXNtIGZsZXggaXRlbXMtY2VudGVyIGdhcC0xLjUgdGV4dC1hbWJlci02MDAgbWItMVwiPlxyXG4gICAgICAgICAgICAgICAgPHNwYW4+Mi48L3NwYW4+IPCfjpIg5bCP5LiA6Iez5bCP5LiJ5a2456ulICjnlLHlsI7luKvku6PpjITku6PloaspXHJcbiAgICAgICAgICAgICAgPC9oND5cclxuICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXNsYXRlLTYwMCBmb250LW1lZGl1bVwiPlxyXG4gICAgICAgICAgICAgICAg5Yid5bCP5bm057Sa5a2456ul5LiN5YW35YKZ5a+r5a2X5oiW5pON5L2c6IO95Yqb77yM5Zug5q2k57O757Wx5YWN6Zmk5LqG5LuW5YCR55qE5omT5a2X5pON5L2c77yaXHJcbiAgICAgICAgICAgICAgPC9wPlxyXG4gICAgICAgICAgICAgIDx1bCBjbGFzc05hbWU9XCJsaXN0LWRpc2MgcGwtNSBtdC0xIHNwYWNlLXktMSB0ZXh0LXNsYXRlLTUwMCB0ZXh0LXhzIGZvbnQtc2VtaWJvbGRcIj5cclxuICAgICAgICAgICAgICAgIDxsaT7liJ3lsI/nj63ntJrvvIgxQSDoh7MgM0TvvInnmoTlv4Pmg4Xpu57mlbjnlLHlhbbjgIznj63lsI7luKvjgI3mr4/lpKnmlrzku6PpjITpnaLmnb/kuK3mibnph4/ku6PngrrloavlhaXjgII8L2xpPlxyXG4gICAgICAgICAgICAgICAgPGxpPuS7o+mMhOmBjueoi+S4jeWEsuWtmOS7u+S9leaWh+Wtl+aChOaChOipse+8jOaVuOaTmue0lOeyueOAgeWujOWFqOWQiOimj++8jOWFqOeoi+S/nemanOW5tOW5vOWtuOerpeengemaseOAgjwvbGk+XHJcbiAgICAgICAgICAgICAgPC91bD5cclxuICAgICAgICAgICAgPC9kaXY+XHJcblxyXG4gICAgICAgICAgICB7LyogU2VjdGlvbiAzICovfVxyXG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImJvcmRlci1iIGJvcmRlci1zbGF0ZS0xMDAgcGItM1wiPlxyXG4gICAgICAgICAgICAgIDxoNCBjbGFzc05hbWU9XCJmb250LWV4dHJhYm9sZCB0ZXh0LXNsYXRlLTkwMCB0ZXh0LXhzIG1kOnRleHQtc20gZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTEuNSB0ZXh0LWFtYmVyLTYwMCBtYi0xXCI+XHJcbiAgICAgICAgICAgICAgICA8c3Bhbj4zLjwvc3Bhbj4g8J+PqyDnj63kuLvku7voiIflsI7luKvml6XluLjmjqfliLbnq68gKOaVmeW4q+asiumZkClcclxuICAgICAgICAgICAgICA8L2g0PlxyXG4gICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInRleHQtc2xhdGUtNjAwIGZvbnQtbWVkaXVtXCI+XHJcbiAgICAgICAgICAgICAgICDlsI7luKvlj6/ku6Xlronlhajmn6XnnIvku4rml6Xnj63ntJrnmbvoqJjjgIHmiJbpgLLooYzliJ3lsI/ku6PpjITvvJpcclxuICAgICAgICAgICAgICA8L3A+XHJcbiAgICAgICAgICAgICAgPHVsIGNsYXNzTmFtZT1cImxpc3QtZGlzYyBwbC01IG10LTEgc3BhY2UteS0xIHRleHQtc2xhdGUtNTAwIHRleHQteHMgZm9udC1zZW1pYm9sZFwiPlxyXG4gICAgICAgICAgICAgICAgPGxpPjxzdHJvbmc+5Luj6YyE77yaPC9zdHJvbmc+6Iul55m75YWlIDFBIOiHsyAzRO+8jOezu+e1seWwh+iHquWLlemWi+WVnyAzNSDlgIvluqfomZ/nmoTlpJrmjInpiJXkuqTkupLnn6npmaPjgILlsI7luKvlj6rpnIDoqaLllY/lsI/mnIvlj4vlv4Pmg4XvvIgxLTEw5YiG77yJ77yM5Zyo5bCN5oeJ5bqn6Jmf6bue5pOK5YiG5YC877yM5pyA5b6M6bue5pOK44CM8J+SviDlhLLlrZjkuKblkIzmraXku4rml6Xlhajnj63liIbmlbjjgI3ljbPlj6/mpbXpgJ/mnKzlnLDlrZjmqpTkuKblgrPpgIHliLDpm7Lnq6/vvIE8L2xpPlxyXG4gICAgICAgICAgICAgICAgPGxpPjxzdHJvbmc+5YiG5p6Q6IiH6K2m5aCx77yaPC9zdHJvbmc+5p+l55yL6YCj57qMIDMg5aSp5L2O5pa8IDMg5YiG55qE6aCQ6K2m44CB57K+5rqW6YGO5r++55WZ6KiA77yM6YyE5LiL6Lef6YCy6JmV55CG57Sw56+A5Lim5Zyo57O757Wx5qiZ6KiY44CCPC9saT5cclxuICAgICAgICAgICAgICA8L3VsPlxyXG4gICAgICAgICAgICA8L2Rpdj5cclxuXHJcbiAgICAgICAgICAgIHsvKiBTZWN0aW9uIDQgKi99XHJcbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYm9yZGVyLWIgYm9yZGVyLXNsYXRlLTEwMCBwYi0zXCI+XHJcbiAgICAgICAgICAgICAgPGg0IGNsYXNzTmFtZT1cImZvbnQtZXh0cmFib2xkIHRleHQtc2xhdGUtOTAwIHRleHQteHMgbWQ6dGV4dC1zbSBmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMS41IHRleHQtYW1iZXItNjAwIG1iLTFcIj5cclxuICAgICAgICAgICAgICAgIDxzcGFuPjQuPC9zcGFuPiDwn5uh77iPIOWFqOagoeWuieWFqOebo+aOp+WPiuePree0mueZu+WIhui/vei5pCAo5YWo5qCh5a6J5YWo5a6YKVxyXG4gICAgICAgICAgICAgIDwvaDQ+XHJcbiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPVwidGV4dC1zbGF0ZS02MDAgZm9udC1tZWRpdW1cIj5cclxuICAgICAgICAgICAgICAgIOWIqeeUqCA8c3Ryb25nPkdDQ1BTIOWFqOagoeWuieWFqOebo+aOp+S4reW/gzwvc3Ryb25nPu+8jOWtuOagoemrmOeuoeOAgeekvuW3peaIluagoemVt+iDveeNsuWPluacgOmrmOWFqOWxgOe2reW6pu+8mlxyXG4gICAgICAgICAgICAgIDwvcD5cclxuICAgICAgICAgICAgICA8dWwgY2xhc3NOYW1lPVwibGlzdC1kaXNjIHBsLTUgbXQtMSBzcGFjZS15LTEgdGV4dC1zbGF0ZS01MDAgdGV4dC14cyBmb250LXNlbWlib2xkXCI+XHJcbiAgICAgICAgICAgICAgICA8bGk+PHN0cm9uZz7nmbvliIbov73ouaTvvJo8L3N0cm9uZz7ljbPmmYLlrprkvY0gdG9kYXkg5ZOq5Lqb54+t57Sa5bCa5pyq5aGr5aCx5Lu75L2V5b+D5oOF6bue5pW477yM5Lul5L6/5o+Q56S65bCN5oeJ54+t57Sa5bCO5bir44CCPC9saT5cclxuICAgICAgICAgICAgICAgIDxsaT48c3Ryb25nPumAsuW6pue2nOWQiOW9meWgse+8mjwvc3Ryb25nPuS4gOmNtem7numWi+mAsuW6pue4veihqO+8jOapq+WQkeaOkuavlCAyNCDlgIvnj63ntJrnmoTku4rml6XnmbvpjITkurrmlbjoiIflhajmoKHlkITnj63lubPlnYflv4Pmg4XliIbjgII8L2xpPlxyXG4gICAgICAgICAgICAgICAgPGxpPjxzdHJvbmc+5pWP5oSf6KiA6KuW77yaPC9zdHJvbmc+5qiZ57SF5Lqu54eI5omA5pyJ5Y+v6IO95YyF5ZCr6Ieq5q6Y44CB6Zy45YeM5oiW5pWP5oSf5oSP6K2Y6KiA6KuW55qE5qKd55uu77yM5L+d6Zqc5YWo5qCh5a6J5YWo5LiA6Y215Y+v5o6n44CCPC9saT5cclxuICAgICAgICAgICAgICA8L3VsPlxyXG4gICAgICAgICAgICA8L2Rpdj5cclxuXHJcbiAgICAgICAgICAgIHsvKiBTZWN0aW9uIDUgKi99XHJcbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwicGItMVwiPlxyXG4gICAgICAgICAgICAgIDxoNCBjbGFzc05hbWU9XCJmb250LWV4dHJhYm9sZCB0ZXh0LXNsYXRlLTkwMCB0ZXh0LXhzIG1kOnRleHQtc20gZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTEuNSB0ZXh0LWFtYmVyLTYwMCBtYi0xXCI+XHJcbiAgICAgICAgICAgICAgICA8c3Bhbj41Ljwvc3Bhbj4g8J+MsSDlrbjnlJ/lsIjlsazjgIw0UnMg5b+D6Z2I5YWF6Zu756uZ44CNICjlv4PnkIblgaXlurfntKDppIopXHJcbiAgICAgICAgICAgICAgPC9oND5cclxuICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXNsYXRlLTYwMCBmb250LW1lZGl1bVwiPlxyXG4gICAgICAgICAgICAgICAg6YWN5ZCI5pWZ6IKy5bGA44CMNFJzIOeyvuelnuWBpeW6t+e0hOeroOOAje+8jOacrOW5s+WPsOeCuueZu+iomOW+jOeahOWtuOerpeaPkOS+m+WwiOWxrOS6kuWLleiqv+mBqeW3peWFt++8mlxyXG4gICAgICAgICAgICAgIDwvcD5cclxuICAgICAgICAgICAgICA8dWwgY2xhc3NOYW1lPVwibGlzdC1kaXNjIHBsLTUgbXQtMSBzcGFjZS15LTEgdGV4dC1zbGF0ZS01MDAgdGV4dC14cyBmb250LXNlbWlib2xkXCI+XHJcbiAgICAgICAgICAgICAgICA8bGk+PHN0cm9uZz5SZXN0ICjkvJHmga8p77yaPC9zdHJvbmc+5a6j5bCO6Imv5aW955qEIDktMTEg5bCP5pmC552h55yg5L2c5oGv5Y+K5bu656uL552h5YmN54Sh6J6i5bmV5pS+6ayG5YSA5byP44CCPC9saT5cclxuICAgICAgICAgICAgICAgIDxsaT48c3Ryb25nPlJlbGF4YXRpb24gKOaUvumshinvvJo8L3N0cm9uZz7mj5DkvpvkupLli5XoqIjmmYLjgIzmt7HlkbzlkLjmlL7prIbmlZnnt7TjgI3vvIzphY3lkIjli5XmhYvnuK7mlL7lnJPlnIjjgIHms6LntIvli5XnlavlvJXlsI7mt7HluqbmuJvlo5PjgII8L2xpPlxyXG4gICAgICAgICAgICAgICAgPGxpPjxzdHJvbmc+UmVsYXRpb25zaGlwICjpl5zkv4Ip77yaPC9zdHJvbmc+5byV5bCO5pel5bi444CM5bCP5b6u56yR6IiH5oSf5oGp5Lu75YuZ44CN77yM5bu656uL5a2p5a2Q44CB5ZCM5YSV44CB5a625bqt6IiH5bCO5bir6ZaT55qE5q2j5ZCR6Zec5oe357ay44CCPC9saT5cclxuICAgICAgICAgICAgICAgIDxsaT48c3Ryb25nPlJlc2lsaWVuY2UgKOaKl+mAhinvvJo8L3N0cm9uZz7oqK3oqIjjgIzmraPlkJHmgJ3ntq3nv7vnv7vljaHjgI3vvIzmqKHmk6zlrbjmpa3miJbnpL7kuqTmjKvmipjvvIzpu57mk4rljaHniYcgM0Qg5peL6L2J5b6M5Y2z5Y+v542y5b6X6LyU5bCO6Zec5oe355qE5bu66Kit5oCn6YeN5qeL6KaW6KeS44CCPC9saT5cclxuICAgICAgICAgICAgICAgIDxsaT48c3Ryb25nPuaZuuiDveWBtea4rO+8mjwvc3Ryb25nPueVtuW/g+aDheeZu+iomOeCuiA0IOWIhuaIluS7peS4i++8jOezu+e1seacg+WcqOaPkOS6pOW+jOiHquWLleino+mOluS4puWxlemWi+WFhembu+erme+8jOe1puS6iOWtqeWtkOWNs+aZgueahOW/g+mdiOaUr+aMgeOAgjwvbGk+XHJcbiAgICAgICAgICAgICAgPC91bD5cclxuICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICA8L2Rpdj5cclxuXHJcbiAgICAgICAgey8qIE1vZGFsIEZvb3RlciAqL31cclxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImJnLXNsYXRlLTUwIHB4LTYgcHktNCBmbGV4IGp1c3RpZnktZW5kIGJvcmRlci10IGJvcmRlci1zbGF0ZS0xMDAgZmxleC1zaHJpbmstMFwiPlxyXG4gICAgICAgICAgPGJ1dHRvblxyXG4gICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcclxuICAgICAgICAgICAgb25DbGljaz17b25DbG9zZX1cclxuICAgICAgICAgICAgY2xhc3NOYW1lPVwiYmctYW1iZXItNjAwIGhvdmVyOmJnLWFtYmVyLTcwMCB0ZXh0LXdoaXRlIGZvbnQtZXh0cmFib2xkIHRleHQteHMgcHgtNSBweS0yLjUgcm91bmRlZC14bCB0cmFuc2l0aW9uLWFsbCBjdXJzb3ItcG9pbnRlciBmb250LXNhbnNcIlxyXG4gICAgICAgICAgPlxyXG4gICAgICAgICAgICDmiJHlt7Lkuobop6PvvIzplovlp4vmk43kvZxcclxuICAgICAgICAgIDwvYnV0dG9uPlxyXG4gICAgICAgIDwvZGl2PlxyXG4gICAgICA8L2Rpdj5cclxuICAgIDwvZGl2PlxyXG4gICk7XHJcbn07XHJcbiJdLCJmaWxlIjoiQzovVXNlcnMvSmVycnkvLmdlbWluaS9hbnRpZ3Jhdml0eS9zY3JhdGNoL21vb2R0cmFja2VyL3NyYy9jb21wb25lbnRzL0NvbW1vbi9Nb2RhbHMudHN4In0=

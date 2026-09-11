@@ -1,0 +1,388 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/@fs/C:\\Users\\Jerry\\.gemini\\antigravity\\scratch\\moodtracker\\src\\components\\Dashboards\\StudentDashboard\\StudentDiariesTab.tsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=83d097c1"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+var _s = $RefreshSig$();
+import __vite__cjsImport1_react from "/node_modules/.vite/deps/react.js?v=83d097c1"; const useState = __vite__cjsImport1_react["useState"]; const useEffect = __vite__cjsImport1_react["useEffect"];
+import { motion } from "/node_modules/.vite/deps/motion_react.js?v=83d097c1";
+import { BookOpen, Sparkles, Heart, Eye } from "/node_modules/.vite/deps/lucide-react.js?v=83d097c1";
+import { subscribeDiariesByStudent } from "/src/firebase/services.ts";
+import { getPublicAssetUrl } from "/src/utils/assetHelper.ts";
+export const StudentDiariesTab = ({
+  studentNumber,
+  studentName = "同學",
+  activeMascot = "enen"
+}) => {
+  _s();
+  const [diaries, setDiaries] = useState([]);
+  const [selectedDiary, setSelectedDiary] = useState(null);
+  useEffect(() => {
+    if (!studentNumber) return;
+    const unsub = subscribeDiariesByStudent(studentNumber, (data) => {
+      setDiaries(data);
+    });
+    return () => {
+      if (typeof unsub === "function") unsub();
+    };
+  }, [studentNumber]);
+  return /* @__PURE__ */ jsxDEV("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 rounded-3xl p-6 md:p-8 shadow-xl border border-amber-300 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "space-y-2 z-10", children: [
+        /* @__PURE__ */ jsxDEV("div", { className: "inline-flex items-center gap-1.5 bg-white/80 backdrop-blur-xs px-3 py-1 rounded-full text-xs font-black text-amber-950 shadow-2xs", children: [
+          /* @__PURE__ */ jsxDEV(Sparkles, { className: "w-3.5 h-3.5 text-amber-600" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+            lineNumber: 39,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("span", { children: "4Rs 心靈成長時光機" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+            lineNumber: 40,
+            columnNumber: 13
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+          lineNumber: 38,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("h2", { className: "text-xl md:text-2xl font-black text-slate-900 tracking-tight", children: [
+          "📖 ",
+          studentName,
+          " 的雙週成長日記簿"
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+          lineNumber: 42,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "text-xs md:text-sm text-amber-950/80 font-medium max-w-md", children: "在這裡可以回顧你每期手寫的心靈日記、看見自己的成長足跡，以及校園大使為你送上的專屬加油祝福！" }, void 0, false, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+          lineNumber: 45,
+          columnNumber: 11
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+        lineNumber: 37,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-3 bg-white/90 backdrop-blur-md p-3.5 rounded-2xl shadow-lg border border-white/60 z-10", children: [
+        /* @__PURE__ */ jsxDEV(
+          "img",
+          {
+            src: getPublicAssetUrl("/學校圖檔/吉祥物/enen_reading.png"),
+            alt: "校園大使恩恩",
+            className: "w-14 h-14 object-contain animate-bounce"
+          },
+          void 0,
+          false,
+          {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+            lineNumber: 52,
+            columnNumber: 11
+          },
+          this
+        ),
+        /* @__PURE__ */ jsxDEV("div", { className: "text-xs", children: [
+          /* @__PURE__ */ jsxDEV("span", { className: "font-black text-slate-900 block", children: "恩恩 伴你成長：" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+            lineNumber: 58,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("span", { className: "text-slate-600 text-[11px] font-bold", children: "「每一次認真反思，都是你最珍貴的收穫！」" }, void 0, false, {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+            lineNumber: 61,
+            columnNumber: 13
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+          lineNumber: 57,
+          columnNumber: 11
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+        lineNumber: 51,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+      lineNumber: 36,
+      columnNumber: 7
+    }, this),
+    diaries.length === 0 ? /* @__PURE__ */ jsxDEV("div", { className: "bg-white rounded-3xl border border-dashed border-slate-300 p-12 text-center space-y-4", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mx-auto", children: /* @__PURE__ */ jsxDEV(BookOpen, { className: "w-8 h-8 opacity-60" }, void 0, false, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+        lineNumber: 72,
+        columnNumber: 13
+      }, this) }, void 0, false, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+        lineNumber: 71,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { children: [
+        /* @__PURE__ */ jsxDEV("h4", { className: "text-base font-black text-slate-800", children: "目前尚無已上傳的心靈日記" }, void 0, false, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+          lineNumber: 75,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "text-xs text-slate-500 max-w-sm mx-auto mt-1", children: "完成每兩循環週的實體日記紙並交給老師掃描後，你的手寫原稿與專屬回饋就會自動出現在這裡喔！" }, void 0, false, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+          lineNumber: 76,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+        lineNumber: 74,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+      lineNumber: 70,
+      columnNumber: 7
+    }, this) : /* @__PURE__ */ jsxDEV("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-6", children: diaries.map(
+      (diary) => /* @__PURE__ */ jsxDEV(
+        motion.div,
+        {
+          whileHover: { y: -4 },
+          className: "bg-white rounded-3xl p-6 border border-slate-200 hover:border-amber-400 shadow-sm transition-all flex flex-col justify-between space-y-4",
+          children: [
+            /* @__PURE__ */ jsxDEV("div", { children: [
+              /* @__PURE__ */ jsxDEV("div", { className: "flex items-center justify-between pb-3 border-b border-slate-100", children: [
+                /* @__PURE__ */ jsxDEV("div", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxDEV("span", { className: "text-base font-black text-slate-900", children: diary.cycleLabel || `第 ${diary.cycleNumber * 2 - 1}-${diary.cycleNumber * 2} 循環週` }, void 0, false, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                    lineNumber: 93,
+                    columnNumber: 21
+                  }, this),
+                  /* @__PURE__ */ jsxDEV("span", { className: "text-xs text-slate-400 font-bold", children: [
+                    "(",
+                    diary.submissionDate,
+                    ")"
+                  ] }, void 0, true, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                    lineNumber: 96,
+                    columnNumber: 21
+                  }, this)
+                ] }, void 0, true, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                  lineNumber: 92,
+                  columnNumber: 19
+                }, this),
+                /* @__PURE__ */ jsxDEV("span", { className: "bg-amber-100 text-amber-900 font-black text-[10px] px-2.5 py-0.5 rounded-full", children: [
+                  "✨ ",
+                  diary.aiAnalysis?.primaryEmotion || "感恩"
+                ] }, void 0, true, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                  lineNumber: 100,
+                  columnNumber: 19
+                }, this)
+              ] }, void 0, true, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                lineNumber: 91,
+                columnNumber: 17
+              }, this),
+              /* @__PURE__ */ jsxDEV("div", { className: "my-3 bg-slate-50 p-4 rounded-2xl border border-slate-100 text-xs text-slate-700 leading-relaxed font-medium", children: diary.transcribedText }, void 0, false, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                lineNumber: 106,
+                columnNumber: 17
+              }, this),
+              /* @__PURE__ */ jsxDEV("div", { className: "bg-amber-50/70 border border-amber-200/70 rounded-2xl p-3 flex items-start gap-2.5", children: [
+                /* @__PURE__ */ jsxDEV(Heart, { className: "w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" }, void 0, false, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                  lineNumber: 112,
+                  columnNumber: 19
+                }, this),
+                /* @__PURE__ */ jsxDEV("div", { className: "text-[11px] text-amber-950 font-bold leading-relaxed", children: [
+                  /* @__PURE__ */ jsxDEV("span", { className: "text-amber-800 font-black", children: "校園大使回饋：" }, void 0, false, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                    lineNumber: 114,
+                    columnNumber: 21
+                  }, this),
+                  diary.aiAnalysis?.mascotFeedback || "只要相信自己，你就是最棒的！"
+                ] }, void 0, true, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                  lineNumber: 113,
+                  columnNumber: 19
+                }, this)
+              ] }, void 0, true, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                lineNumber: 111,
+                columnNumber: 17
+              }, this),
+              diary.teacherNotes && /* @__PURE__ */ jsxDEV("div", { className: "mt-2 bg-indigo-50/70 border border-indigo-200/70 rounded-2xl p-3 text-[11px] text-indigo-950 font-bold", children: [
+                /* @__PURE__ */ jsxDEV("span", { className: "text-indigo-800 font-black", children: "班主任心語：" }, void 0, false, {
+                  fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                  lineNumber: 122,
+                  columnNumber: 21
+                }, this),
+                diary.teacherNotes
+              ] }, void 0, true, {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                lineNumber: 121,
+                columnNumber: 13
+              }, this)
+            ] }, void 0, true, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+              lineNumber: 89,
+              columnNumber: 15
+            }, this),
+            diary.scanImageUrl && /* @__PURE__ */ jsxDEV("div", { className: "pt-2 flex justify-end", children: /* @__PURE__ */ jsxDEV(
+              "button",
+              {
+                type: "button",
+                onClick: () => setSelectedDiary(diary),
+                className: "inline-flex items-center gap-1 text-xs font-black text-indigo-600 hover:text-indigo-800 cursor-pointer",
+                children: [
+                  /* @__PURE__ */ jsxDEV(Eye, { className: "w-3.5 h-3.5" }, void 0, false, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                    lineNumber: 136,
+                    columnNumber: 21
+                  }, this),
+                  /* @__PURE__ */ jsxDEV("span", { children: "查看我的手寫原稿" }, void 0, false, {
+                    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                    lineNumber: 137,
+                    columnNumber: 21
+                  }, this)
+                ]
+              },
+              void 0,
+              true,
+              {
+                fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+                lineNumber: 131,
+                columnNumber: 19
+              },
+              this
+            ) }, void 0, false, {
+              fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+              lineNumber: 130,
+              columnNumber: 11
+            }, this)
+          ]
+        },
+        diary.id,
+        true,
+        {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+          lineNumber: 84,
+          columnNumber: 9
+        },
+        this
+      )
+    ) }, void 0, false, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+      lineNumber: 82,
+      columnNumber: 7
+    }, this),
+    selectedDiary && /* @__PURE__ */ jsxDEV("div", { className: "fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-4", children: /* @__PURE__ */ jsxDEV("div", { className: "bg-white w-full max-w-2xl rounded-3xl p-6 shadow-2xl border border-slate-200 space-y-4", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "flex items-center justify-between pb-3 border-b border-slate-100", children: [
+        /* @__PURE__ */ jsxDEV("h3", { className: "text-base font-black text-slate-900", children: [
+          "📄 ",
+          selectedDiary.cycleLabel,
+          " • 手寫原稿回顧"
+        ] }, void 0, true, {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+          lineNumber: 151,
+          columnNumber: 15
+        }, this),
+        /* @__PURE__ */ jsxDEV(
+          "button",
+          {
+            type: "button",
+            onClick: () => setSelectedDiary(null),
+            className: "p-1 text-slate-400 hover:text-slate-600 cursor-pointer",
+            children: "✕"
+          },
+          void 0,
+          false,
+          {
+            fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+            lineNumber: 154,
+            columnNumber: 15
+          },
+          this
+        )
+      ] }, void 0, true, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+        lineNumber: 150,
+        columnNumber: 13
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "max-h-[65vh] overflow-y-auto rounded-2xl border border-slate-200 p-2 bg-slate-50 flex items-center justify-center", children: /* @__PURE__ */ jsxDEV(
+        "img",
+        {
+          src: selectedDiary.scanImageUrl,
+          alt: "手寫原稿",
+          className: "max-w-full h-auto object-contain rounded-xl"
+        },
+        void 0,
+        false,
+        {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+          lineNumber: 164,
+          columnNumber: 15
+        },
+        this
+      ) }, void 0, false, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+        lineNumber: 163,
+        columnNumber: 13
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "text-right", children: /* @__PURE__ */ jsxDEV(
+        "button",
+        {
+          type: "button",
+          onClick: () => setSelectedDiary(null),
+          className: "bg-slate-900 text-white text-xs font-black px-5 py-2.5 rounded-xl cursor-pointer",
+          children: "關閉"
+        },
+        void 0,
+        false,
+        {
+          fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+          lineNumber: 172,
+          columnNumber: 15
+        },
+        this
+      ) }, void 0, false, {
+        fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+        lineNumber: 171,
+        columnNumber: 13
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+      lineNumber: 149,
+      columnNumber: 11
+    }, this) }, void 0, false, {
+      fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+      lineNumber: 148,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, true, {
+    fileName: "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx",
+    lineNumber: 33,
+    columnNumber: 5
+  }, this);
+};
+_s(StudentDiariesTab, "6UlI7ri2o9xPlv2IWI+WqUzbwvg=");
+_c = StudentDiariesTab;
+var _c;
+$RefreshReg$(_c, "StudentDiariesTab");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) {
+  return RefreshRuntime.register(type, "C:/Users/Jerry/.gemini/antigravity/scratch/moodtracker/src/components/Dashboards/StudentDashboard/StudentDiariesTab.tsx " + id);
+}
+function $RefreshSig$() {
+  return RefreshRuntime.createSignatureFunctionForTransform();
+}
+
+//# sourceMappingURL=data:application/json;base64,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UTtBQUFBQSxVQUFXO0FBQUEsYUFEL0I7QUFBQTtBQUFBO0FBQUE7QUFBQSxlQUVBO0FBQUEsUUFDQTtBQUFBLFVBQUM7QUFBQTtBQUFBLFlBQ0MsTUFBSztBQUFBLFlBQ0wsU0FBUyxNQUFNUCxpQkFBaUIsSUFBSTtBQUFBLFlBQ3BDLFdBQVU7QUFBQSxZQUF3RDtBQUFBO0FBQUEsVUFIcEU7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLFFBTUE7QUFBQSxXQVZGO0FBQUE7QUFBQTtBQUFBO0FBQUEsYUFXQTtBQUFBLE1BRUEsdUJBQUMsU0FBSSxXQUFVLHFIQUNiO0FBQUEsUUFBQztBQUFBO0FBQUEsVUFDQyxLQUFLRCxjQUFjZ0I7QUFBQUEsVUFDbkIsS0FBSTtBQUFBLFVBQ0osV0FBVTtBQUFBO0FBQUEsUUFIWjtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUEsTUFHeUQsS0FKM0Q7QUFBQTtBQUFBO0FBQUE7QUFBQSxhQU1BO0FBQUEsTUFFQSx1QkFBQyxTQUFJLFdBQVUsY0FDYjtBQUFBLFFBQUM7QUFBQTtBQUFBLFVBQ0MsTUFBSztBQUFBLFVBQ0wsU0FBUyxNQUFNZixpQkFBaUIsSUFBSTtBQUFBLFVBQ3BDLFdBQVU7QUFBQSxVQUFrRjtBQUFBO0FBQUEsUUFIOUY7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLE1BTUEsS0FQRjtBQUFBO0FBQUE7QUFBQTtBQUFBLGFBUUE7QUFBQSxTQTlCRjtBQUFBO0FBQUE7QUFBQTtBQUFBLFdBK0JBLEtBaENGO0FBQUE7QUFBQTtBQUFBO0FBQUEsV0FpQ0E7QUFBQSxPQXBKSjtBQUFBO0FBQUE7QUFBQTtBQUFBLFNBdUpBO0FBRUo7QUFBRUosR0E1S1dKLG1CQUFtRDtBQUFBLEtBQW5EQTtBQUFtRCxJQUFBeUI7QUFBQSxhQUFBQSxJQUFBIiwibmFtZXMiOlsidXNlU3RhdGUiLCJ1c2VFZmZlY3QiLCJtb3Rpb24iLCJCb29rT3BlbiIsIlNwYXJrbGVzIiwiSGVhcnQiLCJFeWUiLCJzdWJzY3JpYmVEaWFyaWVzQnlTdHVkZW50IiwiZ2V0UHVibGljQXNzZXRVcmwiLCJTdHVkZW50RGlhcmllc1RhYiIsInN0dWRlbnROdW1iZXIiLCJzdHVkZW50TmFtZSIsImFjdGl2ZU1hc2NvdCIsIl9zIiwiZGlhcmllcyIsInNldERpYXJpZXMiLCJzZWxlY3RlZERpYXJ5Iiwic2V0U2VsZWN0ZWREaWFyeSIsInVuc3ViIiwiZGF0YSIsImxlbmd0aCIsIm1hcCIsImRpYXJ5IiwieSIsImN5Y2xlTGFiZWwiLCJjeWNsZU51bWJlciIsInN1Ym1pc3Npb25EYXRlIiwiYWlBbmFseXNpcyIsInByaW1hcnlFbW90aW9uIiwidHJhbnNjcmliZWRUZXh0IiwibWFzY290RmVlZGJhY2siLCJ0ZWFjaGVyTm90ZXMiLCJzY2FuSW1hZ2VVcmwiLCJpZCIsIl9jIl0sImlnbm9yZUxpc3QiOltdLCJzb3VyY2VzIjpbIlN0dWRlbnREaWFyaWVzVGFiLnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QsIHsgdXNlU3RhdGUsIHVzZUVmZmVjdCB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IG1vdGlvbiB9IGZyb20gJ21vdGlvbi9yZWFjdCc7XG5pbXBvcnQgeyBCb29rT3BlbiwgU3BhcmtsZXMsIEhlYXJ0LCBDYWxlbmRhciwgRmlsZVRleHQsIENoZWNrQ2lyY2xlMiwgQ2hldnJvblJpZ2h0LCBFeWUgfSBmcm9tICdsdWNpZGUtcmVhY3QnO1xuaW1wb3J0IHsgU3R1ZGVudERpYXJ5RW50cnkgfSBmcm9tICcuLi8uLi8uLi90eXBlcy9kaWFyeSc7XG5pbXBvcnQgeyBzdWJzY3JpYmVEaWFyaWVzQnlTdHVkZW50IH0gZnJvbSAnLi4vLi4vLi4vZmlyZWJhc2Uvc2VydmljZXMnO1xuaW1wb3J0IHsgZ2V0UHVibGljQXNzZXRVcmwgfSBmcm9tICcuLi8uLi8uLi91dGlscy9hc3NldEhlbHBlcic7XG5cbmludGVyZmFjZSBTdHVkZW50RGlhcmllc1RhYlByb3BzIHtcbiAgc3R1ZGVudE51bWJlcjogc3RyaW5nO1xuICBzdHVkZW50TmFtZT86IHN0cmluZztcbiAgYWN0aXZlTWFzY290PzogJ3hpbnhpbicgfCAnZW5lbic7XG59XG5cbmV4cG9ydCBjb25zdCBTdHVkZW50RGlhcmllc1RhYjogUmVhY3QuRkM8U3R1ZGVudERpYXJpZXNUYWJQcm9wcz4gPSAoe1xuICBzdHVkZW50TnVtYmVyLFxuICBzdHVkZW50TmFtZSA9ICflkIzlrbgnLFxuICBhY3RpdmVNYXNjb3QgPSAnZW5lbidcbn0pID0+IHtcbiAgY29uc3QgW2RpYXJpZXMsIHNldERpYXJpZXNdID0gdXNlU3RhdGU8U3R1ZGVudERpYXJ5RW50cnlbXT4oW10pO1xuICBjb25zdCBbc2VsZWN0ZWREaWFyeSwgc2V0U2VsZWN0ZWREaWFyeV0gPSB1c2VTdGF0ZTxTdHVkZW50RGlhcnlFbnRyeSB8IG51bGw+KG51bGwpO1xuXG4gIHVzZUVmZmVjdCgoKSA9PiB7XG4gICAgaWYgKCFzdHVkZW50TnVtYmVyKSByZXR1cm47XG4gICAgY29uc3QgdW5zdWIgPSBzdWJzY3JpYmVEaWFyaWVzQnlTdHVkZW50KHN0dWRlbnROdW1iZXIsIChkYXRhKSA9PiB7XG4gICAgICBzZXREaWFyaWVzKGRhdGEpO1xuICAgIH0pO1xuICAgIHJldHVybiAoKSA9PiB7XG4gICAgICBpZiAodHlwZW9mIHVuc3ViID09PSAnZnVuY3Rpb24nKSB1bnN1YigpO1xuICAgIH07XG4gIH0sIFtzdHVkZW50TnVtYmVyXSk7XG5cbiAgcmV0dXJuIChcbiAgICA8ZGl2IGNsYXNzTmFtZT1cInNwYWNlLXktNlwiPlxuICAgICAgXG4gICAgICB7LyogMS4gV0VMQ09NRSBIRVJPIEJBTk5FUiAqL31cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctZ3JhZGllbnQtdG8tciBmcm9tLWFtYmVyLTQwMCB2aWEtYW1iZXItMzAwIHRvLWFtYmVyLTQwMCByb3VuZGVkLTN4bCBwLTYgbWQ6cC04IHNoYWRvdy14bCBib3JkZXIgYm9yZGVyLWFtYmVyLTMwMCBmbGV4IGZsZXgtY29sIG1kOmZsZXgtcm93IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWJldHdlZW4gZ2FwLTYgcmVsYXRpdmUgb3ZlcmZsb3ctaGlkZGVuXCI+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3BhY2UteS0yIHotMTBcIj5cbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImlubGluZS1mbGV4IGl0ZW1zLWNlbnRlciBnYXAtMS41IGJnLXdoaXRlLzgwIGJhY2tkcm9wLWJsdXIteHMgcHgtMyBweS0xIHJvdW5kZWQtZnVsbCB0ZXh0LXhzIGZvbnQtYmxhY2sgdGV4dC1hbWJlci05NTAgc2hhZG93LTJ4c1wiPlxuICAgICAgICAgICAgPFNwYXJrbGVzIGNsYXNzTmFtZT1cInctMy41IGgtMy41IHRleHQtYW1iZXItNjAwXCIgLz5cbiAgICAgICAgICAgIDxzcGFuPjRScyDlv4PpnYjmiJDplbfmmYLlhYnmqZ88L3NwYW4+XG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgPGgyIGNsYXNzTmFtZT1cInRleHQteGwgbWQ6dGV4dC0yeGwgZm9udC1ibGFjayB0ZXh0LXNsYXRlLTkwMCB0cmFja2luZy10aWdodFwiPlxuICAgICAgICAgICAg8J+TliB7c3R1ZGVudE5hbWV9IOeahOmbmemAseaIkOmVt+aXpeiomOewv1xuICAgICAgICAgIDwvaDI+XG4gICAgICAgICAgPHAgY2xhc3NOYW1lPVwidGV4dC14cyBtZDp0ZXh0LXNtIHRleHQtYW1iZXItOTUwLzgwIGZvbnQtbWVkaXVtIG1heC13LW1kXCI+XG4gICAgICAgICAgICDlnKjpgJnoo6Hlj6/ku6Xlm57poafkvaDmr4/mnJ/miYvlr6vnmoTlv4PpnYjml6XoqJjjgIHnnIvopovoh6rlt7HnmoTmiJDplbfotrPot6HvvIzku6Xlj4rmoKHlnJLlpKfkvb/ngrrkvaDpgIHkuIrnmoTlsIjlsazliqDmsrnnpZ3npo/vvIFcbiAgICAgICAgICA8L3A+XG4gICAgICAgIDwvZGl2PlxuXG4gICAgICAgIHsvKiBNYXNjb3QgR3JlZXRpbmcgQXZhdGFyICovfVxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIGdhcC0zIGJnLXdoaXRlLzkwIGJhY2tkcm9wLWJsdXItbWQgcC0zLjUgcm91bmRlZC0yeGwgc2hhZG93LWxnIGJvcmRlciBib3JkZXItd2hpdGUvNjAgei0xMFwiPlxuICAgICAgICAgIDxpbWdcbiAgICAgICAgICAgIHNyYz17Z2V0UHVibGljQXNzZXRVcmwoJy/lrbjmoKHlnJbmqpQv5ZCJ56Wl54mpL2VuZW5fcmVhZGluZy5wbmcnKX1cbiAgICAgICAgICAgIGFsdD1cIuagoeWckuWkp+S9v+aBqeaBqVwiXG4gICAgICAgICAgICBjbGFzc05hbWU9XCJ3LTE0IGgtMTQgb2JqZWN0LWNvbnRhaW4gYW5pbWF0ZS1ib3VuY2VcIlxuICAgICAgICAgIC8+XG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZXh0LXhzXCI+XG4gICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJmb250LWJsYWNrIHRleHQtc2xhdGUtOTAwIGJsb2NrXCI+XG4gICAgICAgICAgICAgIOaBqeaBqSDkvLTkvaDmiJDplbfvvJpcbiAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cInRleHQtc2xhdGUtNjAwIHRleHQtWzExcHhdIGZvbnQtYm9sZFwiPlxuICAgICAgICAgICAgICDjgIzmr4/kuIDmrKHoqo3nnJ/lj43mgJ3vvIzpg73mmK/kvaDmnIDnj43osrTnmoTmlLbnqavvvIHjgI1cbiAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgPC9kaXY+XG4gICAgICA8L2Rpdj5cblxuICAgICAgey8qIDIuIERJQVJZIEVOVFJJRVMgVElNRUxJTkUgLyBHUklEICovfVxuICAgICAge2RpYXJpZXMubGVuZ3RoID09PSAwID8gKFxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImJnLXdoaXRlIHJvdW5kZWQtM3hsIGJvcmRlciBib3JkZXItZGFzaGVkIGJvcmRlci1zbGF0ZS0zMDAgcC0xMiB0ZXh0LWNlbnRlciBzcGFjZS15LTRcIj5cbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInctMTYgaC0xNiBiZy1hbWJlci01MCB0ZXh0LWFtYmVyLTYwMCByb3VuZGVkLWZ1bGwgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgbXgtYXV0b1wiPlxuICAgICAgICAgICAgPEJvb2tPcGVuIGNsYXNzTmFtZT1cInctOCBoLTggb3BhY2l0eS02MFwiIC8+XG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgPGRpdj5cbiAgICAgICAgICAgIDxoNCBjbGFzc05hbWU9XCJ0ZXh0LWJhc2UgZm9udC1ibGFjayB0ZXh0LXNsYXRlLTgwMFwiPuebruWJjeWwmueEoeW3suS4iuWCs+eahOW/g+mdiOaXpeiomDwvaDQ+XG4gICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXhzIHRleHQtc2xhdGUtNTAwIG1heC13LXNtIG14LWF1dG8gbXQtMVwiPlxuICAgICAgICAgICAgICDlrozmiJDmr4/lhanlvqrnkrDpgLHnmoTlr6bpq5Tml6XoqJjntJnkuKbkuqTntabogIHluKvmjoPmj4/lvozvvIzkvaDnmoTmiYvlr6vljp/nqL/oiIflsIjlsazlm57ppYvlsLHmnIPoh6rli5Xlh7rnj77lnKjpgJnoo6HllpTvvIFcbiAgICAgICAgICAgIDwvcD5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgPC9kaXY+XG4gICAgICApIDogKFxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImdyaWQgZ3JpZC1jb2xzLTEgbWQ6Z3JpZC1jb2xzLTIgZ2FwLTZcIj5cbiAgICAgICAgICB7ZGlhcmllcy5tYXAoKGRpYXJ5KSA9PiAoXG4gICAgICAgICAgICA8bW90aW9uLmRpdlxuICAgICAgICAgICAgICBrZXk9e2RpYXJ5LmlkfVxuICAgICAgICAgICAgICB3aGlsZUhvdmVyPXt7IHk6IC00IH19XG4gICAgICAgICAgICAgIGNsYXNzTmFtZT1cImJnLXdoaXRlIHJvdW5kZWQtM3hsIHAtNiBib3JkZXIgYm9yZGVyLXNsYXRlLTIwMCBob3Zlcjpib3JkZXItYW1iZXItNDAwIHNoYWRvdy1zbSB0cmFuc2l0aW9uLWFsbCBmbGV4IGZsZXgtY29sIGp1c3RpZnktYmV0d2VlbiBzcGFjZS15LTRcIlxuICAgICAgICAgICAgPlxuICAgICAgICAgICAgICA8ZGl2PlxuICAgICAgICAgICAgICAgIHsvKiBIZWFkZXIgaW5mbyAqL31cbiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktYmV0d2VlbiBwYi0zIGJvcmRlci1iIGJvcmRlci1zbGF0ZS0xMDBcIj5cbiAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTJcIj5cbiAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwidGV4dC1iYXNlIGZvbnQtYmxhY2sgdGV4dC1zbGF0ZS05MDBcIj5cbiAgICAgICAgICAgICAgICAgICAgICB7ZGlhcnkuY3ljbGVMYWJlbCB8fCBg56ysICR7ZGlhcnkuY3ljbGVOdW1iZXIgKiAyIC0gMX0tJHtkaWFyeS5jeWNsZU51bWJlciAqIDJ9IOW+queSsOmAsWB9XG4gICAgICAgICAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwidGV4dC14cyB0ZXh0LXNsYXRlLTQwMCBmb250LWJvbGRcIj5cbiAgICAgICAgICAgICAgICAgICAgICAoe2RpYXJ5LnN1Ym1pc3Npb25EYXRlfSlcbiAgICAgICAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJiZy1hbWJlci0xMDAgdGV4dC1hbWJlci05MDAgZm9udC1ibGFjayB0ZXh0LVsxMHB4XSBweC0yLjUgcHktMC41IHJvdW5kZWQtZnVsbFwiPlxuICAgICAgICAgICAgICAgICAgICDinKgge2RpYXJ5LmFpQW5hbHlzaXM/LnByaW1hcnlFbW90aW9uIHx8ICfmhJ/mgaknfVxuICAgICAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgICAgICAgey8qIFRyYW5zY3JpYmVkIFRleHQgKi99XG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJteS0zIGJnLXNsYXRlLTUwIHAtNCByb3VuZGVkLTJ4bCBib3JkZXIgYm9yZGVyLXNsYXRlLTEwMCB0ZXh0LXhzIHRleHQtc2xhdGUtNzAwIGxlYWRpbmctcmVsYXhlZCBmb250LW1lZGl1bVwiPlxuICAgICAgICAgICAgICAgICAge2RpYXJ5LnRyYW5zY3JpYmVkVGV4dH1cbiAgICAgICAgICAgICAgICA8L2Rpdj5cblxuICAgICAgICAgICAgICAgIHsvKiBNYXNjb3QgRW5jb3VyYWdlbWVudCAqL31cbiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImJnLWFtYmVyLTUwLzcwIGJvcmRlciBib3JkZXItYW1iZXItMjAwLzcwIHJvdW5kZWQtMnhsIHAtMyBmbGV4IGl0ZW1zLXN0YXJ0IGdhcC0yLjVcIj5cbiAgICAgICAgICAgICAgICAgIDxIZWFydCBjbGFzc05hbWU9XCJ3LTQgaC00IHRleHQtYW1iZXItNjAwIGZsZXgtc2hyaW5rLTAgbXQtMC41XCIgLz5cbiAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwidGV4dC1bMTFweF0gdGV4dC1hbWJlci05NTAgZm9udC1ib2xkIGxlYWRpbmctcmVsYXhlZFwiPlxuICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJ0ZXh0LWFtYmVyLTgwMCBmb250LWJsYWNrXCI+5qCh5ZyS5aSn5L2/5Zue6aWL77yaPC9zcGFuPlxuICAgICAgICAgICAgICAgICAgICB7ZGlhcnkuYWlBbmFseXNpcz8ubWFzY290RmVlZGJhY2sgfHwgJ+WPquimgeebuOS/oeiHquW3se+8jOS9oOWwseaYr+acgOajkueahO+8gSd9XG4gICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICA8L2Rpdj5cblxuICAgICAgICAgICAgICAgIHsvKiBUZWFjaGVyJ3MgTm90ZSAoaWYgYW55KSAqL31cbiAgICAgICAgICAgICAgICB7ZGlhcnkudGVhY2hlck5vdGVzICYmIChcbiAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibXQtMiBiZy1pbmRpZ28tNTAvNzAgYm9yZGVyIGJvcmRlci1pbmRpZ28tMjAwLzcwIHJvdW5kZWQtMnhsIHAtMyB0ZXh0LVsxMXB4XSB0ZXh0LWluZGlnby05NTAgZm9udC1ib2xkXCI+XG4gICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cInRleHQtaW5kaWdvLTgwMCBmb250LWJsYWNrXCI+54+t5Li75Lu75b+D6Kqe77yaPC9zcGFuPlxuICAgICAgICAgICAgICAgICAgICB7ZGlhcnkudGVhY2hlck5vdGVzfVxuICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgKX1cbiAgICAgICAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgICAgICAgey8qIFZpZXcgb3JpZ2luYWwgc2NhbiBhY3Rpb24gKi99XG4gICAgICAgICAgICAgIHtkaWFyeS5zY2FuSW1hZ2VVcmwgJiYgKFxuICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwicHQtMiBmbGV4IGp1c3RpZnktZW5kXCI+XG4gICAgICAgICAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICAgICAgICAgIHR5cGU9XCJidXR0b25cIlxuICAgICAgICAgICAgICAgICAgICBvbkNsaWNrPXsoKSA9PiBzZXRTZWxlY3RlZERpYXJ5KGRpYXJ5KX1cbiAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwiaW5saW5lLWZsZXggaXRlbXMtY2VudGVyIGdhcC0xIHRleHQteHMgZm9udC1ibGFjayB0ZXh0LWluZGlnby02MDAgaG92ZXI6dGV4dC1pbmRpZ28tODAwIGN1cnNvci1wb2ludGVyXCJcbiAgICAgICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICAgICAgPEV5ZSBjbGFzc05hbWU9XCJ3LTMuNSBoLTMuNVwiIC8+XG4gICAgICAgICAgICAgICAgICAgIDxzcGFuPuafpeeci+aIkeeahOaJi+Wvq+WOn+eovzwvc3Bhbj5cbiAgICAgICAgICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICApfVxuICAgICAgICAgICAgPC9tb3Rpb24uZGl2PlxuICAgICAgICAgICkpfVxuICAgICAgICA8L2Rpdj5cbiAgICAgICl9XG5cbiAgICAgIHsvKiAzLiBPUklHSU5BTCBTQ0FOIFBPUFVQIE1PREFMICovfVxuICAgICAge3NlbGVjdGVkRGlhcnkgJiYgKFxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZpeGVkIGluc2V0LTAgei01MCBiZy1zbGF0ZS05MDAvODAgYmFja2Ryb3AtYmx1ci14cyBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBwLTRcIj5cbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImJnLXdoaXRlIHctZnVsbCBtYXgtdy0yeGwgcm91bmRlZC0zeGwgcC02IHNoYWRvdy0yeGwgYm9yZGVyIGJvcmRlci1zbGF0ZS0yMDAgc3BhY2UteS00XCI+XG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktYmV0d2VlbiBwYi0zIGJvcmRlci1iIGJvcmRlci1zbGF0ZS0xMDBcIj5cbiAgICAgICAgICAgICAgPGgzIGNsYXNzTmFtZT1cInRleHQtYmFzZSBmb250LWJsYWNrIHRleHQtc2xhdGUtOTAwXCI+XG4gICAgICAgICAgICAgICAg8J+ThCB7c2VsZWN0ZWREaWFyeS5jeWNsZUxhYmVsfSDigKIg5omL5a+r5Y6f56i/5Zue6aGnXG4gICAgICAgICAgICAgIDwvaDM+XG4gICAgICAgICAgICAgIDxidXR0b25cbiAgICAgICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICAgICAgICAgICBvbkNsaWNrPXsoKSA9PiBzZXRTZWxlY3RlZERpYXJ5KG51bGwpfVxuICAgICAgICAgICAgICAgIGNsYXNzTmFtZT1cInAtMSB0ZXh0LXNsYXRlLTQwMCBob3Zlcjp0ZXh0LXNsYXRlLTYwMCBjdXJzb3ItcG9pbnRlclwiXG4gICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICDinJVcbiAgICAgICAgICAgICAgPC9idXR0b24+XG4gICAgICAgICAgICA8L2Rpdj5cblxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJtYXgtaC1bNjV2aF0gb3ZlcmZsb3cteS1hdXRvIHJvdW5kZWQtMnhsIGJvcmRlciBib3JkZXItc2xhdGUtMjAwIHAtMiBiZy1zbGF0ZS01MCBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlclwiPlxuICAgICAgICAgICAgICA8aW1nXG4gICAgICAgICAgICAgICAgc3JjPXtzZWxlY3RlZERpYXJ5LnNjYW5JbWFnZVVybH1cbiAgICAgICAgICAgICAgICBhbHQ9XCLmiYvlr6vljp/nqL9cIlxuICAgICAgICAgICAgICAgIGNsYXNzTmFtZT1cIm1heC13LWZ1bGwgaC1hdXRvIG9iamVjdC1jb250YWluIHJvdW5kZWQteGxcIlxuICAgICAgICAgICAgICAvPlxuICAgICAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwidGV4dC1yaWdodFwiPlxuICAgICAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICAgICAgdHlwZT1cImJ1dHRvblwiXG4gICAgICAgICAgICAgICAgb25DbGljaz17KCkgPT4gc2V0U2VsZWN0ZWREaWFyeShudWxsKX1cbiAgICAgICAgICAgICAgICBjbGFzc05hbWU9XCJiZy1zbGF0ZS05MDAgdGV4dC13aGl0ZSB0ZXh0LXhzIGZvbnQtYmxhY2sgcHgtNSBweS0yLjUgcm91bmRlZC14bCBjdXJzb3ItcG9pbnRlclwiXG4gICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICDpl5zplolcbiAgICAgICAgICAgICAgPC9idXR0b24+XG4gICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgPC9kaXY+XG4gICAgICApfVxuXG4gICAgPC9kaXY+XG4gICk7XG59O1xuIl0sImZpbGUiOiJDOi9Vc2Vycy9KZXJyeS8uZ2VtaW5pL2FudGlncmF2aXR5L3NjcmF0Y2gvbW9vZHRyYWNrZXIvc3JjL2NvbXBvbmVudHMvRGFzaGJvYXJkcy9TdHVkZW50RGFzaGJvYXJkL1N0dWRlbnREaWFyaWVzVGFiLnRzeCJ9

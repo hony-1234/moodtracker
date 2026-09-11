@@ -23,6 +23,7 @@ import {
 import { auth, db, provider } from './firebase/config';
 import { handleFirestoreError, sendGmail, refreshGmailAccessToken, exchangeAuthCodeForTokens } from './firebase/services';
 import { ALL_CLASSES } from './constants/moodConstants';
+import { findStudentByClassAndNumber, findStudentByGoogleEmail } from './data/studentsRoster';
 import { OperationType } from './types';
 import {
   isP1_3,
@@ -45,6 +46,8 @@ import TeacherLogin from './components/Portals/TeacherLogin';
 import StudentDashboard from './components/Dashboards/StudentDashboard/Index';
 import { TeacherDashboard } from './components/Dashboards/TeacherDashboard/Index';
 import { P13BatchGrader } from './components/Dashboards/TeacherDashboard/P13BatchGrader';
+import StudentBookClosingAnimation from './components/Portals/StudentBookClosingAnimation';
+import BackgroundMusic from './components/Audio/BackgroundMusic';
 
 // Overlays
 import {
@@ -89,9 +92,10 @@ export default function App() {
   const [studentComment, setStudentComment] = useState('');
   const [studentSuccessMessage, setStudentSuccessMessage] = useState(false);
   const [showStudentReport, setShowStudentReport] = useState(false);
+  const [isStudentClosingBook, setIsStudentClosingBook] = useState(false);
 
-  // --- TEACHER P.1-3 BATCH ENTRY STATES ---
-  const [batchScores, setBatchScores] = useState<Record<string, { moodScore: number | string; id?: string }>>({});
+  // --- TEACHER BATCH ENTRY (P.1 - P.6) STATES ---
+  const [batchScores, setBatchScores] = useState<Record<string, { moodScore: number | string; comment?: string; id?: string }>>({});
   const [isP13Saved, setIsP13Saved] = useState(false);
 
   // --- TEACHER STANDARD DASHBOARD STATES ---
@@ -104,7 +108,7 @@ export default function App() {
   const [updateSummaryVisible, setUpdateSummaryVisible] = useState(false);
   const [guideModalVisible, setGuideModalVisible] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'REPORTS' | 'ANALYTICS' | 'PASSWORDS' | 'LOGS' | 'ALL_COMMENTS' | 'PUSH_NOTIFICATIONS'>('REPORTS');
+  const [activeTab, setActiveTab] = useState<'REPORTS' | 'ANALYTICS' | 'DIARIES' | 'PROFILES' | 'PASSWORDS' | 'LOGS' | 'ALL_COMMENTS' | 'PUSH_NOTIFICATIONS'>('REPORTS');
   const [detailStudentId, setDetailStudentId] = useState<string | null>(null);
   const [loginHistory, setLoginHistory] = useState<any[]>([]);
   const [passwordsData, setPasswordsData] = useState<Record<string, string>>({});
@@ -406,16 +410,17 @@ export default function App() {
 
         const sortedUnique = Array.from(uniqueDeduplicated.values());
 
-        if (isP1_3(selectedClass)) {
+        if (selectedClass && selectedClass !== 'GCCPS') {
           const todayStr = formatDateObj(new Date());
           const recordsForToday = sortedUnique.filter(r => getDisplayDate(r) === todayStr);
-          const mapped: Record<string, { moodScore: number | string; id?: string }> = {};
+          const mapped: Record<string, { moodScore: number | string; comment?: string; id?: string }> = {};
           recordsForToday.forEach(r => {
             const sNum = parseInt(r.studentNumber || r.學號 || "0");
             if (sNum > 0) {
               const rawScore = r.moodScore || r.心情指數 || "5";
               mapped[String(sNum)] = {
                 moodScore: rawScore === 'N/A' ? 'N/A' : (parseInt(rawScore) || 5),
+                comment: String(r.comment || r.有事情想向老師分享 || ""),
                 id: r.id
               };
             }
@@ -901,25 +906,40 @@ export default function App() {
       const docRef = doc(db, "class_passwords", selectedClass);
       const docSnap = await getDoc(docRef);
       const data = docSnap.exists() ? docSnap.data() : null;
-      const correctPass = (data && typeof data.password === 'string' && data.password.trim() !== '') ? data.password : getDefaultPass(selectedClass);
+      const defaultPass = getDefaultPass(selectedClass);
+      const correctPass = (data && typeof data.password === 'string' && data.password.trim() !== '') ? data.password.trim() : defaultPass;
 
       let isTeacherVerified = false;
       const inputPass = loginPassword.trim();
 
       if (correctPass.startsWith('sha256:')) {
         const inputHash = await sha256(inputPass);
-        if (`sha256:${inputHash}` === correctPass.trim()) {
+        const inputHashLower = await sha256(inputPass.toLowerCase());
+        if (`sha256:${inputHash}` === correctPass || `sha256:${inputHashLower}` === correctPass) {
           isTeacherVerified = true;
         }
       } else {
-        if (inputPass === correctPass.trim()) {
+        if (inputPass.toLowerCase() === correctPass.toLowerCase()) {
           isTeacherVerified = true;
         }
       }
 
+      // Default password fallback (e.g. 4a -> 4a4a)
+      if (!isTeacherVerified && inputPass.toLowerCase() === defaultPass.toLowerCase()) {
+        isTeacherVerified = true;
+      }
+
+      // Fallbacks for GCCPS and TEST
+      if (!isTeacherVerified && selectedClass === 'GCCPS' && (inputPass.toLowerCase() === 'gccpsgccps' || inputPass.toLowerCase() === 'gccps')) {
+        isTeacherVerified = true;
+      }
+      if (!isTeacherVerified && selectedClass === 'TEST' && (inputPass.toLowerCase() === 'testtest' || inputPass.toLowerCase() === 'test')) {
+        isTeacherVerified = true;
+      }
+
       if (!isTeacherVerified) {
         setLoading(false);
-        alert("密碼不正確，請重試。");
+        alert("密碼不正確，請重試。若忘記密碼請聯絡系統管理員。");
         return;
       }
 
@@ -956,23 +976,22 @@ export default function App() {
     }
   };
 
-  const handleStudentLoginSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!selectedClass) {
+  const handleStudentLoginSubmit = async (e?: FormEvent, overrideClass?: string, overrideStudentNo?: string) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const effectiveClass = overrideClass || selectedClass;
+    if (!effectiveClass) {
       alert("請選擇班級！");
       return;
     }
-    const isJunior = isP1_3(selectedClass);
-    if (!isJunior && !studentNoInput.trim()) {
-      alert("請輸入學生座號！");
-      return;
-    }
+    if (overrideClass) setSelectedClass(overrideClass);
+    if (overrideStudentNo !== undefined) setStudentNoInput(overrideStudentNo);
+
     setLoading(true);
     try {
-      const sNo = studentNoInput.trim();
+      const sNo = (overrideStudentNo !== undefined ? overrideStudentNo : studentNoInput).trim();
 
-      if (isJunior && !sNo) {
-        // Direct entry to P1-3 Teacher Batch Grader
+      if (!sNo) {
+        // Direct entry to Teacher Batch Insert (P.1 - P.6 single page entry)
         if (!auth.currentUser) {
           try {
             await signInAnonymously(auth);
@@ -994,7 +1013,7 @@ export default function App() {
           localStorage.removeItem('student_token_session');
         }
       } else {
-        // Individual Student Mood Logging
+        // Individual Student Mood Logging (P.1 - P.6)
         setActiveStudentNumber(sNo);
         setViewState('STUDENT_DASHBOARD');
 
@@ -1012,13 +1031,17 @@ export default function App() {
 
       // Record audit history
       try {
+        const isJunior = selectedClass.startsWith('1') || selectedClass.startsWith('2') || selectedClass.startsWith('3');
+        const rosterStudent = findStudentByClassAndNumber(selectedClass, sNo) || (auth.currentUser?.email ? findStudentByGoogleEmail(auth.currentUser.email) : undefined);
+        const logDisplayName = rosterStudent ? `${rosterStudent.chineseName} (${rosterStudent.englishName})` : (auth.currentUser?.displayName || '');
         await addDoc(collection(db, "login_history"), {
           class: selectedClass,
           studentNumber: sNo || 'BATCH',
-          email: auth.currentUser?.email || (isJunior ? 'teacher_p1_3_batch' : 'google_authenticated_student'),
-          displayName: auth.currentUser?.displayName || '',
+          studentId: rosterStudent?.studentId || '',
+          email: auth.currentUser?.email || rosterStudent?.email || (isJunior ? 'teacher_p1_3_batch' : 'google_authenticated_student'),
+          displayName: logDisplayName,
           timestamp: serverTimestamp(),
-          device: isJunior && !sNo ? "Teacher P.1-3 Batch Grader" : "Student Portal"
+          device: isJunior && !sNo ? "Teacher P.1-3 Batch Grader" : "Student Google Portal"
         });
       } catch (logErr) {}
 
@@ -1074,8 +1097,12 @@ export default function App() {
       const docRef = doc(db, "mood_reports", docId);
 
       const studentEmail = auth.currentUser?.email || '';
-      const studentName = auth.currentUser?.displayName || '';
       const googleUid = auth.currentUser?.uid || '';
+      const rosterStudent = findStudentByClassAndNumber(selectedClass, activeStudentNumber) || (studentEmail ? findStudentByGoogleEmail(studentEmail) : undefined);
+      const studentChineseName = rosterStudent?.chineseName || '';
+      const studentEnglishName = rosterStudent?.englishName || '';
+      const finalStudentName = studentChineseName ? `${studentChineseName} (${studentEnglishName})` : (auth.currentUser?.displayName || '');
+      const studentName = finalStudentName;
 
       // Write to Firestore securely using setDoc with merge: true (bypassing collection queries)
       await setDoc(docRef, {
@@ -1088,11 +1115,14 @@ export default function App() {
         '心情指數': String(studentMood),
         comment: studentComment.trim(),
         '有事情想向老師分享': studentComment.trim(),
-        email: studentEmail,
-        studentEmail: studentEmail,
-        '學生電郵': studentEmail,
-        studentName: studentName,
-        '學生姓名': studentName,
+        email: studentEmail || rosterStudent?.email || '',
+        studentEmail: studentEmail || rosterStudent?.email || '',
+        '學生電郵': studentEmail || rosterStudent?.email || '',
+        studentName: finalStudentName,
+        '學生姓名': finalStudentName,
+        chineseName: studentChineseName,
+        englishName: studentEnglishName,
+        studentId: rosterStudent?.studentId || '',
         googleUid: googleUid,
         timestamp: serverTimestamp(),
         ipAddress: clientIp,
@@ -1198,12 +1228,25 @@ export default function App() {
     }
   };
 
-  const handleP13CellGradeChange = (studentNo: string, grade: number | string) => {
+  const handleP13CellGradeChange = (studentNo: string, grade: number | string, comment?: string) => {
     setBatchScores(prev => ({
       ...prev,
       [studentNo]: {
         ...prev[studentNo],
-        moodScore: grade
+        moodScore: grade !== undefined ? grade : (prev[studentNo]?.moodScore || 5),
+        comment: comment !== undefined ? comment : (prev[studentNo]?.comment || '')
+      }
+    }));
+    setIsP13Saved(false);
+  };
+
+  const handleP13CellCommentChange = (studentNo: string, comment: string) => {
+    setBatchScores(prev => ({
+      ...prev,
+      [studentNo]: {
+        ...prev[studentNo],
+        moodScore: prev[studentNo]?.moodScore || 5,
+        comment: comment
       }
     }));
     setIsP13Saved(false);
@@ -1219,10 +1262,20 @@ export default function App() {
         const item = batchScores[studentNo];
         if (!item.moodScore) return;
 
+        const rosterInfo = findStudentByClassAndNumber(selectedClass, studentNo);
+        const studentNameStr = rosterInfo ? `${rosterInfo.chineseName} (${rosterInfo.englishName})` : `同學`;
+
         if (item.id) {
           await updateDoc(doc(db, "mood_reports", item.id), {
             moodScore: String(item.moodScore),
             '心情指數': String(item.moodScore),
+            comment: item.comment || "",
+            '有事情想向老師分享': item.comment || "",
+            studentId: rosterInfo?.studentId || "",
+            chineseName: rosterInfo?.chineseName || "",
+            englishName: rosterInfo?.englishName || "",
+            studentName: studentNameStr,
+            source: 'teacher_batch_insert',
             timestamp: serverTimestamp()
           });
         } else {
@@ -1234,8 +1287,13 @@ export default function App() {
             '學號': String(studentNo),
             moodScore: String(item.moodScore),
             '心情指數': String(item.moodScore),
-            comment: "",
-            '有事情想向老師分享': "",
+            comment: item.comment || "",
+            '有事情想向老師分享': item.comment || "",
+            studentId: rosterInfo?.studentId || "",
+            chineseName: rosterInfo?.chineseName || "",
+            englishName: rosterInfo?.englishName || "",
+            studentName: studentNameStr,
+            source: 'teacher_batch_insert',
             timestamp: serverTimestamp(),
             status: "Resolved"
           });
@@ -1267,19 +1325,21 @@ export default function App() {
             const prev2Score = parseInt(prev2.moodScore || prev2.心情指數 || "5");
 
             if (prev1Score <= 3 && prev2Score <= 3) {
-              alertSub = `[自動警報] 學生情緒警示 (3天) - ${selectedClass}班 ${studentNo}號`;
-              alertBod = `系統偵測到異常情況：\n\n原因: 學生連續三天情緒指數低落 (先前: ${prev2Score}, ${prev1Score}, 這次: ${scoreNum})\n\n請盡速跟進處理。`;
+              alertSub = `[自動警報] 學生情緒警示 (3天) - ${selectedClass}班 ${studentNo}號 ${rosterInfo ? rosterInfo.chineseName : ''}`;
+              alertBod = `系統偵測到異常情況：\n\n原因: 學生連續三天情緒指數低落 (先前: ${prev2Score}, ${prev1Score}, 這次: ${scoreNum})\n學生姓名: ${studentNameStr} (${rosterInfo?.studentId || ''})\n\n請盡速跟進處理。`;
             }
           }
 
           if (alertSub && alertBod) {
-            console.log("QUEUED EMAIL ALERT (P1-3 BATCH) IN FIRESTORE:", { to: alertEmails, subject: alertSub, body: alertBod });
+            console.log("QUEUED EMAIL ALERT (BATCH INSERT) IN FIRESTORE:", { to: alertEmails, subject: alertSub, body: alertBod });
             try {
               await addDoc(collection(db, "pending_alerts"), {
                 class: selectedClass,
                 studentNumber: String(studentNo),
+                studentName: studentNameStr,
+                studentId: rosterInfo?.studentId || "",
                 reason: alertBod,
-                comment: "",
+                comment: item.comment || "",
                 moodScore: scoreNum,
                 timestamp: serverTimestamp(),
                 to: alertEmails,
@@ -1533,7 +1593,8 @@ export default function App() {
     }, 150);
   };
 
-  const handleLogout = () => {
+  const performActualLogout = () => {
+    setIsStudentClosingBook(false);
     localStorage.removeItem('teacher_token_session');
     localStorage.removeItem('student_token_session');
     setSelectedClass('');
@@ -1544,6 +1605,14 @@ export default function App() {
     setShowStudentReport(false);
     signOut(auth).catch((e) => console.warn("Sign out error:", e));
     setViewState('LANDING');
+  };
+
+  const handleLogout = () => {
+    if (viewState === 'STUDENT_DASHBOARD') {
+      setIsStudentClosingBook(true);
+      return;
+    }
+    performActualLogout();
   };
 
   // --- ANALYTICS DATA BUILDER ---
@@ -1814,17 +1883,22 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-transparent text-[#1E293B] font-sans">
+      {/* GLOBAL PERSISTENT BACKGROUND MUSIC (LOOPS SEAMLESSLY DURING PAGE TRANSITIONS) */}
+      <BackgroundMusic />
+
       {/* GLOBAL MASCOT WATERMARK BACKGROUND */}
       <MascotWatermarkBackground />
 
-      {/* GLOBAL NAVBAR HEADER */}
-      <Header
-        viewState={viewState}
-        selectedClass={selectedClass}
-        activeStudentNumber={activeStudentNumber}
-        setGuideModalVisible={setGuideModalVisible}
-        handleLogout={handleLogout}
-      />
+      {/* GLOBAL NAVBAR HEADER (Hidden on cartoon Landing & Student Login pages) */}
+      {viewState !== 'LANDING' && viewState !== 'STUDENT_LOGIN' && (
+        <Header
+          viewState={viewState}
+          selectedClass={selectedClass}
+          activeStudentNumber={activeStudentNumber}
+          setGuideModalVisible={setGuideModalVisible}
+          handleLogout={handleLogout}
+        />
+      )}
 
       {/* ROUTER AND SWITCHER */}
       <main className="max-w-7xl mx-auto px-4 md:px-8 py-8">
@@ -1889,11 +1963,16 @@ export default function App() {
           {viewState === 'TEACHER_P1_3_BATCH' && (
             <P13BatchGrader
               selectedClass={selectedClass}
+              setSelectedClass={setSelectedClass}
+              ALL_CLASSES={ALL_CLASSES}
               batchScores={batchScores}
               handleP13CellGradeChange={handleP13CellGradeChange}
+              handleP13CellCommentChange={handleP13CellCommentChange}
               handleP13BatchSubmit={handleP13BatchSubmit}
               isP13Saved={isP13Saved}
               loading={loading}
+              setViewState={setViewState}
+              reports={reports}
             />
           )}
 
@@ -1960,6 +2039,22 @@ export default function App() {
           )}
         </AnimatePresence>
       </main>
+
+      {/* 3D BOOK CLOSING ANIMATION OVERLAY FOR STUDENT TERMINALS */}
+      <AnimatePresence>
+        {isStudentClosingBook && (
+          <StudentBookClosingAnimation
+            selectedClass={selectedClass}
+            activeStudentNumber={activeStudentNumber}
+            studentDisplayName={
+              (findStudentByClassAndNumber(selectedClass, activeStudentNumber) || 
+               (auth.currentUser?.email ? findStudentByGoogleEmail(auth.currentUser.email) : undefined))?.chineseName || 
+              `${selectedClass} 班 ${activeStudentNumber} 號同學`
+            }
+            onComplete={performActualLogout}
+          />
+        )}
+      </AnimatePresence>
 
       {/* OVERLAY MODALS */}
       <ActionModal

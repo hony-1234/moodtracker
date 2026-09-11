@@ -10,8 +10,9 @@ import {
   UserCredential
 } from 'firebase/auth';
 import { auth, db } from './config';
-import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc, setDoc, onSnapshot, collection, query, where, getDocs, deleteDoc } from 'firebase/firestore';
 import { OperationType, FirestoreErrorInfo } from '../types';
+import { StudentDiaryEntry } from '../types/diary';
 
 export type MascotId = 'xinxin' | 'enen';
 
@@ -263,3 +264,105 @@ export const exchangeAuthCodeForTokens = async (clientId: string, clientSecret: 
     expiresIn: data.expires_in as number
   };
 };
+
+/**
+ * ============================================================================
+ * 4Rs 心靈成長日記 (STUDENT DIARY SERVICES)
+ * ============================================================================
+ */
+
+/**
+ * 儲存或更新單篇學生心靈日記 (Auto-saves to Firestore)
+ */
+export const saveStudentDiaryEntry = async (entry: StudentDiaryEntry): Promise<void> => {
+  try {
+    const docRef = doc(db, 'studentDiaries', entry.id);
+    await setDoc(docRef, entry, { merge: true });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, `studentDiaries/${entry.id}`);
+  }
+};
+
+/**
+ * 批次儲存多篇心靈日記
+ */
+export const batchSaveStudentDiaries = async (entries: StudentDiaryEntry[]): Promise<void> => {
+  try {
+    await Promise.all(entries.map(entry => saveStudentDiaryEntry(entry)));
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, 'studentDiaries/batch');
+  }
+};
+
+/**
+ * 依班級即時監聽心靈日記列表 (Teacher View)
+ */
+export const subscribeDiariesByClass = (
+  className: string,
+  callback: (diaries: StudentDiaryEntry[]) => void
+) => {
+  try {
+    const q = className === 'ALL' || !className
+      ? collection(db, 'studentDiaries')
+      : query(collection(db, 'studentDiaries'), where('class', '==', className));
+
+    return onSnapshot(q, (snapshot) => {
+      const items: StudentDiaryEntry[] = [];
+      snapshot.forEach((docSnap) => {
+        items.push(docSnap.data() as StudentDiaryEntry);
+      });
+      // Sort by submissionDate descending
+      items.sort((a, b) => (b.submissionDate || '').localeCompare(a.submissionDate || ''));
+      callback(items);
+    }, (error) => {
+      console.error('Error subscribing to class diaries:', error);
+      callback([]);
+    });
+  } catch (error) {
+    console.error('Failed to setup class diaries listener:', error);
+    return () => {};
+  }
+};
+
+/**
+ * 依學生學號即時監聽心靈日記列表 (Student View)
+ */
+export const subscribeDiariesByStudent = (
+  studentNumber: string,
+  callback: (diaries: StudentDiaryEntry[]) => void
+) => {
+  try {
+    const q = query(
+      collection(db, 'studentDiaries'),
+      where('studentNumber', '==', studentNumber)
+    );
+
+    return onSnapshot(q, (snapshot) => {
+      const items: StudentDiaryEntry[] = [];
+      snapshot.forEach((docSnap) => {
+        items.push(docSnap.data() as StudentDiaryEntry);
+      });
+      items.sort((a, b) => (b.submissionDate || '').localeCompare(a.submissionDate || ''));
+      callback(items);
+    }, (error) => {
+      console.error('Error subscribing to student diaries:', error);
+      callback([]);
+    });
+  } catch (error) {
+    console.error('Failed to setup student diaries listener:', error);
+    return () => {};
+  }
+};
+
+/**
+ * 刪除單篇日記
+ */
+export const deleteStudentDiaryEntry = async (diaryId: string): Promise<void> => {
+  try {
+    const docRef = doc(db, 'studentDiaries', diaryId);
+    await deleteDoc(docRef);
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, `studentDiaries/${diaryId}`);
+  }
+};
+

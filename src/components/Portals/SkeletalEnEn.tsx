@@ -28,6 +28,9 @@ export interface SkeletalEnEnProps {
   mouseY: any;
   isHovered: boolean;
   eyeState: EyeState;
+  width?: number | string;
+  height?: number | string;
+  className?: string;
 }
 
 const MASCOT_VERSION = "1";
@@ -39,7 +42,10 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
   mouseX,
   mouseY,
   isHovered,
-  eyeState
+  eyeState,
+  width = '240px',
+  height = '260px',
+  className = 'mb-4'
 }) => {
   // Cursor tracking spring offsets for 2.5D depth parallax
   const rawEyeOffsetX = useTransform(mouseX, [-0.5, 0.5], [-3.5, 3.5]);
@@ -173,10 +179,10 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
 
   return (
     <motion.div 
-      className="relative select-none pointer-events-none mb-4"
+      className={`relative select-none pointer-events-none ${className}`}
       style={{
-        width: '240px',
-        height: '260px',
+        width: typeof width === 'number' ? `${width}px` : width,
+        height: typeof height === 'number' ? `${height}px` : height,
         transformStyle: 'preserve-3d',
         perspective: 1000
       }}
@@ -310,8 +316,8 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
         }}
       >
         <div 
-          className="w-28 h-20 rounded-full bg-gradient-to-tr from-amber-300/40 via-yellow-200/50 to-orange-300/30 blur-md pointer-events-none"
-          style={{ transform: 'translate(4px, 46px)' }}
+          className="w-[45%] h-[30%] rounded-full bg-gradient-to-tr from-amber-300/40 via-yellow-200/50 to-orange-300/30 blur-md pointer-events-none"
+          style={{ transform: 'translate(4%, 40%)' }}
         />
       </motion.div>
 

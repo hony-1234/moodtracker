@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { 
   Shield, Sliders, Trash2, AlertCircle, CheckCircle, 
   AlertTriangle, FileText, Activity, Key, Clock, 
-  Download, Upload, Bell, Sparkles
+  Download, Upload, Bell, Sparkles, BookOpen, Users
 } from 'lucide-react';
 import { getPublicAssetUrl } from '../../../utils/assetHelper';
 import { getActiveMascot, setActiveMascot, subscribeActiveMascot, MascotId } from '../../../firebase/services';
@@ -14,6 +14,9 @@ import { Analytics } from './Analytics';
 import { Passwords } from './Passwords';
 import { AuditLogs } from './AuditLogs';
 import { PushNotificationPanel } from './PushNotificationPanel';
+import { DiaryHub } from './DiaryHub/Index';
+import { StudentProfiles } from './StudentProfiles';
+import { DualTrackStudentReportModal } from '../../Reports/DualTrackStudentReportModal';
 
 // Constants
 import { getMoodColor } from '../../../constants/moodConstants';
@@ -44,8 +47,8 @@ interface TeacherDashboardProps {
   selectedClass: string;
   reports: any[];
   analyticsData: any;
-  activeTab: 'REPORTS' | 'ANALYTICS' | 'PASSWORDS' | 'LOGS' | 'ALL_COMMENTS' | 'PUSH_NOTIFICATIONS';
-  setActiveTab: (tab: 'REPORTS' | 'ANALYTICS' | 'PASSWORDS' | 'LOGS' | 'ALL_COMMENTS' | 'PUSH_NOTIFICATIONS') => void;
+  activeTab: 'REPORTS' | 'ANALYTICS' | 'DIARIES' | 'PROFILES' | 'PASSWORDS' | 'LOGS' | 'ALL_COMMENTS' | 'PUSH_NOTIFICATIONS';
+  setActiveTab: (tab: 'REPORTS' | 'ANALYTICS' | 'DIARIES' | 'PROFILES' | 'PASSWORDS' | 'LOGS' | 'ALL_COMMENTS' | 'PUSH_NOTIFICATIONS') => void;
   alertEmails: string;
   setAlertEmails: (emails: string) => void;
   handleSaveAlertSettings: () => Promise<void>;
@@ -195,6 +198,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
   // Mascot state
   const [currentMascot, setCurrentMascot] = useState<MascotId>('enen');
   const [mascotUpdateMsg, setMascotUpdateMsg] = useState<string | null>(null);
+  const [comprehensiveReportStudent, setComprehensiveReportStudent] = useState<string | null>(null);
 
   useEffect(() => {
     const unsubscribe = subscribeActiveMascot((m) => {
@@ -367,7 +371,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
               }`}>
                 <div className="w-16 h-16 rounded-xl bg-white border border-slate-200 p-1 shrink-0 overflow-hidden flex items-center justify-center shadow-2xs">
                   <img 
-                    src={getPublicAssetUrl("/學校圖檔/吉祥物/enen_full.png")} 
+                    src={getPublicAssetUrl("/學校圖檔/吉祥物/enen_cheer.png")} 
                     alt="恩恩天使" 
                     className="w-full h-full object-contain"
                   />
@@ -382,7 +386,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                     )}
                   </div>
                   <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-2 font-medium">
-                    ✨ 靈動天使拍翼、麵包聖體光芒守護、靈巧眨眼與歡快搖擺，象徵愛德與感恩。
+                    ✨ 靈動天使拍翼、手持聖經與愛心守護、歡快鼓勵同學，象徵愛德與感恩。
                   </p>
                   <div className="mt-2">
                     {currentMascot === 'enen' ? (
@@ -401,40 +405,40 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                 </div>
               </div>
 
-              {/* Mascot Option 2: 信信火焰 */}
+              {/* Mascot Option 2: 恩恩愛心 */}
               <div className={`p-3.5 rounded-2xl border-2 transition-all flex items-center gap-3.5 ${
                 currentMascot === 'xinxin' 
-                  ? 'border-amber-500 bg-amber-50/60 shadow-sm ring-2 ring-amber-400/20' 
+                  ? 'border-pink-500 bg-pink-50/60 shadow-sm ring-2 ring-pink-400/20' 
                   : 'border-slate-200 bg-white hover:border-slate-300'
               }`}>
                 <div className="w-16 h-16 rounded-xl bg-white border border-slate-200 p-1 shrink-0 overflow-hidden flex items-center justify-center shadow-2xs">
                   <img 
-                    src={getPublicAssetUrl("/學校圖檔/吉祥物/信信-01.png")} 
-                    alt="信信火焰" 
+                    src={getPublicAssetUrl("/學校圖檔/吉祥物/enen_hearts.png")} 
+                    alt="恩恩愛心" 
                     className="w-full h-full object-contain"
                   />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h5 className="text-xs font-black text-slate-800">信信 (XinXin) - 堅毅信念火焰</h5>
+                    <h5 className="text-xs font-black text-slate-800">恩恩 (EnEn) - 滿載愛心恩典</h5>
                     {currentMascot === 'xinxin' && (
-                      <span className="bg-amber-600 text-white text-[9.5px] font-black px-2 py-0.5 rounded-full">
+                      <span className="bg-pink-600 text-white text-[9.5px] font-black px-2 py-0.5 rounded-full">
                         當前上線中
                       </span>
                     )}
                   </div>
                   <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-2 font-medium">
-                    🔥 堅毅信念之火、手部互動肢體、立體重力感應眼神，象徵信德與勇氣。
+                    💖 溫馨比心傳遞關懷、胸前感恩紅心、純潔白翼，陪伴孩子健康成長。
                   </p>
                   <div className="mt-2">
                     {currentMascot === 'xinxin' ? (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-lg bg-amber-100 text-amber-800 border border-amber-200 shadow-3xs">
-                        <CheckCircle className="w-3 h-3 text-amber-600" /> 已設為校園大使
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-lg bg-pink-100 text-pink-800 border border-pink-200 shadow-3xs">
+                        <CheckCircle className="w-3 h-3 text-pink-600" /> 已設為校園大使
                       </span>
                     ) : (
                       <button
                         onClick={() => handleSelectMascot('xinxin')}
-                        className="text-[11px] font-bold px-3 py-1 rounded-lg bg-white hover:bg-amber-50 text-amber-700 border border-amber-300 hover:border-amber-400 transition cursor-pointer active:scale-95 shadow-3xs flex items-center gap-1.5"
+                        className="text-[11px] font-bold px-3 py-1 rounded-lg bg-white hover:bg-pink-50 text-pink-700 border border-pink-300 hover:border-pink-400 transition cursor-pointer active:scale-95 shadow-3xs flex items-center gap-1.5"
                       >
                         <span>🔄 切換為此大使</span>
                       </button>
@@ -668,6 +672,24 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             <Activity className="w-4 h-4" />
             圖表趨勢分析
           </button>
+          <button
+            onClick={() => setActiveTab('DIARIES')}
+            className={`px-4 py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === 'DIARIES' ? 'bg-[#1E293B] text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
+            }`}
+          >
+            <BookOpen className="w-4 h-4 text-amber-500" />
+            📚 心靈日記管理
+          </button>
+          <button
+            onClick={() => setActiveTab('PROFILES')}
+            className={`px-4 py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === 'PROFILES' ? 'bg-[#1E293B] text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
+            }`}
+          >
+            <Users className="w-4 h-4 text-emerald-500" />
+            👤 學生檔案 ({selectedClass === 'GCCPS' ? '全校名冊' : '本班名冊'})
+          </button>
           {selectedClass === 'GCCPS' && (
             <>
               <button
@@ -820,6 +842,39 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
           </motion.div>
         )}
 
+        {activeTab === 'DIARIES' && (
+          <motion.div
+            key="diaries_hub"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+          >
+            <DiaryHub
+              selectedClass={selectedClass}
+              currentUser={currentUser}
+              onOpenStudentReport={(studentNo) => setComprehensiveReportStudent(studentNo)}
+            />
+          </motion.div>
+        )}
+
+        {activeTab === 'PROFILES' && (
+          <motion.div
+            key="profiles"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+          >
+            <StudentProfiles
+              selectedClass={selectedClass}
+              reports={reports}
+              todayStr={todayStr}
+              onOpenStudentReport={(studentNo) => setComprehensiveReportStudent(studentNo)}
+            />
+          </motion.div>
+        )}
+
         {activeTab === 'PASSWORDS' && selectedClass === 'GCCPS' && (
           <Passwords
             passwordsData={passwordsData}
@@ -848,6 +903,18 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
           />
         )}
       </AnimatePresence>
+
+      {/* Comprehensive Dual-Track Student Report Modal */}
+      {comprehensiveReportStudent && (
+        <DualTrackStudentReportModal
+          visible={!!comprehensiveReportStudent}
+          onClose={() => setComprehensiveReportStudent(null)}
+          studentNumber={comprehensiveReportStudent}
+          studentClass={selectedClass === 'GCCPS' ? comprehensiveReportStudent.substring(0, 2) : selectedClass}
+          studentName={`學生 (${comprehensiveReportStudent})`}
+          dailyMoodLogs={reports.filter((r) => String(r.studentNumber || r.學號 || '').includes(comprehensiveReportStudent))}
+        />
+      )}
     </motion.div>
   );
 };

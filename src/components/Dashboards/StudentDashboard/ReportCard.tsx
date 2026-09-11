@@ -17,6 +17,7 @@ interface ReportCardProps {
   activeStudentNumber: string | number;
   showStudentReport: boolean;
   setShowStudentReport: (s: boolean) => void;
+  hideToggleButton?: boolean;
 }
 
 export const ReportCard: React.FC<ReportCardProps> = ({
@@ -25,20 +26,23 @@ export const ReportCard: React.FC<ReportCardProps> = ({
   activeStudentNumber,
   showStudentReport,
   setShowStudentReport,
+  hideToggleButton = false,
 }) => {
   return (
-    <div className="mt-8 pt-6 border-t border-slate-100 text-left font-sans">
-      <div className="flex justify-center mb-6">
-        <button
-          type="button"
-          onClick={() => setShowStudentReport(!showStudentReport)}
-          className="bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-6 py-3 rounded-xl font-bold text-sm tracking-wide transition-all shadow-3xs cursor-pointer"
-        >
-          {showStudentReport ? "🙈 隱藏我的個人心情成長報告" : "📊 查看個人情緒成長報告 & 心聲回顧"}
-        </button>
-      </div>
+    <div className={`${hideToggleButton ? 'mt-2 pt-0' : 'mt-8 pt-6 border-t border-slate-100'} text-left font-sans`}>
+      {!hideToggleButton && (
+        <div className="flex justify-center mb-6">
+          <button
+            type="button"
+            onClick={() => setShowStudentReport(!showStudentReport)}
+            className="bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-6 py-3 rounded-xl font-bold text-sm tracking-wide transition-all shadow-3xs cursor-pointer"
+          >
+            {showStudentReport ? "🙈 隱藏我的個人心情成長報告" : "📊 查看個人情緒成長報告 & 心聲回顧"}
+          </button>
+        </div>
+      )}
 
-      {showStudentReport && (() => {
+      {(showStudentReport || hideToggleButton) && (() => {
         const last30Entries = reports
           .filter((r: any) => {
             const rClass = (r.class || r.班別 || '').toUpperCase();

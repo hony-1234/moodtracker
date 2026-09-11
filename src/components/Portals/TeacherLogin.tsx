@@ -1,13 +1,8 @@
 import React, { useState, FormEvent } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, Mail, Lock, ShieldCheck, UserPlus, LogIn, KeyRound } from 'lucide-react';
-import { 
-  loginWithEmail, 
-  registerWithEmail, 
-  resetUserPassword, 
-  formatAuthErrorMessage 
-} from '../../firebase/services';
+import { motion } from 'motion/react';
+import { ChevronLeft, Lock, Eye, EyeOff, ShieldCheck, ArrowRight, Sparkles, KeyRound } from 'lucide-react';
 import { getPublicAssetUrl } from '../../utils/assetHelper';
+import { getDefaultPass } from '../../utils/dateHelpers';
 
 interface TeacherLoginProps {
   selectedClass: string;
@@ -28,97 +23,39 @@ export default function TeacherLogin({
   setLoginPassword,
   rememberMe,
   setRememberMe,
-  loading: parentLoading,
+  loading,
   handleTeacherLoginSubmit,
   setViewState,
 }: TeacherLoginProps) {
-  const [authMode, setAuthMode] = useState<'email' | 'class'>('email');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isRegistering, setIsRegistering] = useState(false);
-  const [authError, setAuthError] = useState<string | null>(null);
-  const [authSuccess, setAuthSuccess] = useState<string | null>(null);
-  const [localLoading, setLocalLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const loading = parentLoading || localLoading;
+  const defaultPassHint = selectedClass ? getDefaultPass(selectedClass) : '4a4a';
 
-  const handleEmailAuthSubmit = async (e: FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setAuthError(null);
-    setAuthSuccess(null);
-
-    if (!email.trim()) {
-      setAuthError('請輸入電子郵件地址。');
+    setErrorMsg(null);
+    if (!selectedClass) {
+      setErrorMsg("請先選擇您任教或管理的班別！");
       return;
     }
-    if (!password) {
-      setAuthError('請輸入密碼。');
+    if (!loginPassword.trim()) {
+      setErrorMsg(`請輸入 ${selectedClass} 班密碼（預設為 ${defaultPassHint}）！`);
       return;
     }
-
-    setLocalLoading(true);
-    try {
-      if (isRegistering) {
-        if (password.length < 6) {
-          setAuthError('密碼長度至少需 6 個字元。');
-          setLocalLoading(false);
-          return;
-        }
-        await registerWithEmail(email, password);
-        setAuthSuccess('🎉 帳號註冊成功！正在進入控制台...');
-      } else {
-        await loginWithEmail(email, password);
-      }
-
-      // Default role to GCCPS if not chosen
-      const activeRole = selectedClass || 'GCCPS';
-      setSelectedClass(activeRole);
-
-      if (rememberMe) {
-        localStorage.setItem('teacher_token_session', JSON.stringify({ 
-          cls: activeRole, 
-          view: 'TEACHER_DASHBOARD',
-          email: email.trim()
-        }));
-      } else {
-        localStorage.removeItem('teacher_token_session');
-      }
-
-      setViewState('TEACHER_DASHBOARD');
-    } catch (err: any) {
-      console.error('Firebase Auth Error:', err);
-      setAuthError(formatAuthErrorMessage(err));
-    } finally {
-      setLocalLoading(false);
-    }
-  };
-
-  const handleForgotPassword = async () => {
-    if (!email.trim()) {
-      setAuthError('請先在上方輸入您的電子郵件地址以接收重設密碼信件。');
-      return;
-    }
-    setLocalLoading(true);
-    setAuthError(null);
-    try {
-      await resetUserPassword(email);
-      setAuthSuccess(`重設密碼信已成功寄送至 ${email}，請查收信箱。`);
-    } catch (err: any) {
-      setAuthError(formatAuthErrorMessage(err));
-    } finally {
-      setLocalLoading(false);
-    }
+    handleTeacherLoginSubmit(e);
   };
 
   return (
     <motion.div 
-      initial={{ opacity: 0, x: 10 }} 
-      animate={{ opacity: 1, x: 0 }} 
-      exit={{ opacity: 0, x: -10 }} 
-      transition={{ duration: 0.2 }}
-      className="max-w-md mx-auto bg-white border border-slate-200 shadow-xl rounded-2xl overflow-hidden"
+      initial={{ opacity: 0, y: 12 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      exit={{ opacity: 0, y: -12 }} 
+      transition={{ duration: 0.25 }}
+      className="max-w-md mx-auto bg-white border border-slate-200 shadow-2xl rounded-3xl overflow-hidden font-sans"
     >
-      <div className="bg-amber-600 px-6 py-6 text-white text-center flex flex-col items-center">
+      {/* HEADER */}
+      <div className="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 px-6 py-6 text-white text-center flex flex-col items-center">
         <div className="w-16 h-16 bg-white rounded-2xl p-1.5 shadow-md flex items-center justify-center border border-white/10 mb-2 relative overflow-hidden">
           <img
             src={getPublicAssetUrl("/學校圖檔/學校logo/school_logo.png")}
@@ -134,276 +71,161 @@ export default function TeacherLogin({
             }}
           />
         </div>
-        <h3 className="text-lg font-black mt-1 tracking-wide">校園管理與教師端登入</h3>
-        <p className="text-xs text-amber-100 mt-0.5">Firebase 身份驗證 / 全校安全儀表板</p>
+        <h3 className="text-lg sm:text-xl font-black mt-1 tracking-tight">教師及管理員終端 (Teacher Terminal)</h3>
+        <p className="text-xs text-amber-100 mt-1 font-medium">
+          天主教善導小學 · 班級安全管理控制台
+        </p>
       </div>
 
-      {/* AUTH MODE TOGGLE */}
-      <div className="flex border-b border-slate-100 bg-slate-50/70 p-1.5">
-        <button
-          type="button"
-          onClick={() => { setAuthMode('email'); setAuthError(null); }}
-          className={`flex-1 py-2 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-            authMode === 'email' 
-              ? 'bg-white text-amber-600 shadow-sm' 
-              : 'text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          <Mail className="w-3.5 h-3.5" />
-          Firebase 電郵驗證
-        </button>
-        <button
-          type="button"
-          onClick={() => { setAuthMode('class'); setAuthError(null); }}
-          className={`flex-1 py-2 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-            authMode === 'class' 
-              ? 'bg-white text-amber-600 shadow-sm' 
-              : 'text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          <KeyRound className="w-3.5 h-3.5" />
-          班級專屬安全碼
-        </button>
-      </div>
-
-      {/* FEEDBACK NOTIFICATIONS */}
-      {authError && (
-        <div className="mx-6 mt-4 p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-medium rounded-xl flex items-start gap-2">
-          <span className="font-bold">⚠️</span>
-          <span className="flex-1">{authError}</span>
+      {/* NOTICE BANNER */}
+      <div className="px-6 pt-5 pb-1">
+        <div className="bg-amber-50/90 border border-amber-200/80 rounded-2xl p-3.5 text-xs text-amber-950 font-medium space-y-1">
+          <div className="flex items-center gap-1.5 font-black text-amber-900 text-xs">
+            <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>教師班級專屬登入（無需 Google / Gmail）</span>
+          </div>
+          <p className="text-[11.5px] leading-relaxed text-amber-900">
+            老師<strong>無需登入個人的 Gmail 帳號</strong>，只需在下方選擇任教班級並輸入班級安全密碼即可直接進入管理儀表板。
+          </p>
         </div>
-      )}
-      {authSuccess && (
-        <div className="mx-6 mt-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium rounded-xl flex items-start gap-2">
-          <span className="font-bold">✅</span>
-          <span className="flex-1">{authSuccess}</span>
+      </div>
+
+      {/* ERROR FEEDBACK */}
+      {errorMsg && (
+        <div className="mx-6 mt-3 p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-bold rounded-xl flex items-center gap-2">
+          <span>⚠️</span>
+          <span>{errorMsg}</span>
         </div>
       )}
 
-      {/* EMAIL / PASSWORD FORM */}
-      {authMode === 'email' && (
-        <form onSubmit={handleEmailAuthSubmit} className="p-6 space-y-4">
-          <div>
-            <label className="block text-xs font-bold text-[#64748B] uppercase tracking-wider mb-1.5">
-              管理身分 / 班級權限
+      {/* CLASS LOGIN FORM */}
+      <form onSubmit={onSubmit} className="p-6 space-y-4">
+        {/* CLASS SELECTOR */}
+        <div>
+          <label className="block text-xs font-black text-slate-700 uppercase tracking-wide mb-1.5">
+            1. 選擇任教班別 / 管理權限
+          </label>
+          <select
+            id="teacher-class-select"
+            className="w-full h-12 px-3.5 border-2 border-slate-200 focus:border-amber-500 rounded-xl font-black text-slate-800 bg-white focus:ring-2 focus:ring-amber-200 focus:outline-none text-sm transition-all cursor-pointer"
+            value={selectedClass}
+            onChange={(e) => {
+              setSelectedClass(e.target.value);
+              setErrorMsg(null);
+            }}
+            required
+          >
+            <option value="">-- 請選擇班別 --</option>
+            <optgroup label="初小 (P.1 - P.3) 班級">
+              {['1A','1B','1C','2A','2B','2C','2D','3A','3B','3C','3D'].map(c => (
+                <option key={c} value={c}>{c} 班</option>
+              ))}
+            </optgroup>
+            <optgroup label="高小 (P.4 - P.6) 班級">
+              {['4A','4B','4C','4D','5A','5B','5C','5D','6A','6B','6C','6D'].map(c => (
+                <option key={c} value={c}>{c} 班</option>
+              ))}
+            </optgroup>
+            <optgroup label="全校安全官與測試">
+              <option value="GCCPS">🏫 GCCPS 全校安全監控中心</option>
+              <option value="TEST">TEST 測試班級</option>
+            </optgroup>
+          </select>
+        </div>
+
+        {/* PASSWORD INPUT */}
+        <div>
+          <div className="flex justify-between items-center mb-1.5">
+            <label className="block text-xs font-black text-slate-700 uppercase tracking-wide">
+              2. 班級安全密碼 (Class Password)
             </label>
-            <select
-              id="teacher-role-select"
-              className="w-full h-11 px-3 border border-slate-200 rounded-xl font-bold text-slate-800 bg-slate-50 focus:ring-2 focus:ring-amber-200 focus:outline-none text-sm"
-              value={selectedClass || 'GCCPS'}
-              onChange={(e) => setSelectedClass(e.target.value)}
-            >
-              <optgroup label="全校安全官">
-                <option value="GCCPS">🏫 GCCPS 全校安全監控中心</option>
-              </optgroup>
-              <optgroup label="測試用與除錯">
-                <option value="TEST">TEST 測試班級</option>
-              </optgroup>
-              <optgroup label="小一 (P.1) 至 小六 (P.6) 班級">
-                {['1A','1B','1C','1D','2A','2B','2C','2D','3A','3B','3C','3D','4A','4B','4C','4D','5A','5B','5C','5D','6A','6B','6C','6D'].map(c => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </optgroup>
-            </select>
           </div>
-
-          <div>
-            <label className="block text-xs font-bold text-[#64748B] uppercase tracking-wider mb-1.5">
-              教師或管理員電郵 (Firebase Auth)
-            </label>
-            <div className="relative">
-              <input
-                id="teacher-email-input"
-                type="email"
-                placeholder="teacher@gccps.edu.hk"
-                className="w-full h-11 pl-10 pr-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-200 focus:outline-none text-slate-800 text-sm font-semibold"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-              />
-              <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex justify-between items-center mb-1.5">
-              <label className="block text-xs font-bold text-[#64748B] uppercase tracking-wider">
-                密碼
-              </label>
-              {!isRegistering && (
-                <button
-                  type="button"
-                  onClick={handleForgotPassword}
-                  className="text-[11px] font-semibold text-amber-600 hover:text-amber-700 underline bg-transparent border-none p-0 cursor-pointer"
-                >
-                  忘記密碼？
-                </button>
-              )}
-            </div>
-            <div className="relative">
-              <input
-                id="teacher-password-auth-input"
-                type="password"
-                placeholder="請輸入密碼 (至少 6 位字元)"
-                className="w-full h-11 pl-10 pr-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-200 focus:outline-none text-slate-800 text-sm font-semibold"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="current-password"
-              />
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 pt-1">
+          <div className="relative">
             <input
-              type="checkbox"
-              id="teacher-remember-me-email"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-              className="w-4 h-4 text-amber-600 border-slate-300 rounded focus:ring-amber-500"
-            />
-            <label htmlFor="teacher-remember-me-email" className="text-xs font-semibold text-slate-700 cursor-pointer">
-              記住我的登入狀態
-            </label>
-          </div>
-
-          <div className="pt-2">
-            <motion.button
-              whileHover={{ scale: 1.015 }}
-              whileTap={{ scale: 0.985 }}
-              transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              id="btn-teacher-email-submit"
-              type="submit"
-              disabled={loading}
-              className="w-full h-11 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-black text-sm tracking-widest transition-all cursor-pointer shadow-md flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                "驗證中..."
-              ) : isRegistering ? (
-                <>
-                  <UserPlus className="w-4 h-4" />
-                  註冊並登入 Firebase 帳號
-                </>
-              ) : (
-                <>
-                  <LogIn className="w-4 h-4" />
-                  以電郵密碼登入
-                </>
-              )}
-            </motion.button>
-          </div>
-
-          <div className="text-center pt-1">
-            <button
-              type="button"
-              onClick={() => {
-                setIsRegistering(!isRegistering);
-                setAuthError(null);
-                setAuthSuccess(null);
+              id="teacher-password-input"
+              type={showPassword ? "text" : "password"}
+              placeholder={selectedClass ? `請輸入 ${selectedClass} 班安全密碼` : "請先選擇班級"}
+              className="w-full h-12 pl-10 pr-11 border-2 border-slate-200 focus:border-amber-500 rounded-xl focus:ring-2 focus:ring-amber-200 focus:outline-none text-slate-800 text-sm font-bold transition-all placeholder:text-slate-300 placeholder:font-medium"
+              value={loginPassword}
+              onChange={(e) => {
+                setLoginPassword(e.target.value);
+                setErrorMsg(null);
               }}
-              className="text-xs font-bold text-amber-700 hover:text-amber-800 underline bg-transparent border-none cursor-pointer"
-            >
-              {isRegistering ? '已有 Firebase 帳號？切換至登入' : '第一次使用？點此註冊 Firebase 教師帳號'}
-            </button>
-          </div>
-
-          <div className="pt-2 border-t border-slate-100">
-            <button
-              type="button"
-              onClick={() => setViewState('LANDING')}
-              className="w-full text-center text-xs text-slate-400 hover:text-amber-600 transition-all flex items-center justify-center gap-1 font-semibold bg-transparent border-none p-0 cursor-pointer"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              返回首頁模式選擇
-            </button>
-          </div>
-        </form>
-      )}
-
-      {/* CLASS PASSCODE FORM */}
-      {authMode === 'class' && (
-        <form onSubmit={handleTeacherLoginSubmit} className="p-6 space-y-4">
-          <div>
-            <label className="block text-xs font-bold text-[#64748B] uppercase tracking-wider mb-1.5">
-              登入班級帳號 / 控制終端
-            </label>
-            <select
-              id="teacher-class-select"
-              className="w-full h-11 px-3 border border-slate-200 rounded-xl font-bold text-slate-800 bg-slate-50 focus:ring-2 focus:ring-amber-200 focus:outline-none text-sm"
-              value={selectedClass}
-              onChange={(e) => setSelectedClass(e.target.value)}
-            >
-              <option value="">--請選擇登入權限--</option>
-              <optgroup label="全校安全官">
-                <option value="GCCPS">🏫 GCCPS 全校安全監控中心</option>
-              </optgroup>
-              <optgroup label="測試用與除錯">
-                <option value="TEST">TEST 測試班級</option>
-              </optgroup>
-              <optgroup label="小一 (P.1) 至 小六 (P.6) 班級">
-                {['1A','1B','1C','1D','2A','2B','2C','2D','3A','3B','3C','3D','4A','4B','4C','4D','5A','5B','5C','5D','6A','6B','6C','6D'].map(c => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </optgroup>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-[#64748B] uppercase tracking-wider mb-1.5">
-              請輸入班級安全密碼
-            </label>
-            <div className="relative">
-              <input
-                id="teacher-password-input"
-                type="password"
-                placeholder="請輸入班級管理密碼"
-                className="w-full h-11 pl-10 pr-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-200 focus:outline-none text-slate-800 text-sm font-semibold"
-                value={loginPassword}
-                onChange={(e) => setLoginPassword(e.target.value)}
-              />
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 pt-1">
-            <input
-              type="checkbox"
-              id="teacher-remember-me"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-              className="w-4 h-4 text-amber-600 border-slate-300 rounded focus:ring-amber-500"
+              autoComplete="current-password"
             />
-            <label htmlFor="teacher-remember-me" className="text-xs font-semibold text-slate-700 cursor-pointer">
-              記住我的登入狀態
-            </label>
-          </div>
-
-          <div className="pt-2">
-            <motion.button
-              whileHover={{ scale: 1.015 }}
-              whileTap={{ scale: 0.985 }}
-              transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              id="btn-teacher-submit"
-              type="submit"
-              disabled={loading}
-              className="w-full h-11 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-black text-sm tracking-widest transition-all cursor-pointer shadow-md flex items-center justify-center gap-2"
-            >
-              {loading ? "進入管理授權中..." : "安全登入控制端"}
-            </motion.button>
-          </div>
-
-          <div className="pt-2 border-t border-slate-100">
+            <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-4" />
             <button
               type="button"
-              onClick={() => setViewState('LANDING')}
-              className="w-full text-center text-xs text-slate-400 hover:text-amber-600 transition-all flex items-center justify-center gap-1 font-semibold bg-transparent border-none p-0 cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-700 transition-colors p-0.5 cursor-pointer"
+              title={showPassword ? "隱藏密碼" : "顯示密碼"}
             >
-              <ChevronLeft className="w-4 h-4" />
-              返回首頁模式選擇
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
-        </form>
-      )}
+          <p className="text-[11px] text-slate-400 mt-1 font-medium">
+            💡 密碼不區分大小寫（英文大小寫皆可接受）。
+          </p>
+        </div>
+
+        {/* REMEMBER ME */}
+        <div className="flex items-center gap-2 pt-1">
+          <input
+            type="checkbox"
+            id="teacher-remember-me"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+            className="w-4 h-4 text-amber-600 border-slate-300 rounded focus:ring-amber-500 cursor-pointer"
+          />
+          <label htmlFor="teacher-remember-me" className="text-xs font-bold text-slate-700 cursor-pointer select-none">
+            記住我的登入狀態 (下次在此瀏覽器自動進入)
+          </label>
+        </div>
+
+        {/* SUBMIT BUTTON */}
+        <div className="pt-2">
+          <motion.button
+            whileHover={{ scale: 1.015 }}
+            whileTap={{ scale: 0.985 }}
+            id="btn-teacher-submit"
+            type="submit"
+            disabled={loading}
+            className="w-full h-12 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white rounded-xl font-black text-xs sm:text-sm tracking-wide transition-all cursor-pointer shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 px-2 sm:px-4 disabled:from-slate-300 disabled:to-slate-300"
+          >
+            {loading ? (
+              <span>驗證安全碼中...</span>
+            ) : (
+              <>
+                <span>
+                  {selectedClass 
+                    ? `🚀 進入 ${selectedClass} 班 教學管理控制台`
+                    : '🚀 登入教師控制台'}
+                </span>
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </motion.button>
+        </div>
+
+        {/* BACK BUTTON */}
+        <div className="pt-2 border-t border-slate-100">
+          <button
+            type="button"
+            onClick={() => setViewState('LANDING')}
+            className="w-full text-center text-xs text-slate-400 hover:text-amber-600 transition-all flex items-center justify-center gap-1 font-semibold bg-transparent border-none p-0 cursor-pointer"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            返回首頁模式選擇
+          </button>
+        </div>
+      </form>
+
+      {/* FOOTER NOTE */}
+      <div className="bg-slate-50 border-t border-slate-100 p-4 text-center">
+        <p className="text-[11px] text-slate-400 font-medium">
+          🛡️ 天主教善導小學 學生心理健康追蹤平台 · 班級密碼保護機制
+        </p>
+      </div>
     </motion.div>
   );
 }
