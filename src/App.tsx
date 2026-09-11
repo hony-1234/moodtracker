@@ -183,17 +183,21 @@ export default function App() {
     if (savedTeacher) {
       try {
         const { cls, view } = JSON.parse(savedTeacher);
-        setSelectedClass(cls);
-        setViewState(view);
+        if (cls) setSelectedClass(cls);
+        if (view) setViewState(view);
       } catch (err) {}
     } else {
       const savedStudent = localStorage.getItem('student_token_session');
       if (savedStudent) {
         try {
           const { cls, view, studentNo } = JSON.parse(savedStudent);
-          setSelectedClass(cls);
-          setActiveStudentNumber(studentNo || '');
-          setViewState(view);
+          if (cls) setSelectedClass(cls);
+          if (studentNo) setActiveStudentNumber(studentNo);
+          if (view) {
+            setViewState(view);
+          } else if (cls) {
+            setViewState('STUDENT_DASHBOARD');
+          }
         } catch (err) {}
       }
     }
@@ -321,7 +325,7 @@ export default function App() {
         const uniqueReports = new Map<string, any>();
         dList.forEach((r: any) => {
           const ds = getDisplayDate(r);
-          if (ds === "INVALID_DATE" || ds.includes('0026/') || ds.includes('/0026')) return;
+          if (!ds || ds === "INVALID_DATE" || ds.includes('0026/') || ds.includes('/0026')) return;
 
           const itemTime = getUnixTime(r);
           if (itemTime < oneYearAgoTime || itemTime > tomorrowTime) return;
@@ -370,7 +374,7 @@ export default function App() {
 
         combined.forEach(item => {
           const ds = getDisplayDate(item);
-          if (ds === "INVALID_DATE" || ds.includes('0026/') || ds.includes('/0026')) return;
+          if (!ds || ds === "INVALID_DATE" || ds.includes('0026/') || ds.includes('/0026')) return;
 
           const itemTime = getUnixTime(item);
           if (itemTime >= oneYearAgoTime && itemTime <= tomorrowTime) {

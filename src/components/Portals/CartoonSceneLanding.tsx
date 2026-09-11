@@ -233,7 +233,7 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
       {/* 3. Two Flying Live-2D 恩恩 Mascots in the Sky (Device-Scale Aware) */}
       {/* Flying Mascot 1: Upper Left / Center Sky */}
       <motion.div
-        className="absolute top-[8%] sm:top-[8%] left-[4%] sm:left-[10%] md:left-[18%] z-15 pointer-events-none"
+        className="absolute top-[14%] sm:top-[8%] left-[4%] sm:left-[10%] md:left-[18%] z-15 pointer-events-none"
         animate={{
           x: [0, 50, 90, 40, 0],
           y: [0, -20, 8, -10, 0],
@@ -245,7 +245,7 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
           ease: 'easeInOut'
         }}
       >
-        <div className="relative w-20 h-24 sm:w-28 sm:h-32 md:w-36 md:h-40 filter drop-shadow-md">
+        <div className="relative w-16 h-20 sm:w-28 sm:h-32 md:w-36 md:h-40 filter drop-shadow-md">
           <SkeletalEnEn
             width="100%"
             height="100%"
@@ -344,7 +344,7 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
             <h1 className="text-xs sm:text-base md:text-lg font-black text-slate-800 tracking-tight leading-tight whitespace-nowrap">
               天主教善導小學
             </h1>
-            <p className="text-[9px] sm:text-[11px] md:text-xs font-semibold text-emerald-700 whitespace-nowrap">
+            <p className="text-[9px] sm:text-[11px] md:text-xs font-semibold text-emerald-700 whitespace-nowrap hidden sm:block">
               Good Counsel Catholic Primary School
             </p>
           </div>
@@ -375,13 +375,13 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
             title="切換回經典登入頁面"
           >
             <RefreshCw className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-500" />
-            <span className="hidden xs:inline">切換經典版面</span>
+            <span className="hidden sm:inline">切換經典版面</span>
           </button>
         </div>
       </header>
 
       {/* 6. Main Interactive Stage (Bottom Area - Adaptive Grounding Height) */}
-      <div className={`absolute inset-x-0 bottom-0 z-25 ${isPortrait ? (isMobile ? 'h-[50%]' : 'h-[52%]') : 'h-[62%] md:h-[68%]'} flex items-end justify-between px-2 sm:px-6 md:px-12 lg:px-20 pb-3 sm:pb-4 md:pb-6 pointer-events-none`}>
+      <div className={`absolute inset-x-0 bottom-0 z-25 ${isPortrait ? (isMobile ? 'h-[46%]' : 'h-[50%]') : 'h-[58%] md:h-[64%]'} flex items-end justify-between px-2 sm:px-6 md:px-12 lg:px-20 pb-5 sm:pb-6 md:pb-8 pointer-events-none`}>
 
         {/* ======================================================== */}
         {/* LEFT SIDE: BOY & GIRL STUDENTS (STUDENT PORTAL)         */}
@@ -403,11 +403,11 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
               type="button"
               data-role="student-portal-btn"
               onClick={handleStudentClick}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black px-2 sm:px-4 md:px-6 py-1.5 sm:py-2 rounded-full shadow-xl border-2 border-white/80 flex items-center justify-center gap-1 sm:gap-2 transition-transform hover:scale-108 active:scale-95 cursor-pointer whitespace-nowrap"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black px-2.5 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full shadow-xl border-2 border-white/80 flex items-center justify-center gap-1 sm:gap-2 transition-transform hover:scale-108 active:scale-95 cursor-pointer whitespace-nowrap"
             >
-              <GraduationCap className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-yellow-300 shrink-0" />
-              <span className="text-[11px] sm:text-sm md:text-base tracking-wide whitespace-nowrap">學生心情空間</span>
-              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-300 shrink-0 hidden xs:inline" />
+              <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-yellow-300 shrink-0" />
+              <span className="text-[11px] sm:text-xs md:text-sm font-black tracking-wide whitespace-nowrap">學生心情空間</span>
+              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-300 shrink-0 hidden sm:inline" />
             </button>
             {/* Interactive Speech Bubble */}
             <AnimatePresence>
@@ -460,13 +460,13 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
             <img
               src={getPublicAssetUrl('/學校圖檔/學生/chibi_student_boy.png')}
               alt="善導小學男學生"
-              className="h-30 xs:h-38 sm:h-50 md:h-62 lg:h-74 xl:h-86 w-auto object-contain drop-shadow-xl select-none -mr-3 md:-mr-5 z-10 transition-transform group-hover:-translate-y-1"
+              className="h-28 sm:h-40 md:h-52 lg:h-64 xl:h-72 max-h-[25vh] sm:max-h-[34vh] md:max-h-[40vh] w-auto object-contain drop-shadow-xl select-none -mr-3 md:-mr-5 z-10 transition-transform group-hover:-translate-y-1"
             />
             {/* Girl Student (Right) - In Mascot Art Style */}
             <img
               src={getPublicAssetUrl('/學校圖檔/學生/chibi_student_girl.png')}
               alt="善導小學女學生"
-              className="h-30 xs:h-38 sm:h-50 md:h-62 lg:h-74 xl:h-86 w-auto object-contain drop-shadow-xl select-none z-10 transition-transform group-hover:-translate-y-1"
+              className="h-28 sm:h-40 md:h-52 lg:h-64 xl:h-72 max-h-[25vh] sm:max-h-[34vh] md:max-h-[40vh] w-auto object-contain drop-shadow-xl select-none z-10 transition-transform group-hover:-translate-y-1"
             />
           </motion.div>
         </div>
@@ -500,9 +500,9 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
             transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             className="mb-2 text-center select-none pointer-events-none"
           >
-            <div className="bg-white/95 backdrop-blur-md px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-lg border border-amber-200 inline-flex items-center gap-1 sm:gap-1.5 whitespace-nowrap">
+            <div className="bg-white/95 backdrop-blur-md px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-full shadow-lg border border-amber-200 inline-flex items-center gap-1 sm:gap-1.5 whitespace-nowrap">
               <span className="text-amber-500 font-bold text-xs">💛</span>
-              <span className="text-[10px] sm:text-xs md:text-sm font-black text-amber-900 tracking-wide whitespace-nowrap">
+              <span className="text-[9.5px] sm:text-xs md:text-sm font-black text-amber-900 tracking-wide whitespace-nowrap">
                 感恩・忠信・關愛
               </span>
             </div>
@@ -541,12 +541,12 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
               transition={{ duration: 0.3 }}
               src={getPublicAssetUrl(currentCostume.imagePath)}
               alt={`天主教善導小學校園吉祥物 恩恩 (${currentCostume.name}) - 點擊前往學生積點獎勵系統`}
-              className="h-28 xs:h-36 sm:h-48 md:h-60 lg:h-72 xl:h-80 w-auto object-contain drop-shadow-2xl select-none"
+              className="h-28 sm:h-40 md:h-52 lg:h-64 xl:h-72 max-h-[25vh] sm:max-h-[34vh] md:max-h-[40vh] w-auto object-contain drop-shadow-2xl select-none"
             />
 
             {/* Costume Badge & Quick Re-roll Dice underneath */}
-            <div className="mt-1 flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
-              <span className={`px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-black shadow-md border border-white/60 flex items-center gap-1 ${currentCostume.badgeBg}`}>
+            <div className="relative -mt-2.5 sm:-mt-3 z-20 flex items-center gap-1.5 opacity-95 group-hover:opacity-100 transition-opacity">
+              <span className={`px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[11px] md:text-xs font-black shadow-md border border-white/60 flex items-center gap-1 ${currentCostume.badgeBg}`}>
                 <span>{currentCostume.sparkleEmoji}</span>
                 <span>{currentCostume.name}</span>
               </span>
@@ -599,13 +599,13 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
               type="button"
               data-role="teacher-portal-btn"
               onClick={handleTeacherClick}
-              className="bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black px-2 sm:px-4 md:px-6 py-1.5 sm:py-2 rounded-full shadow-xl border-2 border-white/80 flex items-center justify-center gap-1 sm:gap-2 transition-transform hover:scale-108 active:scale-95 cursor-pointer whitespace-nowrap"
+              className="bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black px-2.5 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full shadow-xl border-2 border-white/80 flex items-center justify-center gap-1 sm:gap-2 transition-transform hover:scale-108 active:scale-95 cursor-pointer whitespace-nowrap"
             >
-              <BookOpen className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-amber-300 shrink-0" />
-              <span className="text-[11px] sm:text-sm md:text-base tracking-wide whitespace-nowrap">
+              <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-amber-300 shrink-0" />
+              <span className="text-[11px] sm:text-xs md:text-sm font-black tracking-wide whitespace-nowrap">
                 {isMobile ? '教師終端' : '教師及管理終端'}
               </span>
-              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-amber-300 shrink-0 hidden xs:inline" />
+              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-amber-300 shrink-0 hidden sm:inline" />
             </button>
             {/* Interactive Speech Bubble */}
             <AnimatePresence>
@@ -658,13 +658,13 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
             <img
               src={getPublicAssetUrl('/學校圖檔/教師/teacher_male.png')}
               alt="善導小學男教師"
-              className="h-34 xs:h-44 sm:h-56 md:h-72 lg:h-84 xl:h-96 w-auto object-contain drop-shadow-xl select-none -mr-3 md:-mr-5 z-10 transition-transform group-hover:-translate-y-1"
+              className="h-32 sm:h-44 md:h-56 lg:h-68 xl:h-76 max-h-[28vh] sm:max-h-[37vh] md:max-h-[43vh] w-auto object-contain drop-shadow-xl select-none -mr-3 md:-mr-5 z-10 transition-transform group-hover:-translate-y-1"
             />
             {/* Female Teacher (Right) */}
             <img
               src={getPublicAssetUrl('/學校圖檔/教師/teacher_female.png')}
               alt="善導小學女教師"
-              className="h-32 xs:h-42 sm:h-54 md:h-70 lg:h-82 xl:h-92 w-auto object-contain drop-shadow-xl select-none z-10 transition-transform group-hover:-translate-y-1"
+              className="h-30 sm:h-42 md:h-54 lg:h-66 xl:h-74 max-h-[26vh] sm:max-h-[35vh] md:max-h-[41vh] w-auto object-contain drop-shadow-xl select-none z-10 transition-transform group-hover:-translate-y-1"
             />
           </motion.div>
         </div>
@@ -672,7 +672,7 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
       </div>
 
       {/* 7. Bottom Ground Info Bar */}
-      <footer className="absolute bottom-1 inset-x-0 z-30 px-4 py-1 flex items-center justify-between text-[11px] md:text-xs text-white/90 drop-shadow pointer-events-none">
+      <footer className="absolute bottom-1 sm:bottom-1.5 inset-x-0 z-30 px-3 sm:px-6 py-1 flex items-center justify-between text-[10px] sm:text-[11px] md:text-xs text-white/90 drop-shadow pointer-events-none">
         <div className="flex items-center gap-2 pointer-events-auto">
           <button
             type="button"

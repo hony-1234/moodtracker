@@ -153,7 +153,7 @@ export default function BackgroundMusic() {
       {/* Floating Animated BGM Control Widget */}
       <div 
         data-role="bgm-controller"
-        className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-[70] select-none flex items-center gap-2 pointer-events-auto"
+        className="fixed bottom-2 right-2 sm:bottom-4 sm:right-4 z-[70] select-none flex items-center gap-2 pointer-events-auto"
         onMouseEnter={() => setIsExpanded(true)}
         onMouseLeave={() => setIsExpanded(false)}
       >
@@ -209,7 +209,7 @@ export default function BackgroundMusic() {
           onClick={togglePlayPause}
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.92 }}
-          className={`relative group flex items-center justify-center p-2.5 sm:p-3 rounded-full shadow-lg transition-all cursor-pointer border ${
+          className={`relative group flex items-center justify-center p-2 sm:p-2.5 md:p-3 rounded-full shadow-lg transition-all cursor-pointer border ${
             isPlaying && !isMuted
               ? 'bg-gradient-to-tr from-amber-400 via-amber-300 to-yellow-200 text-amber-950 border-amber-300/80 shadow-amber-300/40 ring-2 ring-amber-200/50'
               : 'bg-white/90 backdrop-blur-md text-slate-500 border-slate-200 shadow-slate-300/30 hover:bg-white'
@@ -224,9 +224,9 @@ export default function BackgroundMusic() {
             className="flex items-center justify-center"
           >
             {isPlaying && !isMuted ? (
-              <Disc className="w-5 h-5 sm:w-5.5 sm:h-5.5 text-amber-900" />
+              <Disc className="w-4 h-4 sm:w-5 sm:h-5 text-amber-900" />
             ) : (
-              <VolumeX className="w-5 h-5 sm:w-5.5 sm:h-5.5 text-slate-400" />
+              <VolumeX className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
             )}
           </motion.div>
 

@@ -316,32 +316,69 @@ export default function ClassroomBookExperience({
       </div>
 
       {/* 2. TOP FLOATING UTILITY BAR */}
-      <header className="relative z-30 px-4 py-3 sm:px-6 flex items-center justify-between bg-white/70 backdrop-blur-md border-b border-amber-200/60 shadow-xs">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 bg-white rounded-xl shadow-xs p-1 flex items-center justify-center border border-amber-200">
-            <img
-              src={getPublicAssetUrl('/學校圖檔/學校logo/school_logo.png')}
-              alt="校徽"
-              className="w-7 h-7 object-contain"
-            />
-          </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs sm:text-sm font-black text-slate-800">
-                天主教善導小學 · 溫暖教室
-              </span>
-              <span className="text-[10px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.2 rounded-full border border-amber-200">
-                4Rs 心靈空間
-              </span>
+      <header className="relative z-30 px-3 py-2 sm:px-6 sm:py-3 bg-white/85 backdrop-blur-md border-b border-amber-200/60 shadow-xs flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
+        {/* Top Tier (Mobile/Tablet) or Left Tier (Desktop): School Info + Quick Action Buttons on Mobile */}
+        <div className="flex items-center justify-between w-full lg:w-auto">
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-white rounded-xl shadow-xs p-1 flex items-center justify-center border border-amber-200 shrink-0">
+              <img
+                src={getPublicAssetUrl('/學校圖檔/學校logo/school_logo.png')}
+                alt="校徽"
+                className="w-6 h-6 sm:w-7 sm:h-7 object-contain"
+              />
             </div>
-            <p className="text-[10px] sm:text-xs text-slate-500 font-semibold">
-              歡迎你，{selectedClass} 班 {activeStudentNumber} 號 {studentDisplayName}
-            </p>
+            <div>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="text-xs sm:text-sm font-black text-slate-800">
+                  天主教善導小學 · 溫暖教室
+                </span>
+                <span className="text-[10px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.2 rounded-full border border-amber-200">
+                  4Rs 心靈空間
+                </span>
+              </div>
+              <p className="text-[10px] sm:text-xs text-slate-500 font-semibold">
+                歡迎你，{selectedClass} 班 {activeStudentNumber} 號 {studentDisplayName}
+              </p>
+            </div>
+          </div>
+
+          {/* Quick Controls shown on top row for screens < lg */}
+          <div className="flex lg:hidden items-center gap-1 sm:gap-1.5 shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                setSoundEnabled(!soundEnabled);
+                window.dispatchEvent(new CustomEvent('gccps:toggle-bgm'));
+              }}
+              className="p-1.5 sm:p-2 rounded-xl text-slate-600 hover:text-slate-900 bg-white/80 hover:bg-white border border-slate-200 transition-colors cursor-pointer shadow-xs"
+              title={soundEnabled ? '音效與音樂已開啟 (點擊關閉)' : '音效與音樂已關閉 (點擊開啟)'}
+            >
+              {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-amber-600" /> : <VolumeX className="w-3.5 h-3.5 text-slate-400" />}
+            </button>
+            <button
+              type="button"
+              data-role="switch-to-dashboard-btn"
+              onClick={() => onSwitchToDashboard('MOOD')}
+              className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:text-indigo-700 bg-white/80 hover:bg-white border border-slate-200 transition-all cursor-pointer shadow-xs flex items-center gap-1"
+              title="切換至標準條列儀表板"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5 text-indigo-600" />
+              <span className="hidden sm:inline">切換標準面板</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-red-600 bg-white/80 hover:bg-white border border-slate-200 transition-all cursor-pointer shadow-xs flex items-center gap-1"
+              title="登出帳號"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">登出</span>
+            </button>
           </div>
         </div>
 
-        {/* CARTOON VIEW QUICK TABS */}
-        <div className="flex items-center gap-1 sm:gap-1.5 bg-amber-900/10 p-1 rounded-2xl border border-amber-900/15 overflow-x-auto no-scrollbar max-w-[55vw] sm:max-w-none">
+        {/* CARTOON VIEW QUICK TABS: Horizontally scrollable on mobile/tablet */}
+        <div className="flex items-center gap-1 sm:gap-1.5 bg-amber-900/10 p-1 rounded-2xl border border-amber-900/15 overflow-x-auto no-scrollbar w-full lg:w-auto justify-start lg:justify-center">
           <button
             type="button"
             data-tab="MOOD"
@@ -396,7 +433,8 @@ export default function ClassroomBookExperience({
           </button>
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Desktop-only action controls */}
+        <div className="hidden lg:flex items-center gap-2 shrink-0">
           <button
             type="button"
             onClick={() => {
@@ -417,7 +455,7 @@ export default function ClassroomBookExperience({
             title="切換至標準條列儀表板"
           >
             <LayoutDashboard className="w-3.5 h-3.5 text-indigo-600" />
-            <span className="hidden sm:inline">切換標準面板</span>
+            <span>切換標準面板</span>
           </button>
 
           <button
@@ -427,7 +465,7 @@ export default function ClassroomBookExperience({
             title="登出帳號"
           >
             <LogOut className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">登出</span>
+            <span>登出</span>
           </button>
         </div>
       </header>

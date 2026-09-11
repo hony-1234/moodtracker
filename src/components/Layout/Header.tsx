@@ -63,7 +63,7 @@ export default function Header({
         {viewState !== 'LANDING' && (
           <div className="flex items-center space-x-2.5">
             <span className="hidden sm:inline-block text-sm font-bold text-[#475569] bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
-              {viewState.includes('TEACHER') ? "🏫 教師權限 ：" : "🎒 學生通道 ："}
+              {(viewState && viewState.includes('TEACHER')) ? "🏫 教師權限 ：" : "🎒 學生通道 ："}
               <span className="text-blue-600 ml-1">{selectedClass || "未登入"}</span>
               {activeStudentNumber && <span className="text-indigo-600 ml-1">({activeStudentNumber} 號)</span>}
             </span>

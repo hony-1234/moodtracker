@@ -652,11 +652,11 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
       )}
 
       {/* Dashboard Control Buttons */}
-      <div className="bg-white border border-[#E2E8F0] p-4 rounded-2xl flex flex-col lg:flex-row items-center justify-between gap-4 font-sans">
-        <div className="flex flex-wrap justify-center sm:justify-start gap-1">
+      <div className="bg-white border border-[#E2E8F0] p-3 sm:p-4 rounded-2xl flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 font-sans">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar w-full lg:w-auto py-1">
           <button
             onClick={() => setActiveTab('REPORTS')}
-            className={`px-4 py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
               activeTab === 'REPORTS' ? 'bg-[#1E293B] text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
             }`}
           >
@@ -665,7 +665,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('ANALYTICS')}
-            className={`px-4 py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
               activeTab === 'ANALYTICS' ? 'bg-[#1E293B] text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
             }`}
           >
@@ -674,7 +674,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('DIARIES')}
-            className={`px-4 py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
               activeTab === 'DIARIES' ? 'bg-[#1E293B] text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
             }`}
           >
@@ -683,7 +683,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('PROFILES')}
-            className={`px-4 py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
               activeTab === 'PROFILES' ? 'bg-[#1E293B] text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
             }`}
           >
@@ -694,7 +694,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             <>
               <button
                 onClick={() => setActiveTab('ALL_COMMENTS')}
-                className={`px-4 py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+                className={`px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
                   activeTab === 'ALL_COMMENTS' ? 'bg-[#1E293B] text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
                 }`}
               >
@@ -703,7 +703,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
               </button>
               <button
                 onClick={() => setActiveTab('PASSWORDS')}
-                className={`px-4 py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+                className={`px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
                   activeTab === 'PASSWORDS' ? 'bg-[#1E293B] text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
                 }`}
               >
@@ -712,7 +712,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
               </button>
               <button
                 onClick={() => setActiveTab('LOGS')}
-                className={`px-4 py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+                className={`px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
                   activeTab === 'LOGS' ? 'bg-[#1E293B] text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
                 }`}
               >
@@ -723,7 +723,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
           )}
           <button
             onClick={() => setActiveTab('PUSH_NOTIFICATIONS')}
-            className={`px-4 py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
               activeTab === 'PUSH_NOTIFICATIONS' ? 'bg-[#1E293B] text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
             }`}
           >

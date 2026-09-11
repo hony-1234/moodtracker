@@ -323,37 +323,100 @@ export const ClassroomBatchBookExperience: React.FC<ClassroomBatchBookExperience
       </div>
 
       {/* 2. TOP FLOATING APP BAR */}
-      <header className="relative z-30 px-4 sm:px-6 py-3 flex items-center justify-between gap-2.5 bg-white/75 backdrop-blur-md border-b border-amber-200/60 shadow-xs">
-        {/* Left: School Crest & Title */}
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-white shadow-xs border border-amber-200 p-1 flex items-center justify-center shrink-0">
-            <img
-              src={getPublicAssetUrl('/學校圖檔/學校logo/school_logo.png')}
-              alt="天主教善導小學校徽"
-              className="w-7 h-7 object-contain"
-            />
+      <header className="relative z-30 px-3 py-2 sm:px-6 sm:py-3 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 bg-white/85 backdrop-blur-md border-b border-amber-200/60 shadow-xs">
+        {/* Top Tier (Mobile/Tablet) or Left Tier (Desktop): School Crest & Title + Right Controls on Mobile */}
+        <div className="flex items-center justify-between w-full lg:w-auto">
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white shadow-xs border border-amber-200 p-1 flex items-center justify-center shrink-0">
+              <img
+                src={getPublicAssetUrl('/學校圖檔/學校logo/school_logo.png')}
+                alt="天主教善導小學校徽"
+                className="w-6 h-6 sm:w-7 sm:h-7 object-contain"
+              />
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="text-xs sm:text-sm font-black text-amber-950 tracking-tight">
+                  天主教善導小學 · 溫暖教室
+                </span>
+                <span className="text-[10px] bg-amber-100 text-amber-800 border border-amber-200 font-bold px-1.5 py-0.2 rounded-full">
+                  初小全班代登日記
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-semibold text-slate-500">
+                <span>班級心情花名冊</span>
+                <span>•</span>
+                <span className="text-indigo-700 font-black">
+                  {selectedClass ? `${selectedClass} 班` : '未選班別'} (共 {displayStudents.length} 位同學)
+                </span>
+              </div>
+            </div>
           </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs sm:text-sm font-black text-amber-950 tracking-tight">
-                天主教善導小學 · 溫暖教室
-              </span>
-              <span className="text-[10px] bg-amber-100 text-amber-800 border border-amber-200 font-bold px-1.5 py-0.2 rounded-full">
-                初小全班代登日記
-              </span>
-            </div>
-            <div className="flex items-center gap-2 text-[10px] sm:text-xs font-semibold text-slate-500">
-              <span>班級心情花名冊</span>
-              <span>•</span>
-              <span className="text-indigo-700 font-black">
-                {selectedClass ? `${selectedClass} 班` : '未選班別'} (共 {displayStudents.length} 位同學)
-              </span>
-            </div>
+
+          {/* Quick Controls shown on top row for screens < lg */}
+          <div className="flex lg:hidden items-center gap-1 sm:gap-1.5 shrink-0">
+            {setSelectedClass && ALL_CLASSES && (
+              <select
+                value={selectedClass}
+                onChange={(e) => {
+                  setSelectedClass(e.target.value);
+                  playSound('pop');
+                }}
+                className="bg-amber-50 hover:bg-white border-2 border-amber-300 text-amber-950 text-xs font-black rounded-xl px-2 py-1 focus:outline-none cursor-pointer shadow-3xs"
+              >
+                <optgroup label="初小 (P.1 - P.3)">
+                  {['1A', '1B', '1C', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D'].map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="高小 (P.4 - P.6)">
+                  {['4A', '4B', '4C', '4D', '5A', '5B', '5C', '5D', '6A', '6B', '6C', '6D'].map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="測試專用">
+                  <option value="TEST">TEST</option>
+                </optgroup>
+              </select>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              className="p-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 flex items-center justify-center transition-all cursor-pointer shadow-3xs"
+              title={soundEnabled ? '關閉音效' : '開啟音效'}
+            >
+              {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-amber-700" /> : <VolumeX className="w-3.5 h-3.5 text-slate-400" />}
+            </button>
+
+            <button
+              type="button"
+              onClick={onSwitchToStandard}
+              className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-white hover:bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs font-black transition-all cursor-pointer shadow-3xs flex items-center gap-1"
+              title="切換標準面板"
+            >
+              <LayoutGrid className="w-3.5 h-3.5 text-indigo-600" />
+              <span className="hidden sm:inline">切換標準</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => (setViewState ? setViewState('STUDENT_LOGIN') : window.history.back())}
+              className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 text-xs font-black transition-all cursor-pointer shadow-3xs flex items-center gap-1"
+              title="返回登入"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">返回</span>
+            </button>
           </div>
         </div>
 
         {/* Center: Quick Tab Pills */}
-        <div className="flex items-center gap-1 sm:gap-1.5 bg-amber-900/10 p-1 rounded-2xl border border-amber-900/15 overflow-x-auto no-scrollbar max-w-[50vw] sm:max-w-none">
+        <div className="flex items-center gap-1 sm:gap-1.5 bg-amber-900/10 p-1 rounded-2xl border border-amber-900/15 overflow-x-auto no-scrollbar w-full lg:w-auto justify-start lg:justify-center">
           <button
             type="button"
             data-tab="ROSTER"
@@ -397,8 +460,8 @@ export const ClassroomBatchBookExperience: React.FC<ClassroomBatchBookExperience
           </button>
         </div>
 
-        {/* Right Controls */}
-        <div className="flex items-center gap-2">
+        {/* Desktop Right Controls */}
+        <div className="hidden lg:flex items-center gap-2 shrink-0">
           {/* Class switcher pill */}
           {setSelectedClass && ALL_CLASSES && (
             <select
@@ -446,7 +509,7 @@ export const ClassroomBatchBookExperience: React.FC<ClassroomBatchBookExperience
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs font-black transition-all cursor-pointer shadow-3xs"
           >
             <LayoutGrid className="w-3.5 h-3.5 text-indigo-600" />
-            <span className="hidden sm:inline">切換標準面板</span>
+            <span>切換標準面板</span>
           </button>
 
           {/* Back to student login */}
@@ -456,7 +519,7 @@ export const ClassroomBatchBookExperience: React.FC<ClassroomBatchBookExperience
             className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 text-xs font-black transition-all cursor-pointer shadow-3xs"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">返回登入</span>
+            <span>返回登入</span>
           </button>
         </div>
       </header>
