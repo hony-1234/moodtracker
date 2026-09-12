@@ -221,7 +221,7 @@ export default function BackgroundMusic() {
           <motion.div
             animate={isPlaying && !isMuted ? { rotate: 360 } : { rotate: 0 }}
             transition={isPlaying && !isMuted ? { duration: 4.5, repeat: Infinity, ease: 'linear' } : { duration: 0.3 }}
-            className="flex items-center justify-center"
+            className="flex items-center justify-center transform-gpu will-change-transform"
           >
             {isPlaying && !isMuted ? (
               <Disc className="w-4 h-4 sm:w-5 sm:h-5 text-amber-900" />
@@ -239,7 +239,7 @@ export default function BackgroundMusic() {
                 scale: [0.9, 1.15, 0.9]
               }}
               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -top-1 -right-1 text-xs"
+              className="absolute -top-1 -right-1 text-xs select-none pointer-events-none transform-gpu will-change-transform"
             >
               🎵
             </motion.span>

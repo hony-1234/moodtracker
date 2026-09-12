@@ -20,7 +20,8 @@ import {
 } from 'lucide-react';
 import { auth } from '../../firebase/config';
 import { loginWithGoogle, logoutUser, formatAuthErrorMessage } from '../../firebase/services';
-import { getPublicAssetUrl } from '../../utils/assetHelper';
+import { getPublicAssetUrl, getWebpUrl } from '../../utils/assetHelper';
+import { getSharedAudioContext } from '../../utils/audioHelper';
 import { getActiveCostume, MascotCostume } from '../../utils/mascotCostumes';
 import { User as FirebaseUser } from 'firebase/auth';
 import { findStudentByGoogleEmail, getStudentsByClass, StudentRecord } from '../../data/studentsRoster';
@@ -86,9 +87,8 @@ export default function StudentLogin({
   const playSound = (type: 'gate' | 'enter' | 'pop' | 'chime') => {
     if (!soundEnabled) return;
     try {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-      if (!AudioCtx) return;
-      const ctx = new AudioCtx();
+      const ctx = getSharedAudioContext();
+      if (!ctx) return;
 
       if (type === 'gate') {
         // Grand warm welcoming chord arpeggio
@@ -295,25 +295,30 @@ export default function StudentLogin({
             >
               {/* Background view behind the gate: sunlit campus walkway */}
               <motion.div 
-                className="absolute inset-0"
+                className="absolute inset-0 transform-gpu"
                 animate={phase === 'ENTERING_CAMPUS' ? { scale: 2.2, opacity: 0.3 } : { scale: 1, opacity: 1 }}
                 transition={{ duration: 1.1, ease: 'easeIn' }}
               >
-                <img
-                  src={getPublicAssetUrl('/學校圖檔/school_main_gate.png')}
-                  alt="天主教善導小學校門"
-                  className="w-full h-full object-cover object-center"
-                />
+                <picture>
+                  <source srcSet={getWebpUrl('/學校圖檔/school_main_gate.png')} type="image/webp" />
+                  <img
+                    src={getPublicAssetUrl('/學校圖檔/school_main_gate.png')}
+                    alt="天主教善導小學校門"
+                    decoding="async"
+                    loading="eager"
+                    className="w-full h-full object-cover object-center"
+                  />
+                </picture>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-amber-100/10 pointer-events-none" />
               </motion.div>
 
               {/* Left Gate Door - 3D swinging outward open */}
               <motion.div
-                className="absolute top-0 bottom-0 left-[21.5%] w-[28.5%] z-20 pointer-events-none origin-left"
+                className="absolute top-0 bottom-0 left-[21.5%] w-[28.5%] z-20 pointer-events-none origin-left transform-gpu will-change-transform"
                 animate={gateDoorOpen ? { rotateY: -80, opacity: 0.15 } : { rotateY: 0, opacity: 1 }}
                 transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
                 style={{
-                  backgroundImage: `url(${getPublicAssetUrl('/學校圖檔/school_main_gate.png')})`,
+                  backgroundImage: `url(${getWebpUrl('/學校圖檔/school_main_gate.png')})`,
                   backgroundPosition: '21.5% center',
                   backgroundSize: `${100 / 0.285}% 100%`,
                   backgroundRepeat: 'no-repeat',
@@ -324,11 +329,11 @@ export default function StudentLogin({
 
               {/* Right Gate Door - 3D swinging outward open */}
               <motion.div
-                className="absolute top-0 bottom-0 right-[21.5%] w-[28.5%] z-20 pointer-events-none origin-right"
+                className="absolute top-0 bottom-0 right-[21.5%] w-[28.5%] z-20 pointer-events-none origin-right transform-gpu will-change-transform"
                 animate={gateDoorOpen ? { rotateY: 80, opacity: 0.15 } : { rotateY: 0, opacity: 1 }}
                 transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
                 style={{
-                  backgroundImage: `url(${getPublicAssetUrl('/學校圖檔/school_main_gate.png')})`,
+                  backgroundImage: `url(${getWebpUrl('/學校圖檔/school_main_gate.png')})`,
                   backgroundPosition: '78.5% center',
                   backgroundSize: `${100 / 0.285}% 100%`,
                   backgroundRepeat: 'no-repeat',
@@ -346,7 +351,7 @@ export default function StudentLogin({
                   animate={{ opacity: [0, 0.9, 0.4], scale: [0.6, 1.8, 2.2] }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 1.2, ease: 'easeOut' }}
-                  className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center"
+                  className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center transform-gpu"
                 >
                   <div className="w-[80vw] h-[80vh] bg-gradient-to-r from-amber-200/60 via-yellow-100/90 to-amber-200/60 rounded-full blur-3xl" />
                 </motion.div>
@@ -361,7 +366,7 @@ export default function StudentLogin({
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ delay: 0.2, duration: 0.5 }}
-                  className="absolute bottom-8 sm:bottom-12 md:bottom-14 left-1/2 -translate-x-1/2 z-40 pointer-events-none px-4 max-w-full"
+                  className="absolute bottom-8 sm:bottom-12 md:bottom-14 left-1/2 -translate-x-1/2 z-40 pointer-events-none px-4 max-w-full transform-gpu"
                 >
                   <div className="bg-white/95 backdrop-blur-md px-4 py-2 sm:px-7 sm:py-3 rounded-full shadow-2xl border-2 sm:border-3 border-amber-400 text-amber-950 font-black text-xs sm:text-base md:text-xl flex items-center gap-2 sm:gap-2.5 whitespace-nowrap">
                     <Sparkles className="w-4 h-4 sm:w-6 sm:h-6 text-amber-500 animate-spin" />
@@ -398,11 +403,16 @@ export default function StudentLogin({
       >
         {/* Full-Screen Cartoon Campus Map Backdrop */}
         <div className="absolute inset-0 z-0">
-          <img
-            src={getPublicAssetUrl('/學校圖檔/school_cartoon_map.png')}
-            alt="天主教善導小學校園探索地圖"
-            className="w-full h-full object-cover object-center filter saturate-[1.08] contrast-[1.02]"
-          />
+          <picture>
+            <source srcSet={getWebpUrl('/學校圖檔/school_cartoon_map.png')} type="image/webp" />
+            <img
+              src={getPublicAssetUrl('/學校圖檔/school_cartoon_map.png')}
+              alt="天主教善導小學校園探索地圖"
+              decoding="async"
+              loading="eager"
+              className="w-full h-full object-cover object-center filter saturate-[1.08] contrast-[1.02]"
+            />
+          </picture>
           {/* Subtle parchment vignette overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-amber-900/15 via-transparent to-amber-950/10 pointer-events-none" />
           <div className="absolute inset-0 bg-amber-100/10 mix-blend-overlay pointer-events-none" />
@@ -413,14 +423,14 @@ export default function StudentLogin({
           <motion.div
             animate={{ x: ['-20%', '115%'] }}
             transition={{ duration: 55, repeat: Infinity, ease: 'linear' }}
-            className="absolute top-4 left-0 opacity-70"
+            className="absolute top-4 left-0 opacity-70 transform-gpu will-change-transform"
           >
             <div className="w-48 h-14 bg-white/80 rounded-full blur-[2px]" />
           </motion.div>
           <motion.div
             animate={{ x: ['-10%', '120%'] }}
             transition={{ duration: 70, repeat: Infinity, ease: 'linear', delay: 10 }}
-            className="absolute top-12 left-0 opacity-60"
+            className="absolute top-12 left-0 opacity-60 transform-gpu will-change-transform"
           >
             <div className="w-64 h-16 bg-white/70 rounded-full blur-[3px]" />
           </motion.div>
@@ -536,6 +546,7 @@ export default function StudentLogin({
                 playSound('pop');
                 setViewState('LANDING');
               }}
+              data-role="back-to-landing-btn"
               className="flex items-center gap-1 sm:gap-1.5 bg-white/95 hover:bg-white text-slate-800 hover:text-emerald-700 font-black px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-2xl shadow-md border-2 border-emerald-300 transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm cursor-pointer whitespace-nowrap"
             >
               <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
@@ -567,11 +578,14 @@ export default function StudentLogin({
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                 className="w-16 h-16 md:w-18 md:h-18 bg-gradient-to-tr from-emerald-100 to-amber-100 rounded-2xl p-1.5 shadow-md border-2 border-amber-200 shrink-0 flex items-center justify-center overflow-hidden"
               >
-                <img
-                  src={getPublicAssetUrl(activeOption === 'STUDENT_LOGIN' ? currentCostume.imagePath : '/學校圖檔/吉祥物/enen_reading.png')}
-                  alt={`吉祥物恩恩 (${currentCostume.name})`}
-                  className="w-full h-full object-contain filter drop-shadow"
-                />
+                <picture className="w-full h-full flex items-center justify-center">
+                  <source srcSet={getWebpUrl(activeOption === 'STUDENT_LOGIN' ? currentCostume.imagePath : '/學校圖檔/吉祥物/enen_reading.png')} type="image/webp" />
+                  <img
+                    src={getPublicAssetUrl(activeOption === 'STUDENT_LOGIN' ? currentCostume.imagePath : '/學校圖檔/吉祥物/enen_reading.png')}
+                    alt={`吉祥物恩恩 (${currentCostume.name})`}
+                    className="w-full h-full object-contain filter drop-shadow"
+                  />
+                </picture>
               </motion.div>
 
               {/* Welcoming Speech Bubble */}

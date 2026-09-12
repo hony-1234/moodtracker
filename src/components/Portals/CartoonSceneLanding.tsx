@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue } from 'motion/react';
 import { Heart, GraduationCap, BookOpen, ArrowRight, RefreshCw, Volume2, VolumeX, Sparkles } from 'lucide-react';
-import { getPublicAssetUrl } from '../../utils/assetHelper';
+import { getPublicAssetUrl, getWebpUrl } from '../../utils/assetHelper';
+import { getSharedAudioContext } from '../../utils/audioHelper';
 import { SkeletalEnEn, EyeState } from './SkeletalEnEn';
 import { useDevice } from '../../hooks/useDevice';
 import { getActiveCostume, getRandomCostume, setActiveCostume, MascotCostume } from '../../utils/mascotCostumes';
@@ -11,6 +12,56 @@ interface CartoonSceneLandingProps {
   setPrivacyModalVisible: (visible: boolean) => void;
   onSwitchToClassic: () => void;
 }
+
+interface SkyFlyingMascotProps {
+  initialEye: EyeState;
+  mouseX: any;
+  mouseY: any;
+  sparkleEmoji: string;
+  sparkleClassName: string;
+}
+
+const SkyFlyingMascot: React.FC<SkyFlyingMascotProps> = React.memo(({
+  initialEye,
+  mouseX,
+  mouseY,
+  sparkleEmoji,
+  sparkleClassName
+}) => {
+  const [eyeState, setEyeState] = useState<EyeState>(initialEye);
+
+  useEffect(() => {
+    const eyeList: EyeState[] = ['normal', 'happy', 'wink_left', 'wink_right', 'look_down', 'surprised', 'star', 'love'];
+    const interval = setInterval(() => {
+      setEyeState(eyeList[Math.floor(Math.random() * eyeList.length)]);
+    }, 2800 + Math.random() * 800);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="relative w-full h-full filter drop-shadow-md">
+      <SkeletalEnEn
+        width="100%"
+        height="100%"
+        className="mb-0"
+        isWiggling={false}
+        mascotX={0}
+        mascotY={0}
+        mouseX={mouseX}
+        mouseY={mouseY}
+        isHovered={false}
+        eyeState={eyeState}
+      />
+      <motion.div
+        animate={{ opacity: [0.3, 0.9, 0.3], scale: [0.8, 1.2, 0.8] }}
+        transition={{ duration: 1.8, repeat: Infinity }}
+        className={sparkleClassName}
+      >
+        {sparkleEmoji}
+      </motion.div>
+    </div>
+  );
+});
 
 export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
   setViewState,
@@ -65,37 +116,28 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
   // Motion values for subtle cursor tracking in Live2D mascots
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const rafId = React.useRef<number | null>(null);
 
-  // Eye states for the two flying Live2D mascots
-  const [flyEye1, setFlyEye1] = useState<EyeState>('happy');
-  const [flyEye2, setFlyEye2] = useState<EyeState>('wink_happy');
-
-  // Periodically cycle flying mascots eye expressions
-  useEffect(() => {
-    const eyeList: EyeState[] = ['normal', 'happy', 'wink_left', 'wink_right', 'look_down', 'surprised', 'star', 'love'];
-    const interval = setInterval(() => {
-      const randomEye1 = eyeList[Math.floor(Math.random() * eyeList.length)];
-      const randomEye2 = eyeList[Math.floor(Math.random() * eyeList.length)];
-      setFlyEye1(randomEye1);
-      setFlyEye2(randomEye2);
-    }, 2800);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Mouse move handler for Live2D parallax
+  // Throttled mouse move handler for Live2D parallax (locked to display refresh rate)
   const handleMouseMove = (e: React.MouseEvent) => {
-    const { innerWidth, innerHeight } = window;
-    mouseX.set((e.clientX / innerWidth) - 0.5);
-    mouseY.set((e.clientY / innerHeight) - 0.5);
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    if (rafId.current !== null) return;
+    rafId.current = requestAnimationFrame(() => {
+      const { innerWidth, innerHeight } = window;
+      mouseX.set((clientX / innerWidth) - 0.5);
+      mouseY.set((clientY / innerHeight) - 0.5);
+      rafId.current = null;
+    });
   };
 
   // Play gentle synthesized chime / entrance sound via Web Audio API
   const playSoundEffect = (type: 'student' | 'teacher' | 'mascot') => {
     if (!soundEnabled) return;
     try {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-      if (!AudioCtx) return;
-      const ctx = new AudioCtx();
+      const ctx = getSharedAudioContext();
+      if (!ctx) return;
 
       if (type === 'student') {
         // Cheerful ascending arpeggio (C5, E5, G5, C6)
@@ -203,11 +245,16 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
     >
       {/* 1. Full-Screen Cartoon School Campus Backdrop */}
       <div className="absolute inset-0 z-0">
-        <img
-          src={getPublicAssetUrl('/學校圖檔/school_cartoon_backdrop.png')}
-          alt="天主教善導小學校園全景"
-          className="w-full h-full object-cover object-bottom"
-        />
+        <picture>
+          <source srcSet={getWebpUrl('/學校圖檔/school_cartoon_backdrop.png')} type="image/webp" />
+          <img
+            src={getPublicAssetUrl('/學校圖檔/school_cartoon_backdrop.png')}
+            alt="天主教善導小學校園全景"
+            decoding="async"
+            loading="eager"
+            className="w-full h-full object-cover object-bottom"
+          />
+        </picture>
         {/* Soft atmospheric sunlight gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-amber-100/15 pointer-events-none" />
       </div>
@@ -217,23 +264,23 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
         <motion.div
           animate={{ x: ['-20%', '115%'] }}
           transition={{ duration: 65, repeat: Infinity, ease: 'linear' }}
-          className="absolute top-6 left-0 opacity-80"
+          className="absolute top-6 left-0 opacity-80 transform-gpu will-change-transform"
         >
           <div className="w-56 h-16 bg-white/75 rounded-full blur-[2px] shadow-sm" />
         </motion.div>
         <motion.div
           animate={{ x: ['-15%', '120%'] }}
           transition={{ duration: 85, repeat: Infinity, ease: 'linear', delay: 15 }}
-          className="absolute top-16 left-0 opacity-60"
+          className="absolute top-16 left-0 opacity-60 transform-gpu will-change-transform"
         >
           <div className="w-72 h-20 bg-white/60 rounded-full blur-[3px]" />
         </motion.div>
       </div>
 
-      {/* 3. Two Flying Live-2D 恩恩 Mascots in the Sky (Device-Scale Aware) */}
+      {/* 3. Two Flying Live-2D 恩恩 Mascots in the Sky (Device-Scale Aware & Self-Contained) */}
       {/* Flying Mascot 1: Upper Left / Center Sky */}
       <motion.div
-        className="absolute top-[14%] sm:top-[8%] left-[4%] sm:left-[10%] md:left-[18%] z-15 pointer-events-none"
+        className="absolute top-[14%] sm:top-[8%] left-[4%] sm:left-[10%] md:left-[18%] z-15 pointer-events-none transform-gpu will-change-transform"
         animate={{
           x: [0, 50, 90, 40, 0],
           y: [0, -20, 8, -10, 0],
@@ -245,33 +292,21 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
           ease: 'easeInOut'
         }}
       >
-        <div className="relative w-16 h-20 sm:w-28 sm:h-32 md:w-36 md:h-40 filter drop-shadow-md">
-          <SkeletalEnEn
-            width="100%"
-            height="100%"
-            className="mb-0"
-            isWiggling={false}
-            mascotX={0}
-            mascotY={0}
+        <div className="relative w-16 h-20 sm:w-28 sm:h-32 md:w-36 md:h-40">
+          <SkyFlyingMascot
+            initialEye="happy"
             mouseX={mouseX}
             mouseY={mouseY}
-            isHovered={false}
-            eyeState={flyEye1}
+            sparkleEmoji="✨"
+            sparkleClassName="absolute -top-2 -right-2 text-yellow-300 text-xs sm:text-base pointer-events-none"
           />
-          <motion.div
-            animate={{ opacity: [0.3, 0.9, 0.3], scale: [0.8, 1.2, 0.8] }}
-            transition={{ duration: 1.8, repeat: Infinity }}
-            className="absolute -top-2 -right-2 text-yellow-300 text-xs sm:text-base"
-          >
-            ✨
-          </motion.div>
         </div>
       </motion.div>
 
       {/* Flying Mascot 2: Upper Right Sky (shown on wider screens or scaled down) */}
       {(!isMobile || isLandscape) && (
         <motion.div
-          className="absolute top-[10%] sm:top-[12%] right-[5%] sm:right-[10%] md:right-[16%] z-15 pointer-events-none"
+          className="absolute top-[10%] sm:top-[12%] right-[5%] sm:right-[10%] md:right-[16%] z-15 pointer-events-none transform-gpu will-change-transform"
           animate={{
             x: [0, -50, -80, -30, 0],
             y: [0, 16, -12, 10, 0],
@@ -284,26 +319,14 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
             delay: 2
           }}
         >
-          <div className="relative w-18 h-22 sm:w-24 sm:h-28 md:w-32 md:h-36 filter drop-shadow-md">
-            <SkeletalEnEn
-              width="100%"
-              height="100%"
-              className="mb-0"
-              isWiggling={false}
-              mascotX={0}
-              mascotY={0}
+          <div className="relative w-18 h-22 sm:w-24 sm:h-28 md:w-32 md:h-36">
+            <SkyFlyingMascot
+              initialEye="wink_happy"
               mouseX={mouseX}
               mouseY={mouseY}
-              isHovered={false}
-              eyeState={flyEye2}
+              sparkleEmoji="⭐"
+              sparkleClassName="absolute -top-1 -left-2 text-amber-300 text-xs sm:text-base pointer-events-none"
             />
-            <motion.div
-              animate={{ opacity: [0.4, 1, 0.4], scale: [0.9, 1.3, 0.9] }}
-              transition={{ duration: 2.2, repeat: Infinity, delay: 0.8 }}
-              className="absolute -top-1 -left-2 text-amber-300 text-xs sm:text-base"
-            >
-              ⭐
-            </motion.div>
           </div>
         </motion.div>
       )}
@@ -428,7 +451,7 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
           {/* Student Characters (Boy & Girl) */}
           <motion.div
             data-role="student-characters"
-            className="relative flex items-end justify-center cursor-pointer group"
+            className="relative flex items-end justify-center cursor-pointer group transform-gpu will-change-transform"
             onClick={handleStudentClick}
             onMouseEnter={() => setHoveredRole('STUDENT')}
             onMouseLeave={() => setHoveredRole(null)}
@@ -454,20 +477,28 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
             }
           >
             {/* Ground Shadow */}
-            <div className="absolute -bottom-2 w-[85%] h-5 bg-black/30 rounded-full blur-md" />
+            <div className="absolute -bottom-2 w-[85%] h-5 bg-black/30 rounded-full blur-md transform-gpu" />
 
             {/* Boy Student (Left) - In Mascot Art Style */}
-            <img
-              src={getPublicAssetUrl('/學校圖檔/學生/chibi_student_boy.png')}
-              alt="善導小學男學生"
-              className="h-28 sm:h-40 md:h-52 lg:h-64 xl:h-72 max-h-[25vh] sm:max-h-[34vh] md:max-h-[40vh] w-auto object-contain drop-shadow-xl select-none -mr-3 md:-mr-5 z-10 transition-transform group-hover:-translate-y-1"
-            />
+            <picture className="z-10 -mr-3 md:-mr-5">
+              <source srcSet={getWebpUrl('/學校圖檔/學生/chibi_student_boy.png')} type="image/webp" />
+              <img
+                src={getPublicAssetUrl('/學校圖檔/學生/chibi_student_boy.png')}
+                alt="善導小學男學生"
+                decoding="async"
+                className="h-28 sm:h-40 md:h-52 lg:h-64 xl:h-72 max-h-[25vh] sm:max-h-[34vh] md:max-h-[40vh] w-auto object-contain drop-shadow-xl select-none transition-transform group-hover:-translate-y-1"
+              />
+            </picture>
             {/* Girl Student (Right) - In Mascot Art Style */}
-            <img
-              src={getPublicAssetUrl('/學校圖檔/學生/chibi_student_girl.png')}
-              alt="善導小學女學生"
-              className="h-28 sm:h-40 md:h-52 lg:h-64 xl:h-72 max-h-[25vh] sm:max-h-[34vh] md:max-h-[40vh] w-auto object-contain drop-shadow-xl select-none z-10 transition-transform group-hover:-translate-y-1"
-            />
+            <picture className="z-10">
+              <source srcSet={getWebpUrl('/學校圖檔/學生/chibi_student_girl.png')} type="image/webp" />
+              <img
+                src={getPublicAssetUrl('/學校圖檔/學生/chibi_student_girl.png')}
+                alt="善導小學女學生"
+                decoding="async"
+                className="h-28 sm:h-40 md:h-52 lg:h-64 xl:h-72 max-h-[25vh] sm:max-h-[34vh] md:max-h-[40vh] w-auto object-contain drop-shadow-xl select-none transition-transform group-hover:-translate-y-1"
+              />
+            </picture>
           </motion.div>
         </div>
 
@@ -487,7 +518,7 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
                 initial={{ opacity: 1, scale: 0.5, x: heart.x, y: 0 }}
                 animate={{ opacity: 0, scale: 1.6, y: heart.y }}
                 transition={{ duration: 1.4, ease: 'easeOut' }}
-                className="absolute left-1/2 bottom-32 -translate-x-1/2 text-rose-500 font-bold flex items-center gap-1"
+                className="absolute left-1/2 bottom-32 -translate-x-1/2 text-rose-500 font-bold flex items-center gap-1 transform-gpu"
               >
                 <Heart className="w-5 h-5 fill-rose-500 text-rose-500" />
               </motion.div>
@@ -498,7 +529,7 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
           <motion.div
             animate={{ y: [0, -4, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            className="mb-2 text-center select-none pointer-events-none"
+            className="mb-2 text-center select-none pointer-events-none transform-gpu"
           >
             <div className="bg-white/95 backdrop-blur-md px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-full shadow-lg border border-amber-200 inline-flex items-center gap-1 sm:gap-1.5 whitespace-nowrap">
               <span className="text-amber-500 font-bold text-xs">💛</span>
@@ -511,7 +542,7 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
           {/* Official Mascot 恩恩 Figure */}
           <motion.div
             data-role="mascot-figure"
-            className="relative cursor-pointer group flex flex-col items-center"
+            className="relative cursor-pointer group flex flex-col items-center transform-gpu will-change-transform"
             onClick={handleMascotClick}
             title={`${currentCostume.name} - 點擊前往學生積點獎勵系統`}
             onMouseEnter={() => setHoveredRole('MASCOT')}
@@ -528,21 +559,25 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
             }}
           >
             {/* Ground Shadow */}
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[70%] h-4 bg-black/25 rounded-full blur-md" />
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[70%] h-4 bg-black/25 rounded-full blur-md transform-gpu" />
 
             {/* Radiant Angelic Glow behind 恩恩 */}
             <div className={`absolute inset-0 ${currentCostume.accentGlow} rounded-full blur-xl scale-95 group-hover:scale-110 transition-transform duration-500 -z-10`} />
 
             {/* Dynamic Costume Mascot */}
-            <motion.img
-              key={currentCostume.id}
-              initial={{ scale: 0.9, opacity: 0.8 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              src={getPublicAssetUrl(currentCostume.imagePath)}
-              alt={`天主教善導小學校園吉祥物 恩恩 (${currentCostume.name}) - 點擊前往學生積點獎勵系統`}
-              className="h-28 sm:h-40 md:h-52 lg:h-64 xl:h-72 max-h-[25vh] sm:max-h-[34vh] md:max-h-[40vh] w-auto object-contain drop-shadow-2xl select-none"
-            />
+            <picture className="contents">
+              <source srcSet={getWebpUrl(currentCostume.imagePath)} type="image/webp" />
+              <motion.img
+                key={currentCostume.id}
+                initial={{ scale: 0.9, opacity: 0.8 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                src={getPublicAssetUrl(currentCostume.imagePath)}
+                alt={`天主教善導小學校園吉祥物 恩恩 (${currentCostume.name}) - 點擊前往學生積點獎勵系統`}
+                decoding="async"
+                className="h-28 sm:h-40 md:h-52 lg:h-64 xl:h-72 max-h-[25vh] sm:max-h-[34vh] md:max-h-[40vh] w-auto object-contain drop-shadow-2xl select-none"
+              />
+            </picture>
 
             {/* Costume Badge & Quick Re-roll Dice underneath */}
             <div className="relative -mt-2.5 sm:-mt-3 z-20 flex items-center gap-1.5 opacity-95 group-hover:opacity-100 transition-opacity">
@@ -567,7 +602,7 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
                   initial={{ opacity: 0, y: 10, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 6, scale: 0.9 }}
-                  className="absolute -top-14 left-1/2 -translate-x-1/2 bg-amber-500 text-white font-bold text-xs md:text-sm px-3.5 py-1.5 rounded-xl shadow-xl border-2 border-white whitespace-nowrap pointer-events-none flex items-center gap-1.5 z-20"
+                  className="absolute -top-14 left-1/2 -translate-x-1/2 bg-amber-500 text-white font-bold text-xs md:text-sm px-3.5 py-1.5 rounded-xl shadow-xl border-2 border-white whitespace-nowrap pointer-events-none flex items-center gap-1.5 z-20 transform-gpu"
                 >
                   <span>{currentCostume.sparkleEmoji}</span>
                   <span>{currentCostume.speech}</span>
@@ -590,7 +625,7 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
           <motion.div
             animate={{ y: [0, -6, 0] }}
             transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
-            className="mb-2 cursor-pointer"
+            className="mb-2 cursor-pointer transform-gpu"
             onClick={handleTeacherClick}
             onMouseEnter={() => setHoveredRole('TEACHER')}
             onMouseLeave={() => setHoveredRole(null)}
@@ -614,7 +649,7 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
                   initial={{ opacity: 0, y: 8, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 4, scale: 0.9 }}
-                  className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white text-emerald-900 font-bold text-xs md:text-sm px-3.5 py-1.5 rounded-xl shadow-lg border border-emerald-200 whitespace-nowrap pointer-events-none flex items-center gap-1.5"
+                  className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white text-emerald-900 font-bold text-xs md:text-sm px-3.5 py-1.5 rounded-xl shadow-lg border border-emerald-200 whitespace-nowrap pointer-events-none flex items-center gap-1.5 transform-gpu"
                 >
                   <span>📚</span>
                   <span>點擊我們進入教師終端！</span>
@@ -626,7 +661,7 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
           {/* Teacher Characters (Male & Female) */}
           <motion.div
             data-role="teacher-characters"
-            className="relative flex items-end justify-center cursor-pointer group"
+            className="relative flex items-end justify-center cursor-pointer group transform-gpu will-change-transform"
             onClick={handleTeacherClick}
             onMouseEnter={() => setHoveredRole('TEACHER')}
             onMouseLeave={() => setHoveredRole(null)}
@@ -652,20 +687,28 @@ export const CartoonSceneLanding: React.FC<CartoonSceneLandingProps> = ({
             }
           >
             {/* Ground Shadow */}
-            <div className="absolute -bottom-2 w-[85%] h-5 bg-black/30 rounded-full blur-md" />
+            <div className="absolute -bottom-2 w-[85%] h-5 bg-black/30 rounded-full blur-md transform-gpu" />
 
             {/* Male Teacher (Left) */}
-            <img
-              src={getPublicAssetUrl('/學校圖檔/教師/teacher_male.png')}
-              alt="善導小學男教師"
-              className="h-32 sm:h-44 md:h-56 lg:h-68 xl:h-76 max-h-[28vh] sm:max-h-[37vh] md:max-h-[43vh] w-auto object-contain drop-shadow-xl select-none -mr-3 md:-mr-5 z-10 transition-transform group-hover:-translate-y-1"
-            />
+            <picture className="z-10 -mr-3 md:-mr-5">
+              <source srcSet={getWebpUrl('/學校圖檔/教師/teacher_male.png')} type="image/webp" />
+              <img
+                src={getPublicAssetUrl('/學校圖檔/教師/teacher_male.png')}
+                alt="善導小學男教師"
+                decoding="async"
+                className="h-32 sm:h-44 md:h-56 lg:h-68 xl:h-76 max-h-[28vh] sm:max-h-[37vh] md:max-h-[43vh] w-auto object-contain drop-shadow-xl select-none transition-transform group-hover:-translate-y-1"
+              />
+            </picture>
             {/* Female Teacher (Right) */}
-            <img
-              src={getPublicAssetUrl('/學校圖檔/教師/teacher_female.png')}
-              alt="善導小學女教師"
-              className="h-30 sm:h-42 md:h-54 lg:h-66 xl:h-74 max-h-[26vh] sm:max-h-[35vh] md:max-h-[41vh] w-auto object-contain drop-shadow-xl select-none z-10 transition-transform group-hover:-translate-y-1"
-            />
+            <picture className="z-10">
+              <source srcSet={getWebpUrl('/學校圖檔/教師/teacher_female.png')} type="image/webp" />
+              <img
+                src={getPublicAssetUrl('/學校圖檔/教師/teacher_female.png')}
+                alt="善導小學女教師"
+                decoding="async"
+                className="h-30 sm:h-42 md:h-54 lg:h-66 xl:h-74 max-h-[26vh] sm:max-h-[35vh] md:max-h-[41vh] w-auto object-contain drop-shadow-xl select-none transition-transform group-hover:-translate-y-1"
+              />
+            </picture>
           </motion.div>
         </div>
 

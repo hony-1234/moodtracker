@@ -7,3 +7,12 @@ export const getPublicAssetUrl = (path: string): string => {
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
   return encodeURI(`${cleanBase}${cleanPath}`);
 };
+
+/**
+ * Returns WebP url for raster PNG assets to drastically reduce bandwidth and load time
+ */
+export const getWebpUrl = (path: string): string => {
+  const webpPath = path.replace(/\.png$/i, '.webp');
+  return getPublicAssetUrl(webpPath);
+};
+

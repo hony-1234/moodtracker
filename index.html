@@ -15,6 +15,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="manifest" href="./manifest.json" />
     <link rel="apple-touch-icon" href="./icon.svg" />
+    <!-- Preload Critical Scene Assets (High Priority WebP & BGM) for Instant Smooth Transitions -->
+    <link rel="preload" as="image" href="./學校圖檔/school_cartoon_backdrop.webp" type="image/webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="./學校圖檔/school_main_gate.webp" type="image/webp" />
+    <link rel="preload" as="image" href="./學校圖檔/school_cartoon_map.webp" type="image/webp" />
+    <link rel="preload" as="image" href="./學校圖檔/教室/classroom_cartoon_backdrop.webp" type="image/webp" />
+    <link rel="preload" as="image" href="./學校圖檔/學生/cartoon_journal_cover.webp" type="image/webp" />
+    <link rel="preload" as="audio" href="./audio/bgm.mp3" type="audio/mpeg" />
   </head>
   <body class="bg-slate-50 text-slate-800">
     <div id="root"></div>

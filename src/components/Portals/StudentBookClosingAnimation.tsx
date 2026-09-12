@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Heart } from 'lucide-react';
-import { getPublicAssetUrl } from '../../utils/assetHelper';
+import { getPublicAssetUrl, getWebpUrl } from '../../utils/assetHelper';
 import { useDevice } from '../../hooks/useDevice';
 
 interface StudentBookClosingAnimationProps {
@@ -298,11 +298,14 @@ export const StudentBookClosingAnimation: React.FC<StudentBookClosingAnimationPr
             className="relative select-none"
           >
             {/* Hardcover Graphic */}
-            <img
-              src={getPublicAssetUrl('/學校圖檔/教室/cartoon_journal_cover.png')}
-              alt="已封存的心情日記本封面"
-              className="w-64 sm:w-80 md:w-92 h-auto drop-shadow-[0_25px_45px_rgba(50,20,5,0.6)] rounded-2xl"
-            />
+            <picture>
+              <source srcSet={getWebpUrl('/學校圖檔/教室/cartoon_journal_cover.png')} type="image/webp" />
+              <img
+                src={getPublicAssetUrl('/學校圖檔/教室/cartoon_journal_cover.png')}
+                alt="已封存的心情日記本封面"
+                className="w-64 sm:w-80 md:w-92 h-auto drop-shadow-[0_25px_45px_rgba(50,20,5,0.6)] rounded-2xl"
+              />
+            </picture>
 
             {/* Glowing Golden Ring Pulse */}
             <div className="absolute inset-0 border-4 border-yellow-300/80 rounded-2xl animate-pulse pointer-events-none shadow-[0_0_25px_rgba(253,224,71,0.5)]" />

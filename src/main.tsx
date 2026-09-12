@@ -2,6 +2,10 @@ import React, { StrictMode, Component, ErrorInfo, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
+import { startImmediateAssetPreload } from './utils/assetPreloader';
+
+// Immediately download and decode all scene assets, costumes, and audio
+startImmediateAssetPreload();
 
 interface ErrorBoundaryProps {
   children: ReactNode;

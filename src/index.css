@@ -44,3 +44,10 @@
     background: #94a3b8;
   }
 }
+/* Broken image resilience */
+img {
+  text-indent: -9999px;
+}
+img:not([src]), img[src=""] {
+  visibility: hidden;
+}

@@ -20,7 +20,8 @@ import {
   Smile,
   Compass
 } from 'lucide-react';
-import { getPublicAssetUrl } from '../../utils/assetHelper';
+import { getPublicAssetUrl, getWebpUrl } from '../../utils/assetHelper';
+import { getSharedAudioContext } from '../../utils/audioHelper';
 import { formatDateObj } from '../../utils/dateHelpers';
 import { MOOD_EMOJIS } from '../../constants/moodConstants';
 import { findStudentByClassAndNumber, findStudentByGoogleEmail } from '../../data/studentsRoster';
@@ -95,14 +96,7 @@ export default function ClassroomBookExperience({
   const playSound = (type: 'chime' | 'book_thud' | 'page_turn' | 'pop' | 'stamp') => {
     if (!soundEnabled) return;
     try {
-      if (!audioCtxRef.current) {
-        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-        if (AudioCtx) audioCtxRef.current = new AudioCtx();
-      }
-      const ctx = audioCtxRef.current;
-      if (!ctx || ctx.state === 'suspended') {
-        ctx?.resume();
-      }
+      const ctx = getSharedAudioContext();
       if (!ctx) return;
 
       const now = ctx.currentTime;
@@ -281,11 +275,14 @@ export default function ClassroomBookExperience({
           transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0 w-full h-full"
         >
-          <img
-            src={getPublicAssetUrl('/學校圖檔/教室/classroom_cartoon_backdrop.png')}
-            alt="天主教善導小學卡通教室全景"
-            className="w-full h-full object-cover object-bottom"
-          />
+          <picture>
+            <source srcSet={getWebpUrl('/學校圖檔/教室/classroom_cartoon_backdrop.png')} type="image/webp" />
+            <img
+              src={getPublicAssetUrl('/學校圖檔/教室/classroom_cartoon_backdrop.png')}
+              alt="天主教善導小學卡通教室全景"
+              className="w-full h-full object-cover object-bottom"
+            />
+          </picture>
           <div className="absolute inset-0 bg-gradient-to-t from-amber-900/25 via-amber-100/10 to-sky-300/15 mix-blend-soft-light" />
         </motion.div>
 
@@ -421,15 +418,18 @@ export default function ClassroomBookExperience({
           <button
             type="button"
             data-tab="DIARIES"
-            onClick={() => handleSelectTab('DIARIES')}
-            className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1 cursor-pointer shrink-0 ${
-              cartoonTab === 'DIARIES'
-                ? 'bg-indigo-600 text-white shadow-xs'
-                : 'text-amber-950/70 hover:bg-white/50'
-            }`}
+            onClick={() => {
+              alert("🚧 4Rs 心靈日記正在精心籌備中 (In Development)，即將正式開放，敬請期待喔！✨");
+            }}
+            className="relative px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-not-allowed text-slate-500 bg-slate-100/80 hover:bg-slate-200/80 border border-slate-300 shadow-3xs shrink-0 select-none group"
+            title="4Rs 心靈日記正在籌備中 (In Development)"
           >
-            <BookOpen className="w-3.5 h-3.5" />
+            <BookOpen className="w-3.5 h-3.5 text-slate-400" />
             <span>📖 心靈日記</span>
+            <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-amber-400 text-amber-950 uppercase tracking-tight shadow-3xs flex items-center gap-0.5">
+              <span>🚧</span>
+              <span>籌備中</span>
+            </span>
           </button>
         </div>
 
@@ -487,11 +487,14 @@ export default function ClassroomBookExperience({
                 onClick={handleOpenBook}
               >
                 <div className="relative">
-                  <img
-                    src={getPublicAssetUrl('/學校圖檔/教室/cartoon_journal_cover.png')}
-                    alt="精裝心情日記"
-                    className="w-72 sm:w-88 md:w-96 lg:w-[420px] h-auto drop-shadow-[0_20px_35px_rgba(70,35,10,0.4)] transition-all duration-300 group-hover:scale-103 group-hover:-rotate-1"
-                  />
+                  <picture>
+                    <source srcSet={getWebpUrl('/學校圖檔/教室/cartoon_journal_cover.png')} type="image/webp" />
+                    <img
+                      src={getPublicAssetUrl('/學校圖檔/教室/cartoon_journal_cover.png')}
+                      alt="精裝心情日記"
+                      className="w-72 sm:w-88 md:w-96 lg:w-[420px] h-auto drop-shadow-[0_20px_35px_rgba(70,35,10,0.4)] transition-all duration-300 group-hover:scale-103 group-hover:-rotate-1"
+                    />
+                  </picture>
                   <div className="absolute top-[58%] inset-x-8 text-center bg-amber-950/55 backdrop-blur-xs py-2 px-3 rounded-lg border border-amber-300/40 shadow-inner">
                     <p className="text-amber-200 text-xs font-serif font-black tracking-widest">
                       {selectedClass} 班 {activeStudentNumber} 號
@@ -780,11 +783,17 @@ export default function ClassroomBookExperience({
                             </button>
                             <button
                               type="button"
-                              onClick={() => handleSelectTab('DIARIES')}
-                              className="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs shadow-xs transition-all cursor-pointer flex items-center gap-1.5"
+                              onClick={() => {
+                                alert("🚧 4Rs 心靈日記正在精心籌備中 (In Development)，即將正式開放，敬請期待喔！✨");
+                              }}
+                              className="relative px-3.5 py-2 rounded-xl bg-slate-200 text-slate-500 font-black text-xs shadow-xs transition-all cursor-not-allowed flex items-center gap-1.5 opacity-80"
+                              title="4Rs 心靈日記正在籌備中 (In Development)"
                             >
-                              <BookOpen className="w-3.5 h-3.5" />
-                              <span>📖 翻開 4Rs 心靈日記</span>
+                              <BookOpen className="w-3.5 h-3.5 text-slate-400" />
+                              <span>📖 4Rs 心靈日記</span>
+                              <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-amber-400 text-amber-950 shadow-3xs">
+                                籌備中
+                              </span>
                             </button>
                             <button
                               type="button"

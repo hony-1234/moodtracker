@@ -202,15 +202,18 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
           <button
             type="button"
-            onClick={() => setActiveTab('DIARIES')}
-            className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 cursor-pointer ${
-              activeTab === 'DIARIES'
-                ? 'bg-indigo-600 text-white shadow-xs scale-102'
-                : 'text-slate-600 hover:bg-slate-100'
-            }`}
+            onClick={() => {
+              alert("🚧 4Rs 心靈日記正在精心籌備中 (In Development)，即將正式開放，敬請期待喔！✨");
+            }}
+            className="relative px-4 sm:px-5 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 cursor-not-allowed opacity-80 text-slate-500 bg-slate-100 border border-slate-300 shadow-3xs"
+            title="4Rs 心靈日記正在籌備中 (In Development)"
           >
-            <BookOpen className="w-4 h-4" />
+            <BookOpen className="w-4 h-4 text-slate-400" />
             <span>📖 我的 4Rs 心靈日記</span>
+            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-amber-400 text-amber-950 uppercase tracking-tight shadow-3xs flex items-center gap-1 animate-pulse">
+              <span>🚧</span>
+              <span>In Development</span>
+            </span>
           </button>
         </div>
       </div>

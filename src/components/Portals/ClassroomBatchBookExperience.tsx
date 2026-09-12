@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { MOOD_EMOJIS, getMoodColor } from '../../constants/moodConstants';
 import { formatDateObj } from '../../utils/dateHelpers';
-import { getPublicAssetUrl } from '../../utils/assetHelper';
+import { getPublicAssetUrl, getWebpUrl } from '../../utils/assetHelper';
 import { getStudentsByClass, StudentRecord } from '../../data/studentsRoster';
 import { FourRsStation } from '../Dashboards/StudentDashboard/FourRsStation';
 
@@ -287,11 +287,14 @@ export const ClassroomBatchBookExperience: React.FC<ClassroomBatchBookExperience
           transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0 w-full h-full"
         >
-          <img
-            src={getPublicAssetUrl('/學校圖檔/教室/classroom_cartoon_backdrop.png')}
-            alt="天主教善導小學卡通教室全景"
-            className="w-full h-full object-cover object-bottom"
-          />
+          <picture>
+            <source srcSet={getWebpUrl('/學校圖檔/教室/classroom_cartoon_backdrop.png')} type="image/webp" />
+            <img
+              src={getPublicAssetUrl('/學校圖檔/教室/classroom_cartoon_backdrop.png')}
+              alt="天主教善導小學卡通教室全景"
+              className="w-full h-full object-cover object-bottom"
+            />
+          </picture>
           <div className="absolute inset-0 bg-gradient-to-t from-amber-900/25 via-amber-100/10 to-sky-300/15 mix-blend-soft-light" />
         </motion.div>
 
@@ -538,11 +541,14 @@ export const ClassroomBatchBookExperience: React.FC<ClassroomBatchBookExperience
             onClick={handleOpenBook}
           >
             <div className="relative">
-              <img
-                src={getPublicAssetUrl('/學校圖檔/教室/cartoon_journal_cover.png')}
-                alt="精裝心情日記"
-                className="w-72 sm:w-88 md:w-96 lg:w-[420px] h-auto drop-shadow-[0_20px_35px_rgba(70,35,10,0.4)] transition-all duration-300 group-hover:scale-103 group-hover:-rotate-1"
-              />
+              <picture>
+                <source srcSet={getWebpUrl('/學校圖檔/教室/cartoon_journal_cover.png')} type="image/webp" />
+                <img
+                  src={getPublicAssetUrl('/學校圖檔/教室/cartoon_journal_cover.png')}
+                  alt="精裝心情日記"
+                  className="w-72 sm:w-88 md:w-96 lg:w-[420px] h-auto drop-shadow-[0_20px_35px_rgba(70,35,10,0.4)] transition-all duration-300 group-hover:scale-103 group-hover:-rotate-1"
+                />
+              </picture>
               <div className="absolute top-[58%] inset-x-8 text-center bg-amber-950/55 backdrop-blur-xs py-2 px-3 rounded-lg border border-amber-300/40 shadow-inner">
                 <p className="text-amber-200 text-xs font-serif font-black tracking-widest">
                   {selectedClass ? `${selectedClass} 班` : '初小班級'} · 班級心情花名冊

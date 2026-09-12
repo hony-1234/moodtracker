@@ -43,19 +43,20 @@ import MascotWatermarkBackground from './components/Layout/MascotWatermarkBackgr
 import Landing from './components/Portals/Landing';
 import StudentLogin from './components/Portals/StudentLogin';
 import TeacherLogin from './components/Portals/TeacherLogin';
-import StudentDashboard from './components/Dashboards/StudentDashboard/Index';
-import { TeacherDashboard } from './components/Dashboards/TeacherDashboard/Index';
-import { P13BatchGrader } from './components/Dashboards/TeacherDashboard/P13BatchGrader';
-import StudentBookClosingAnimation from './components/Portals/StudentBookClosingAnimation';
 import BackgroundMusic from './components/Audio/BackgroundMusic';
+import WalkingSceneTransitionOverlay from './components/Common/WalkingSceneTransitionOverlay';
 
-// Overlays
-import {
-  ActionModal,
-  PrivacyPolicyModal,
-  UpdateSummaryModal,
-  SystemGuideModal
-} from './components/Common/Modals';
+// Lazy loaded heavy components for route code splitting & fast initial paint
+const StudentDashboard = React.lazy(() => import('./components/Dashboards/StudentDashboard/Index'));
+const TeacherDashboard = React.lazy(() => import('./components/Dashboards/TeacherDashboard/Index').then(m => ({ default: m.TeacherDashboard })));
+const P13BatchGrader = React.lazy(() => import('./components/Dashboards/TeacherDashboard/P13BatchGrader').then(m => ({ default: m.P13BatchGrader })));
+const StudentBookClosingAnimation = React.lazy(() => import('./components/Portals/StudentBookClosingAnimation'));
+
+// Lazy loaded overlay modals
+const ActionModal = React.lazy(() => import('./components/Common/Modals').then(m => ({ default: m.ActionModal })));
+const PrivacyPolicyModal = React.lazy(() => import('./components/Common/Modals').then(m => ({ default: m.PrivacyPolicyModal })));
+const UpdateSummaryModal = React.lazy(() => import('./components/Common/Modals').then(m => ({ default: m.UpdateSummaryModal })));
+const SystemGuideModal = React.lazy(() => import('./components/Common/Modals').then(m => ({ default: m.SystemGuideModal })));
 
 // Module-level caches
 let cachedAccessToken: string | null = null;
@@ -65,6 +66,50 @@ const processingAlertIds = new Set<string>();
 export default function App() {
   // --- LAYOUT VIEWS ---
   const [viewState, setViewState] = useState<'LANDING' | 'STUDENT_LOGIN' | 'STUDENT_DASHBOARD' | 'TEACHER_LOGIN' | 'TEACHER_DASHBOARD' | 'TEACHER_P1_3_BATCH'>('LANDING');
+
+  // --- INITIAL BOOT & ASSET PRELOADING STATES ---
+  const [isInitialBootLoading, setIsInitialBootLoading] = useState(true);
+  const [initialBootProgress, setInitialBootProgress] = useState(0);
+
+  // Preload critical assets on startup and only dismiss loading screen when complete
+  useEffect(() => {
+    let isMounted = true;
+    const executePreload = async () => {
+      try {
+        await preloadAllAssetsWithProgress((pct) => {
+          if (isMounted) {
+            setInitialBootProgress(pct);
+          }
+        }, 1800);
+      } catch (err) {
+        console.warn('Initial asset preload notice:', err);
+      } finally {
+        if (isMounted) {
+          setInitialBootProgress(100);
+          setTimeout(() => {
+            if (isMounted) {
+              setIsInitialBootLoading(false);
+            }
+          }, 350);
+        }
+      }
+    };
+
+    executePreload();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // --- SCENE TRANSITION OVERLAY STATE ---
+  const [sceneTransition, setSceneTransition] = useState<{
+    active: boolean;
+    message: string;
+  }>({
+    active: false,
+    message: '正在背著書包漫步走進校園...',
+  });
 
   // --- GENERAL STATES ---
   const [loading, setLoading] = useState(false);
@@ -1004,7 +1049,13 @@ export default function App() {
           }
         }
         setActiveStudentNumber('');
-        setViewState('TEACHER_P1_3_BATCH');
+        setSceneTransition({
+          active: true,
+          message: '正在進入班級代登分通道...',
+        });
+        setTimeout(() => {
+          setViewState('TEACHER_P1_3_BATCH');
+        }, 1100);
 
         if (rememberMe) {
           localStorage.setItem('student_token_session', JSON.stringify({ 
@@ -1019,7 +1070,13 @@ export default function App() {
       } else {
         // Individual Student Mood Logging (P.1 - P.6)
         setActiveStudentNumber(sNo);
-        setViewState('STUDENT_DASHBOARD');
+        setSceneTransition({
+          active: true,
+          message: '正在背著書包漫步走進學生心情花園...',
+        });
+        setTimeout(() => {
+          setViewState('STUDENT_DASHBOARD');
+        }, 1100);
 
         if (rememberMe) {
           localStorage.setItem('student_token_session', JSON.stringify({ 
@@ -1685,35 +1742,40 @@ export default function App() {
     };
   }, [reports]);
 
+  // --- UNIQUE DATES (only recomputes when reports change) ---
+  const uniqueDates = useMemo(() => {
+    const rawUniqueDates = reports.map((item: any) => getDisplayDate(item));
+    return ['全部日期', ...Array.from(new Set(rawUniqueDates))].sort((a: string, b: string) => {
+      if (a === '全部日期') return -1;
+      if (b === '全部日期') return 1;
+      return parseDateString(b) - parseDateString(a);
+    });
+  }, [reports]);
+
+  // --- MISSING STUDENTS TODAY (only recomputes when reports or selectedClass change) ---
+  const missingStudentsToday = useMemo(() => {
+    if (selectedClass === 'GCCPS') return [];
+    const todayStr = formatDateObj(new Date());
+    const todayReportsForClass = reports.filter(r => getDisplayDate(r) === todayStr && (r.class || r.班別) === selectedClass);
+    const enteredStudentNumbers = new Set(todayReportsForClass.map(r => parseInt(r.studentNumber || r.學號 || "0")));
+    return Array.from({ length: 30 }, (_, i) => i + 1).filter(num => !enteredStudentNumbers.has(num));
+  }, [reports, selectedClass]);
+
+  // --- THREAT COUNT ---
+  const threatCount = useMemo(() => {
+    return reports.filter((r: any) => r.status !== 'Resolved' && getWarningLevel(r.comment || r.有事情想向老師分享 || "") === 'red').length;
+  }, [reports]);
+
   // --- QUERY FILTERING ---
-  const { filteredData, uniqueDates, threatCount, missingStudentsToday } = useMemo(() => {
+  const filteredData = useMemo(() => {
     let list = [...reports];
-    let alertThreat = 0;
 
     if (selectedClass === 'GCCPS') {
-      alertThreat = reports.filter((r: any) => r.status !== 'Resolved' && getWarningLevel(r.comment || r.有事情想向老師分享 || "") === 'red').length;
       if (activeTab === 'ALL_COMMENTS') {
         list = list.filter((r: any) => (r.comment || r.有事情想向老師分享 || "").trim() !== "");
       } else {
         list = list.filter((r: any) => getWarningLevel(r.comment || r.有事情想向老師分享 || "") === 'red');
       }
-    } else {
-      alertThreat = reports.filter((r: any) => r.status !== 'Resolved' && getWarningLevel(r.comment || r.有事情想向老師分享 || "") === 'red').length;
-    }
-
-    const rawUniqueDates = reports.map((item: any) => getDisplayDate(item));
-    const dates = ['全部日期', ...Array.from(new Set(rawUniqueDates))].sort((a: string, b: string) => {
-      if (a === '全部日期') return -1;
-      if (b === '全部日期') return 1;
-      return parseDateString(b) - parseDateString(a);
-    });
-
-    let missingStudentsToday: number[] = [];
-    if (selectedClass !== 'GCCPS') {
-      const todayStr = formatDateObj(new Date());
-      const todayReportsForClass = reports.filter(r => getDisplayDate(r) === todayStr && (r.class || r.班別) === selectedClass);
-      const enteredStudentNumbers = new Set(todayReportsForClass.map(r => parseInt(r.studentNumber || r.學號 || "0")));
-      missingStudentsToday = Array.from({ length: 30 }, (_, i) => i + 1).filter(num => !enteredStudentNumbers.has(num));
     }
 
     if (selectedDate !== '全部日期') {
@@ -1722,8 +1784,9 @@ export default function App() {
       }
     }
 
-    if (searchQuery.trim()) {
-      list = list.filter((r: any) => String(r.studentNumber || r.學號 || "").includes(searchQuery.trim()));
+    const query = searchQuery.trim();
+    if (query) {
+      list = list.filter((r: any) => String(r.studentNumber || r.學號 || "").includes(query));
     }
 
     list.sort((a: any, b: any) => {
@@ -1741,7 +1804,7 @@ export default function App() {
       return parseInt(a.studentNumber || a.學號 || "0") - parseInt(b.studentNumber || b.學號 || "0");
     });
 
-    return { filteredData: list, uniqueDates: dates, threatCount: alertThreat, missingStudentsToday };
+    return list;
   }, [reports, selectedClass, selectedDate, searchQuery, activeTab]);
 
   // --- OVERLAY DATA ---
@@ -1890,6 +1953,14 @@ export default function App() {
       {/* GLOBAL PERSISTENT BACKGROUND MUSIC (LOOPS SEAMLESSLY DURING PAGE TRANSITIONS) */}
       <BackgroundMusic />
 
+      {/* GLOBAL SCENE TRANSITION & INITIAL BOOT OVERLAY */}
+      <WalkingSceneTransitionOverlay
+        isVisible={isInitialBootLoading || sceneTransition.active}
+        progress={isInitialBootLoading ? initialBootProgress : undefined}
+        message={isInitialBootLoading ? '校園心情加油站啟動中，正在載入素材...' : sceneTransition.message}
+        onComplete={isInitialBootLoading ? undefined : () => setSceneTransition(prev => ({ ...prev, active: false }))}
+      />
+
       {/* GLOBAL MASCOT WATERMARK BACKGROUND */}
       <MascotWatermarkBackground />
 
@@ -1906,186 +1977,192 @@ export default function App() {
 
       {/* ROUTER AND SWITCHER */}
       <main className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-        <AnimatePresence mode="wait">
-          {viewState === 'LANDING' && (
-            <Landing
-              setViewState={setViewState}
-              setPrivacyModalVisible={setPrivacyModalVisible}
-            />
-          )}
+        <React.Suspense fallback={<WalkingSceneTransitionOverlay isVisible={true} message="校園漫步載入中，即將呈現..." />}>
+          <AnimatePresence mode="wait">
+            {viewState === 'LANDING' && (
+              <Landing
+                setViewState={setViewState}
+                setPrivacyModalVisible={setPrivacyModalVisible}
+              />
+            )}
 
-          {viewState === 'STUDENT_LOGIN' && (
-            <StudentLogin
-              ALL_CLASSES={ALL_CLASSES}
-              selectedClass={selectedClass}
-              setSelectedClass={setSelectedClass}
-              studentNoInput={studentNoInput}
-              setStudentNoInput={setStudentNoInput}
-              loginPassword={loginPassword}
-              setLoginPassword={setLoginPassword}
-              rememberMe={rememberMe}
-              setRememberMe={setRememberMe}
-              loading={loading}
-              handleStudentLoginSubmit={handleStudentLoginSubmit}
-              setViewState={setViewState}
-            />
-          )}
+            {viewState === 'STUDENT_LOGIN' && (
+              <StudentLogin
+                ALL_CLASSES={ALL_CLASSES}
+                selectedClass={selectedClass}
+                setSelectedClass={setSelectedClass}
+                studentNoInput={studentNoInput}
+                setStudentNoInput={setStudentNoInput}
+                loginPassword={loginPassword}
+                setLoginPassword={setLoginPassword}
+                rememberMe={rememberMe}
+                setRememberMe={setRememberMe}
+                loading={loading}
+                handleStudentLoginSubmit={handleStudentLoginSubmit}
+                setViewState={setViewState}
+              />
+            )}
 
-          {viewState === 'TEACHER_LOGIN' && (
-            <TeacherLogin
-              selectedClass={selectedClass}
-              setSelectedClass={setSelectedClass}
-              loginPassword={loginPassword}
-              setLoginPassword={setLoginPassword}
-              rememberMe={rememberMe}
-              setRememberMe={setRememberMe}
-              loading={loading}
-              handleTeacherLoginSubmit={handleTeacherLoginSubmit}
-              setViewState={setViewState}
-            />
-          )}
+            {viewState === 'TEACHER_LOGIN' && (
+              <TeacherLogin
+                selectedClass={selectedClass}
+                setSelectedClass={setSelectedClass}
+                loginPassword={loginPassword}
+                setLoginPassword={setLoginPassword}
+                rememberMe={rememberMe}
+                setRememberMe={setRememberMe}
+                loading={loading}
+                handleTeacherLoginSubmit={handleTeacherLoginSubmit}
+                setViewState={setViewState}
+              />
+            )}
 
-          {viewState === 'STUDENT_DASHBOARD' && (
-            <StudentDashboard
-              selectedClass={selectedClass}
-              activeStudentNumber={activeStudentNumber}
-              studentSuccessMessage={studentSuccessMessage}
-              setStudentSuccessMessage={setStudentSuccessMessage}
-              studentMood={studentMood}
-              setStudentMood={setStudentMood}
-              studentComment={studentComment}
-              setStudentComment={setStudentComment}
-              showStudentReport={showStudentReport}
-              setShowStudentReport={setShowStudentReport}
-              reports={reports}
-              handleLogout={handleLogout}
-              handleStudentReportSubmit={handleStudentReportSubmit}
-              loading={loading}
-            />
-          )}
+            {viewState === 'STUDENT_DASHBOARD' && (
+              <StudentDashboard
+                selectedClass={selectedClass}
+                activeStudentNumber={activeStudentNumber}
+                studentSuccessMessage={studentSuccessMessage}
+                setStudentSuccessMessage={setStudentSuccessMessage}
+                studentMood={studentMood}
+                setStudentMood={setStudentMood}
+                studentComment={studentComment}
+                setStudentComment={setStudentComment}
+                showStudentReport={showStudentReport}
+                setShowStudentReport={setShowStudentReport}
+                reports={reports}
+                handleLogout={handleLogout}
+                handleStudentReportSubmit={handleStudentReportSubmit}
+                loading={loading}
+              />
+            )}
 
-          {viewState === 'TEACHER_P1_3_BATCH' && (
-            <P13BatchGrader
-              selectedClass={selectedClass}
-              setSelectedClass={setSelectedClass}
-              ALL_CLASSES={ALL_CLASSES}
-              batchScores={batchScores}
-              handleP13CellGradeChange={handleP13CellGradeChange}
-              handleP13CellCommentChange={handleP13CellCommentChange}
-              handleP13BatchSubmit={handleP13BatchSubmit}
-              isP13Saved={isP13Saved}
-              loading={loading}
-              setViewState={setViewState}
-              reports={reports}
-            />
-          )}
+            {viewState === 'TEACHER_P1_3_BATCH' && (
+              <P13BatchGrader
+                selectedClass={selectedClass}
+                setSelectedClass={setSelectedClass}
+                ALL_CLASSES={ALL_CLASSES}
+                batchScores={batchScores}
+                handleP13CellGradeChange={handleP13CellGradeChange}
+                handleP13CellCommentChange={handleP13CellCommentChange}
+                handleP13BatchSubmit={handleP13BatchSubmit}
+                isP13Saved={isP13Saved}
+                loading={loading}
+                setViewState={setViewState}
+                reports={reports}
+              />
+            )}
 
-          {viewState === 'TEACHER_DASHBOARD' && (
-            <TeacherDashboard
-              selectedClass={selectedClass}
-              reports={reports}
-              analyticsData={analyticsData}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-              alertEmails={alertEmails}
-              setAlertEmails={setAlertEmails}
-              handleSaveAlertSettings={handleSaveAlertSettings}
-              currentUser={currentUser}
-              handleGoogleLogin={handleGoogleLogin}
-              handleGoogleLogout={handleGoogleLogout}
-              isLoggingIn={isLoggingIn}
-              hasPermissionError={hasPermissionError}
-              threatCount={threatCount}
-              consecutiveLowMoodStudents={consecutiveLowMoodStudents}
-              exportStartDate={exportStartDate}
-              setExportStartDate={setExportStartDate}
-              exportEndDate={exportEndDate}
-              setExportEndDate={setExportEndDate}
-              handleCSVExport={handleCSVExport}
-              isExporting={isExporting}
-              handleCSVUpload={handleCSVUpload}
-              uploadProgress={uploadProgress}
-              handleClearTestData={handleClearTestData}
-              setUpdateSummaryVisible={setUpdateSummaryVisible}
-              todayStr={todayStr}
-              uncompletedList={uncompletedList}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              uniqueDates={uniqueDates}
-              selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
-              missingStudentsToday={missingStudentsToday}
-              studentDirectoryList={studentDirectoryList}
-              detailStudentId={detailStudentId}
-              setDetailStudentId={setDetailStudentId}
-              detailStudentReports={detailStudentReports}
-              filteredData={filteredData}
-              setActiveReportId={setActiveReportId}
-              setActionText={setActionText}
-              setActionModalVisible={setActionModalVisible}
-              passwordsData={passwordsData}
-              setPasswordsData={setPasswordsData}
-              editingStudentPasswords={editingStudentPasswords}
-              setEditingStudentPasswords={setEditingStudentPasswords}
-              currentEditClass={currentEditClass}
-              setCurrentEditClass={setCurrentEditClass}
-              handleSavePasswords={handleSavePasswords}
-              handleSaveStudentPasswords={handleSaveStudentPasswords}
-              isSavingPass={isSavingPass}
-              loginHistory={loginHistory}
-              tokenExpiryTime={tokenExpiryTime}
-              hasPendingUndispatchedAlerts={hasPendingUndispatchedAlerts}
-              gmailCredentials={gmailCredentials}
-              handleSaveOAuthCredentials={handleSaveOAuthCredentials}
-              handleDisconnectGmail={handleDisconnectGmail}
-              handleStartGoogleOAuth={handleStartGoogleOAuth}
-            />
-          )}
-        </AnimatePresence>
+            {viewState === 'TEACHER_DASHBOARD' && (
+              <TeacherDashboard
+                selectedClass={selectedClass}
+                reports={reports}
+                analyticsData={analyticsData}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                alertEmails={alertEmails}
+                setAlertEmails={setAlertEmails}
+                handleSaveAlertSettings={handleSaveAlertSettings}
+                currentUser={currentUser}
+                handleGoogleLogin={handleGoogleLogin}
+                handleGoogleLogout={handleGoogleLogout}
+                isLoggingIn={isLoggingIn}
+                hasPermissionError={hasPermissionError}
+                threatCount={threatCount}
+                consecutiveLowMoodStudents={consecutiveLowMoodStudents}
+                exportStartDate={exportStartDate}
+                setExportStartDate={setExportStartDate}
+                exportEndDate={exportEndDate}
+                setExportEndDate={setExportEndDate}
+                handleCSVExport={handleCSVExport}
+                isExporting={isExporting}
+                handleCSVUpload={handleCSVUpload}
+                uploadProgress={uploadProgress}
+                handleClearTestData={handleClearTestData}
+                setUpdateSummaryVisible={setUpdateSummaryVisible}
+                todayStr={todayStr}
+                uncompletedList={uncompletedList}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                uniqueDates={uniqueDates}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                missingStudentsToday={missingStudentsToday}
+                studentDirectoryList={studentDirectoryList}
+                detailStudentId={detailStudentId}
+                setDetailStudentId={setDetailStudentId}
+                detailStudentReports={detailStudentReports}
+                filteredData={filteredData}
+                setActiveReportId={setActiveReportId}
+                setActionText={setActionText}
+                setActionModalVisible={setActionModalVisible}
+                passwordsData={passwordsData}
+                setPasswordsData={setPasswordsData}
+                editingStudentPasswords={editingStudentPasswords}
+                setEditingStudentPasswords={setEditingStudentPasswords}
+                currentEditClass={currentEditClass}
+                setCurrentEditClass={setCurrentEditClass}
+                handleSavePasswords={handleSavePasswords}
+                handleSaveStudentPasswords={handleSaveStudentPasswords}
+                isSavingPass={isSavingPass}
+                loginHistory={loginHistory}
+                tokenExpiryTime={tokenExpiryTime}
+                hasPendingUndispatchedAlerts={hasPendingUndispatchedAlerts}
+                gmailCredentials={gmailCredentials}
+                handleSaveOAuthCredentials={handleSaveOAuthCredentials}
+                handleDisconnectGmail={handleDisconnectGmail}
+                handleStartGoogleOAuth={handleStartGoogleOAuth}
+              />
+            )}
+          </AnimatePresence>
+        </React.Suspense>
       </main>
 
       {/* 3D BOOK CLOSING ANIMATION OVERLAY FOR STUDENT TERMINALS */}
-      <AnimatePresence>
-        {isStudentClosingBook && (
-          <StudentBookClosingAnimation
-            selectedClass={selectedClass}
-            activeStudentNumber={activeStudentNumber}
-            studentDisplayName={
-              (findStudentByClassAndNumber(selectedClass, activeStudentNumber) || 
-               (auth.currentUser?.email ? findStudentByGoogleEmail(auth.currentUser.email) : undefined))?.chineseName || 
-              `${selectedClass} 班 ${activeStudentNumber} 號同學`
-            }
-            onComplete={performActualLogout}
-          />
-        )}
-      </AnimatePresence>
+      <React.Suspense fallback={null}>
+        <AnimatePresence>
+          {isStudentClosingBook && (
+            <StudentBookClosingAnimation
+              selectedClass={selectedClass}
+              activeStudentNumber={activeStudentNumber}
+              studentDisplayName={
+                (findStudentByClassAndNumber(selectedClass, activeStudentNumber) || 
+                 (auth.currentUser?.email ? findStudentByGoogleEmail(auth.currentUser.email) : undefined))?.chineseName || 
+                `${selectedClass} 班 ${activeStudentNumber} 號同學`
+              }
+              onComplete={performActualLogout}
+            />
+          )}
+        </AnimatePresence>
+      </React.Suspense>
 
       {/* OVERLAY MODALS */}
-      <ActionModal
-        visible={actionModalVisible}
-        onClose={() => setActionModalVisible(false)}
-        onSubmit={handleTeacherActionSubmit}
-        actionText={actionText}
-        setActionText={setActionText}
-        loading={loading}
-      />
+      <React.Suspense fallback={null}>
+        <ActionModal
+          visible={actionModalVisible}
+          onClose={() => setActionModalVisible(false)}
+          onSubmit={handleTeacherActionSubmit}
+          actionText={actionText}
+          setActionText={setActionText}
+          loading={loading}
+        />
 
-      <PrivacyPolicyModal
-        visible={privacyModalVisible}
-        onClose={() => setPrivacyModalVisible(false)}
-      />
+        <PrivacyPolicyModal
+          visible={privacyModalVisible}
+          onClose={() => setPrivacyModalVisible(false)}
+        />
 
-      <UpdateSummaryModal
-        visible={updateSummaryVisible}
-        onClose={() => setUpdateSummaryVisible(false)}
-        todayStr={todayStr}
-        todayReportsByClassSummary={todayReportsByClassSummary}
-      />
+        <UpdateSummaryModal
+          visible={updateSummaryVisible}
+          onClose={() => setUpdateSummaryVisible(false)}
+          todayStr={todayStr}
+          todayReportsByClassSummary={todayReportsByClassSummary}
+        />
 
-      <SystemGuideModal
-        visible={guideModalVisible}
-        onClose={() => setGuideModalVisible(false)}
-      />
+        <SystemGuideModal
+          visible={guideModalVisible}
+          onClose={() => setGuideModalVisible(false)}
+        />
+      </React.Suspense>
     </div>
   );
 }

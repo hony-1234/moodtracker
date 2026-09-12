@@ -35,7 +35,7 @@ export interface SkeletalEnEnProps {
 
 const MASCOT_VERSION = "1";
 
-export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
+const SkeletalEnEnComponent: React.FC<SkeletalEnEnProps> = ({
   isWiggling,
   mascotX,
   mascotY,
@@ -47,24 +47,22 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
   height = '260px',
   className = 'mb-4'
 }) => {
-  // Cursor tracking spring offsets for 2.5D depth parallax
-  const rawEyeOffsetX = useTransform(mouseX, [-0.5, 0.5], [-3.5, 3.5]);
-  const rawEyeOffsetY = useTransform(mouseY, [-0.5, 0.5], [-2.5, 2.5]);
-  const eyeOffsetX = useSpring(rawEyeOffsetX, { stiffness: 160, damping: 18 });
-  const eyeOffsetY = useSpring(rawEyeOffsetY, { stiffness: 160, damping: 18 });
+// Optimized 2.5D depth parallax using direct transforms (0ms physics CPU overhead)
+  const eyeOffsetX = useTransform(mouseX, [-0.5, 0.5], [-3.5, 3.5]);
+  const eyeOffsetY = useTransform(mouseY, [-0.5, 0.5], [-2.5, 2.5]);
 
   // Wing depth parallax (wings behind body shift slightly opposite to mouse)
-  const wingsX = useSpring(useTransform(mouseX, [-0.5, 0.5], [6, -6]), { stiffness: 140, damping: 18 });
-  const wingsY = useSpring(useTransform(mouseY, [-0.5, 0.5], [4, -4]), { stiffness: 140, damping: 18 });
+  const wingsX = useTransform(mouseX, [-0.5, 0.5], [5, -5]);
+  const wingsY = useTransform(mouseY, [-0.5, 0.5], [3, -3]);
 
   // Body & Head parallax (shifts in cursor direction)
-  const bodyX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-3, 3]), { stiffness: 150, damping: 18 });
-  const bodyY = useSpring(useTransform(mouseY, [-0.5, 0.5], [-2.5, 2.5]), { stiffness: 150, damping: 18 });
-  const bodyRotate = useSpring(useTransform(mouseX, [-0.5, 0.5], [-3, 3]), { stiffness: 150, damping: 18 });
+  const bodyX = useTransform(mouseX, [-0.5, 0.5], [-3, 3]);
+  const bodyY = useTransform(mouseY, [-0.5, 0.5], [-2, 2]);
+  const bodyRotate = useTransform(mouseX, [-0.5, 0.5], [-2.5, 2.5]);
 
   // Halo floating parallax
-  const haloX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-4, 4]), { stiffness: 130, damping: 16 });
-  const haloY = useSpring(useTransform(mouseY, [-0.5, 0.5], [-4, 4]), { stiffness: 130, damping: 16 });
+  const haloX = useTransform(mouseX, [-0.5, 0.5], [-3.5, 3.5]);
+  const haloY = useTransform(mouseY, [-0.5, 0.5], [-3.5, 3.5]);
 
   // Left Eye Animation Configuration (Original Hand-Drawn Eyes)
   const getLeftEyeAnimate = () => {
@@ -179,12 +177,10 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
 
   return (
     <motion.div 
-      className={`relative select-none pointer-events-none ${className}`}
+      className={`relative select-none pointer-events-none transform-gpu will-change-transform ${className}`}
       style={{
         width: typeof width === 'number' ? `${width}px` : width,
-        height: typeof height === 'number' ? `${height}px` : height,
-        transformStyle: 'preserve-3d',
-        perspective: 1000
+        height: typeof height === 'number' ? `${height}px` : height
       }}
       animate={isWiggling ? {
         scale: [1, 1.08, 0.96, 1.05, 1],
@@ -214,7 +210,7 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
     >
       {/* 0. GROUND CONTACT SHADOW */}
       <motion.div
-        className="absolute bottom-0 left-0 right-0 h-full w-full pointer-events-none"
+        className="absolute bottom-0 left-0 right-0 h-full w-full pointer-events-none transform-gpu"
         style={{ zIndex: 1 }}
         animate={{
           scaleX: isWiggling ? [1, 0.8, 1.1, 0.9, 1] : isHovered ? [0.92, 0.96, 0.92] : [1, 0.93, 1],
@@ -229,13 +225,14 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
         <img 
           src={getPublicAssetUrl(`/學校圖檔/吉祥物/enen_shadow.png?v=${MASCOT_VERSION}`)}
           alt="恩恩陰影"
+          decoding="async"
           className="w-full h-full object-contain pointer-events-none"
         />
       </motion.div>
 
       {/* 1. LEFT WING (FLAPPING WITH ROOT PIVOT) */}
       <motion.div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none transform-gpu"
         style={{
           zIndex: 5,
           x: wingsX,
@@ -261,13 +258,14 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
         <img 
           src={getPublicAssetUrl(`/學校圖檔/吉祥物/enen_left_wing.png?v=${MASCOT_VERSION}`)}
           alt="恩恩左翼"
+          decoding="async"
           className="w-full h-full object-contain pointer-events-none filter drop-shadow-sm"
         />
       </motion.div>
 
       {/* 2. RIGHT WING (FLAPPING WITH ROOT PIVOT) */}
       <motion.div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none transform-gpu"
         style={{
           zIndex: 5,
           x: wingsX,
@@ -293,13 +291,14 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
         <img 
           src={getPublicAssetUrl(`/學校圖檔/吉祥物/enen_right_wing.png?v=${MASCOT_VERSION}`)}
           alt="恩恩右翼"
+          decoding="async"
           className="w-full h-full object-contain pointer-events-none filter drop-shadow-sm"
         />
       </motion.div>
 
       {/* 3. BREAD SACRED RADIANCE (WARM GLOWING AURA) */}
       <motion.div
-        className="absolute inset-0 pointer-events-none flex items-center justify-center"
+        className="absolute inset-0 pointer-events-none flex items-center justify-center transform-gpu"
         style={{
           zIndex: 8,
           x: bodyX,
@@ -323,7 +322,7 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
 
       {/* 4. MAIN BODY BASE (CONTOUR, HANDS, BREAD, FACE BG, SMILE) */}
       <motion.div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none transform-gpu"
         style={{
           zIndex: 10,
           x: bodyX,
@@ -334,13 +333,14 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
         <img 
           src={getPublicAssetUrl(`/學校圖檔/吉祥物/enen_body_base.png?v=${MASCOT_VERSION}`)}
           alt="恩恩本體"
+          decoding="async"
           className="w-full h-full object-contain pointer-events-none"
         />
       </motion.div>
 
       {/* 5. FLOATING HALO & HAT WITH GOLDEN CROSS */}
       <motion.div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none transform-gpu"
         style={{
           zIndex: 12,
           x: haloX,
@@ -359,13 +359,14 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
         <img 
           src={getPublicAssetUrl(`/學校圖檔/吉祥物/enen_halo.png?v=${MASCOT_VERSION}`)}
           alt="恩恩光環"
+          decoding="async"
           className="w-full h-full object-contain pointer-events-none"
         />
       </motion.div>
 
       {/* 6. LEFT EYE (AUTHENTIC ORIGINAL LIVE2D SKELETAL EYE) */}
       <motion.div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none transform-gpu"
         style={{
           zIndex: 20,
           x: eyeOffsetX,
@@ -378,13 +379,14 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
         <img 
           src={getPublicAssetUrl(`/學校圖檔/吉祥物/enen_left_eye.png?v=${MASCOT_VERSION}`)}
           alt="恩恩左眼"
+          decoding="async"
           className="w-full h-full object-contain pointer-events-none"
         />
       </motion.div>
 
       {/* 7. RIGHT EYE (AUTHENTIC ORIGINAL LIVE2D SKELETAL EYE) */}
       <motion.div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none transform-gpu"
         style={{
           zIndex: 20,
           x: eyeOffsetX,
@@ -397,6 +399,7 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
         <img 
           src={getPublicAssetUrl(`/學校圖檔/吉祥物/enen_right_eye.png?v=${MASCOT_VERSION}`)}
           alt="恩恩右眼"
+          decoding="async"
           className="w-full h-full object-contain pointer-events-none"
         />
       </motion.div>
@@ -404,7 +407,7 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
       {/* 10. HOVER / WIGGLE CELEBRATION SPARKLES */}
       {(isHovered || isWiggling) && (
         <motion.div
-          className="absolute -top-4 -right-2 text-xl pointer-events-none"
+          className="absolute -top-4 -right-2 text-xl pointer-events-none transform-gpu"
           style={{ zIndex: 30 }}
           initial={{ scale: 0, rotate: -20 }}
           animate={{ scale: [1, 1.3, 1], rotate: [0, 15, -10, 0], y: [-2, -8, -2] }}
@@ -415,7 +418,7 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
       )}
       {(isHovered || isWiggling) && (
         <motion.div
-          className="absolute -top-3 -left-2 text-lg pointer-events-none"
+          className="absolute -top-3 -left-2 text-lg pointer-events-none transform-gpu"
           style={{ zIndex: 30 }}
           initial={{ scale: 0, rotate: 20 }}
           animate={{ scale: [1, 1.2, 1], rotate: [0, -15, 10, 0], y: [-1, -6, -1] }}
@@ -427,3 +430,5 @@ export const SkeletalEnEn: React.FC<SkeletalEnEnProps> = ({
     </motion.div>
   );
 };
+
+export const SkeletalEnEn = React.memo(SkeletalEnEnComponent);
