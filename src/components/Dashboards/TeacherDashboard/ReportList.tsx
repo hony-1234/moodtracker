@@ -266,7 +266,7 @@ export const ReportList: React.FC<ReportListProps> = ({
                   warningBadge = <span className="bg-amber-100 text-amber-700 text-[10px] font-black px-2.5 py-1 rounded-full flex items-center gap-1"><AlertTriangle className="w-3.5 h-3.5" /> 疑似不當言論</span>;
                   cardBackground = "bg-amber-50/50 border-amber-300";
                 } else if (warningLevel === 'green') {
-                  warningBadge = <span className="bg-emerald-100 text-emerald-700 text-[10px] font-black px-2.5 py-1 rounded-full flex items-center gap-1"><Activity className="w-3.5 h-3.5" /> 輕微壓力警示</span>;
+                  warningBadge = <span className="bg-emerald-100 text-emerald-700 text-[10px] font-black px-2.5 py-1 rounded-full flex items-center gap-1"><Activity className="w-3.5 h-3.5" /> 輕微學業疲累</span>;
                   cardBackground = "bg-emerald-50/50 border-emerald-300";
                 }
               }

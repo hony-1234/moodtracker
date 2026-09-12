@@ -2,7 +2,6 @@ import React, { useState, FormEvent } from 'react';
 import { motion } from 'motion/react';
 import { ChevronLeft, Lock, Eye, EyeOff, ShieldCheck, ArrowRight, Sparkles, KeyRound } from 'lucide-react';
 import { getPublicAssetUrl } from '../../utils/assetHelper';
-import { getDefaultPass } from '../../utils/dateHelpers';
 
 interface TeacherLoginProps {
   selectedClass: string;
@@ -30,8 +29,6 @@ export default function TeacherLogin({
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const defaultPassHint = selectedClass ? getDefaultPass(selectedClass) : '4a4a';
-
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
@@ -40,7 +37,7 @@ export default function TeacherLogin({
       return;
     }
     if (!loginPassword.trim()) {
-      setErrorMsg(`請輸入 ${selectedClass} 班密碼（預設為 ${defaultPassHint}）！`);
+      setErrorMsg(`請輸入 ${selectedClass} 班安全密碼！`);
       return;
     }
     handleTeacherLoginSubmit(e);
@@ -164,7 +161,7 @@ export default function TeacherLogin({
             </button>
           </div>
           <p className="text-[11px] text-slate-400 mt-1 font-medium">
-            💡 密碼不區分大小寫（英文大小寫皆可接受）。
+            🔒 請輸入學校配置之班級專屬安全密碼；若忘記密碼請聯絡系統管理員。
           </p>
         </div>
 

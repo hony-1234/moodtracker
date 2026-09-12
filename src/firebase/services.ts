@@ -187,11 +187,15 @@ export const handleFirestoreError = (error: unknown, operationType: OperationTyp
 };
 
 // Gmail sending utility
-export const sendGmail = async (accessToken: string, to: string, subject: string, body: string) => {
+// Gmail sending utility (Supports both Plain Text & Rich Responsive HTML)
+export const sendGmail = async (accessToken: string, to: string, subject: string, body: string, isHtml: boolean = false) => {
+  const isHtmlBody = isHtml || body.trim().startsWith('<') || body.includes('<!DOCTYPE') || body.includes('<div') || body.includes('<html');
+  const contentType = isHtmlBody ? "Content-Type: text/html; charset=utf-8" : "Content-Type: text/plain; charset=utf-8";
+
   const emailLines = [
     `To: ${to}`,
     `Subject: =?utf-8?B?${btoa(unescape(encodeURIComponent(subject)))}?=`,
-    "Content-Type: text/plain; charset=utf-8",
+    contentType,
     "",
     body
   ];
@@ -366,3 +370,160 @@ export const deleteStudentDiaryEntry = async (diaryId: string): Promise<void> =>
   }
 };
 
+export interface StudentAlertEmailParams {
+  alertType: 'CRITICAL_NLP' | 'CONSECUTIVE_LOW' | 'EMOTIONAL_DROP';
+  studentClass: string;
+  studentNumber: string;
+  studentName?: string;
+  studentId?: string;
+  studentEmail?: string;
+  moodScore: number;
+  reason: string;
+  comment?: string;
+  dates?: string[];
+  scores?: number[];
+  aiInsight?: string;
+  recommendedAction?: string;
+}
+
+export function buildStudentAlertEmailHtml(params: StudentAlertEmailParams): string {
+  const isCritical = params.alertType === 'CRITICAL_NLP';
+  const headerBg = isCritical ? 'linear-gradient(135deg, #7F1D1D 0%, #B91C1C 100%)' : 'linear-gradient(135deg, #78350F 0%, #D97706 100%)';
+  const badgeTitle = isCritical ? '🚨 學生高危言論緊急預警' : (params.alertType === 'EMOTIONAL_DROP' ? '📉 學生情緒驟降預警' : '⚠️ 學生連續多日低落預警');
+
+  return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>${badgeTitle}</title>
+</head>
+<body style="margin: 0; padding: 20px; background-color: #F8FAFC; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <div style="max-width: 640px; margin: 0 auto; background: #FFFFFF; border-radius: 16px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+    <div style="background: ${headerBg}; padding: 20px 24px; color: #FFFFFF;">
+      <div style="font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; opacity: 0.85;">Good Counsel Catholic Primary School</div>
+      <h2 style="margin: 6px 0 0 0; font-size: 18px; font-weight: 900; color: #FFFFFF;">${badgeTitle}</h2>
+    </div>
+    
+    <div style="padding: 24px;">
+      <div style="background-color: #F1F5F9; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+          <tr>
+            <td style="padding: 4px 0; color: #64748B; width: 110px; font-weight: bold;">班級 / 學號:</td>
+            <td style="padding: 4px 0; color: #0F172A; font-weight: 800;">${params.studentClass} 班 ${params.studentNumber} 號</td>
+          </tr>
+          <tr>
+            <td style="padding: 4px 0; color: #64748B; font-weight: bold;">學生姓名:</td>
+            <td style="padding: 4px 0; color: #0F172A; font-weight: 800;">${params.studentName || '未登記'} ${params.studentId ? `(${params.studentId})` : ''}</td>
+          </tr>
+          <tr>
+            <td style="padding: 4px 0; color: #64748B; font-weight: bold;">登記電郵:</td>
+            <td style="padding: 4px 0; color: #475569;">${params.studentEmail || '未綁定'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 4px 0; color: #64748B; font-weight: bold;">當前心情指數:</td>
+            <td style="padding: 4px 0; color: #E11D48; font-weight: 900; font-size: 15px;">${params.moodScore} / 5 分</td>
+          </tr>
+        </table>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <div style="font-size: 12px; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 6px;">觸發原因</div>
+        <div style="background: #FEF2F2; border-left: 4px solid #EF4444; padding: 12px 14px; border-radius: 0 8px 8px 0; font-size: 13px; color: #991B1B; font-weight: 700;">
+          ${params.reason}
+        </div>
+      </div>
+
+      ${params.comment ? `
+      <div style="margin-bottom: 20px;">
+        <div style="font-size: 12px; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 6px;">學生留言內容</div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 14px; border-radius: 10px; font-size: 13.5px; color: #1E293B; line-height: 1.5; font-style: italic;">
+          「${params.comment}」
+        </div>
+      </div>` : ''}
+
+      ${params.scores && params.scores.length > 1 ? `
+      <div style="margin-bottom: 20px;">
+        <div style="font-size: 12px; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 6px;">近期趨勢階梯</div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 10px 14px; border-radius: 8px; font-size: 12px; color: #475569;">
+          歷史評分：<strong>${params.scores.join('分 → ')}分</strong>
+          ${params.dates ? `<div style="margin-top: 4px; font-size: 11px; color: #94A3B8;">日期：${params.dates.join(', ')}</div>` : ''}
+        </div>
+      </div>` : ''}
+
+      <div style="background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 10px; padding: 14px;">
+        <div style="font-size: 12px; font-weight: 800; color: #4338CA; text-transform: uppercase;">🤖 Gemini Spark 建議介入措施</div>
+        <div style="margin-top: 4px; font-size: 12.5px; color: #312E81; line-height: 1.5;">
+          ${params.recommendedAction || '請班主任在今日第一節小息主動聯絡學生關心，並通報學校輔導組跟進。'}
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: 14px 24px; background: #F1F5F9; text-align: center; font-size: 11px; color: #94A3B8;">
+      天主教善導小學 學生情緒追蹤與安全防護中心 • 系統自動即時發送
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+export const saveDailyReportToFirestore = async (report: any) => {
+  try {
+    const docRef = doc(db, 'daily_morning_reports', report.reportDate);
+    await setDoc(docRef, { ...report, updatedAt: new Date().toISOString() }, { merge: true });
+    return true;
+  } catch (err) {
+    console.error('Failed to save daily report to Firestore:', err);
+    return false;
+  }
+};
+
+export const getDailyReportFromFirestore = async (dateStr: string) => {
+  try {
+    const docRef = doc(db, 'daily_morning_reports', dateStr);
+    const snap = await getDoc(docRef);
+    if (snap.exists()) return snap.data();
+    return null;
+  } catch (err) {
+    console.error('Failed to get daily report from Firestore:', err);
+    return null;
+  }
+};
+
+export const getRecentDailyReports = async (limitCount: number = 7) => {
+  try {
+    const snap = await getDocs(collection(db, 'daily_morning_reports'));
+    const list: any[] = [];
+    snap.forEach(d => list.push(d.data()));
+    list.sort((a, b) => (b.reportDate || '').localeCompare(a.reportDate || ''));
+    return list.slice(0, limitCount);
+  } catch (err) {
+    console.error('Failed to list daily reports:', err);
+    return [];
+  }
+};
+
+export const saveGeminiConfig = async (config: any) => {
+  try {
+    const docRef = doc(db, 'system_settings', 'gemini_config');
+    await setDoc(docRef, config, { merge: true });
+    if (config.apiKey) {
+      localStorage.setItem('gccps_gemini_api_key', config.apiKey);
+    }
+    return true;
+  } catch (err) {
+    console.error('Failed to save Gemini config:', err);
+    return false;
+  }
+};
+
+export const getGeminiConfig = async () => {
+  try {
+    const docRef = doc(db, 'system_settings', 'gemini_config');
+    const snap = await getDoc(docRef);
+    if (snap.exists()) return snap.data();
+    return null;
+  } catch (err) {
+    console.error('Failed to get Gemini config:', err);
+    return null;
+  }
+};

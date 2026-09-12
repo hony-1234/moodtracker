@@ -21,7 +21,16 @@ import {
 
 // Core dependencies
 import { auth, db, provider } from './firebase/config';
-import { handleFirestoreError, sendGmail, refreshGmailAccessToken, exchangeAuthCodeForTokens } from './firebase/services';
+import { 
+  handleFirestoreError, 
+  sendGmail, 
+  refreshGmailAccessToken, 
+  exchangeAuthCodeForTokens,
+  buildStudentAlertEmailHtml,
+  saveDailyReportToFirestore,
+  getDailyReportFromFirestore,
+  getGeminiConfig
+} from './firebase/services';
 import { ALL_CLASSES } from './constants/moodConstants';
 import { findStudentByClassAndNumber, findStudentByGoogleEmail } from './data/studentsRoster';
 import { OperationType } from './types';
@@ -34,7 +43,9 @@ import {
   getDefaultPass,
   getDefaultStudentPass
 } from './utils/dateHelpers';
-import { getWarningLevel, getWarningWeight } from './utils/sensitivityEngine';
+import { analyzeTextNlp, getWarningLevel, getWarningWeight } from './utils/sensitivityEngine';
+import { detectConsecutiveLowMood, checkSingleStudentAlert } from './utils/consecutiveDetection';
+import { generateDailyMorningReport, buildDailyMorningReportHtml } from './services/geminiSparkService';
 import { sha256 } from './utils/passwordHashing';
 
 // Components
@@ -153,7 +164,7 @@ export default function App() {
   const [updateSummaryVisible, setUpdateSummaryVisible] = useState(false);
   const [guideModalVisible, setGuideModalVisible] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'REPORTS' | 'ANALYTICS' | 'DIARIES' | 'PROFILES' | 'PASSWORDS' | 'LOGS' | 'ALL_COMMENTS' | 'PUSH_NOTIFICATIONS'>('REPORTS');
+  const [activeTab, setActiveTab] = useState<'REPORTS' | 'ANALYTICS' | 'DIARIES' | 'PROFILES' | 'PASSWORDS' | 'LOGS' | 'ALL_COMMENTS' | 'PUSH_NOTIFICATIONS' | 'GEMINI_REPORT' | 'SPARKLE_ALERTS'>('REPORTS');
   const [detailStudentId, setDetailStudentId] = useState<string | null>(null);
   const [loginHistory, setLoginHistory] = useState<any[]>([]);
   const [passwordsData, setPasswordsData] = useState<Record<string, string>>({});
@@ -573,18 +584,20 @@ export default function App() {
         const docId = alertDoc.id;
 
         try {
-          // Attempt to dispatch via Gmail API (only if activeToken is valid)
-          if (activeToken) {
-            console.log(`Relaying pending email alert ${docId} via Teacher Gmail API...`);
-            try {
-              await sendGmail(activeToken, data.to, data.subject, data.body);
-              console.log(`Email alert ${docId} dispatched successfully via Gmail.`);
-            } catch (gmailErr: any) {
-              console.error(`Gmail dispatch failed for alert ${docId}:`, gmailErr);
-              // Do not abort, proceed to FCM push notifications!
-            }
-          } else {
-            console.log(`Gmail API token not available. Skipping email dispatch for alert ${docId}.`);
+          // Sparkle Autonomous Email Dispatcher (Zero manual login required)
+          console.log(`Relaying pending email alert ${docId} via Sparkle Autonomous Mailer...`);
+          try {
+            await dispatchSparkleAlertEmail({
+              to: data.to,
+              subject: data.subject,
+              htmlBody: data.body,
+              alertType: data.alertType || 'CRITICAL_NLP',
+              metadata: data,
+              gmailToken: activeToken
+            });
+            console.log(`Email alert ${docId} dispatched successfully via Sparkle.`);
+          } catch (sparkleErr: any) {
+            console.error(`Sparkle dispatch failed for alert ${docId}:`, sparkleErr);
           }
 
           // Relay Push Notifications via FCM Web Push API
@@ -710,6 +723,84 @@ export default function App() {
     };
     fetchSettings();
   }, []);
+
+  // Automated Morning Report Auto-Dispatch Check (Gemini Spark)
+  useEffect(() => {
+    let timer: any = null;
+    const checkMorningDispatch = async () => {
+      try {
+        const config = await getGeminiConfig();
+        if (!config || !config.autoMorningSend) return;
+
+        const now = new Date();
+        const dayOfWeek = now.getDay();
+        const onlySchoolDays = config.onlySchoolDays !== false;
+
+        // Only send on school days (Monday=1 to Friday=5)
+        if (onlySchoolDays && (dayOfWeek === 0 || dayOfWeek === 6)) {
+          return;
+        }
+
+        const currentHours = String(now.getHours()).padStart(2, '0');
+        const currentMinutes = String(now.getMinutes()).padStart(2, '0');
+        const currentTime = `${currentHours}:${currentMinutes}`;
+        const targetTime = config.morningSendTime || '08:30';
+        const todayDateStr = formatDateObj(now);
+
+        if (currentTime >= targetTime) {
+          const existingReport = await getDailyReportFromFirestore(todayDateStr);
+          if (existingReport && existingReport.status === 'sent') {
+            return;
+          }
+
+          let token = cachedAccessToken;
+          if (!token && gmailCredentials?.client_id && gmailCredentials?.client_secret && gmailCredentials?.refresh_token) {
+            const refreshRes = await refreshGmailAccessToken(
+              gmailCredentials.client_id,
+              gmailCredentials.client_secret,
+              gmailCredentials.refresh_token
+            );
+            token = refreshRes.accessToken;
+            cachedAccessToken = refreshRes.accessToken;
+          }
+
+          console.log("Auto Morning Dispatch: Generating Sparkle Daily Morning Report for", todayDateStr);
+          const report = await generateDailyMorningReport(reports, todayDateStr);
+          const html = buildDailyMorningReportHtml(report);
+          const subject = `[晨間情報] 天主教善導小學 — 全校心靈健康與 4Rs 每日晨報 (${todayDateStr})`;
+          const recipients = Array.isArray(config.recipients) && config.recipients.length > 0 
+            ? config.recipients.join(', ')
+            : alertEmails;
+
+          if (recipients) {
+            await dispatchSparkleAlertEmail({
+              to: recipients,
+              subject,
+              htmlBody: html,
+              alertType: 'MORNING_REPORT',
+              metadata: { reportId: report.reportId },
+              gmailToken: token
+            });
+            report.status = 'sent';
+            report.sentAt = new Date().toISOString();
+            report.sentTo = recipients.split(',').map((s: string) => s.trim());
+            await saveDailyReportToFirestore(report);
+            console.log("Auto Morning Dispatch: Successfully sent daily report via Sparkle to", recipients);
+          }
+        }
+      } catch (err) {
+        console.warn("Auto Morning Dispatch check encountered an issue:", err);
+      }
+    };
+
+    const initialDelay = setTimeout(checkMorningDispatch, 5000);
+    timer = setInterval(checkMorningDispatch, 60000);
+
+    return () => {
+      clearTimeout(initialDelay);
+      clearInterval(timer);
+    };
+  }, [reports, gmailCredentials, alertEmails]);
 
   const handleSaveAlertSettings = async () => {
     setLoading(true);
@@ -1187,7 +1278,7 @@ export default function App() {
         googleUid: googleUid,
         timestamp: serverTimestamp(),
         ipAddress: clientIp,
-        status: getWarningLevel(studentComment) !== 'none' ? "Pending" : "Resolved"
+        status: (getWarningLevel(studentComment) === "red" || getWarningLevel(studentComment) === "yellow" || studentMood <= 2) ? "Pending" : "Resolved"
       }, { merge: true });
 
       // Save to localStorage for Student Dashboard Report Card
@@ -1224,51 +1315,71 @@ export default function App() {
         console.error("Local storage caching failed:", localErr);
       }
 
-      const warningLvl = getWarningLevel(studentComment);
+      const nlpResult = analyzeTextNlp(studentComment);
+      const warningLvl = nlpResult.level;
       const isLowScore = studentMood <= 3;
 
       if (warningLvl === 'red' || isLowScore) {
-        // Sort local history logs to evaluate sequential trends
-        const sortedLocalList = [...localList].sort((a, b) => getUnixTime(b) - getUnixTime(a));
-        const pastRecords = sortedLocalList.filter(d => getDisplayDate(d) !== todayStr);
-
         let shouldAlert = false;
         let alertReason = "";
+        let alertType: 'CRITICAL_NLP' | 'CONSECUTIVE_LOW' | 'EMOTIONAL_DROP' = 'CRITICAL_NLP';
 
         if (warningLvl === 'red') {
           shouldAlert = true;
-          alertReason = "學生提交了高危險層級的內容 (嚴重安全隱患)。";
-        } else if (isLowScore) {
-          if (pastRecords.length >= 2) {
-            const prev1 = pastRecords[0];
-            const prev2 = pastRecords[1];
-            const prev1Score = parseInt(prev1.moodScore || prev1.心情指數 || "5");
-            const prev2Score = parseInt(prev2.moodScore || prev2.心情指數 || "5");
-
-            if (prev1Score <= 3 && prev2Score <= 3) {
-              shouldAlert = true;
-              alertReason = `學生連續三天情緒指數低落 (先前指數: ${prev2Score}, ${prev1Score}, 這次指數: ${studentMood})。`;
-            }
+          alertType = 'CRITICAL_NLP';
+          alertReason = `🚨 學生提交了高危敏感言論 (${nlpResult.matchedRuleSummary})`;
+        } else {
+          // Check consecutive streak or sudden severe emotional drop
+          const checkRes = checkSingleStudentAlert(
+            reports,
+            selectedClass,
+            activeStudentNumber,
+            studentMood,
+            studentComment,
+            todayStr
+          );
+          if (checkRes.shouldAlert && checkRes.alert) {
+            shouldAlert = true;
+            alertType = checkRes.alert.type === 'severe_drop' ? 'EMOTIONAL_DROP' : 'CONSECUTIVE_LOW';
+            alertReason = checkRes.alert.description;
           }
         }
 
         if (shouldAlert) {
-          const subject = `[自動警報] 學生情緒警示 - ${selectedClass}班 ${activeStudentNumber}號`;
-          const body = `系統偵測到異常情況：\n\n原因: ${alertReason}\n學生電郵: ${studentEmail || '未綁定'}\n學生姓名: ${studentName || '未填寫'}\n學生留言: ${studentComment.trim()}\n當前情緒指數: ${studentMood}\n\n請盡速跟進處理。`;
-          console.log("QUEUED EMAIL ALERT IN FIRESTORE:", { to: alertEmails, subject, body });
+          const rosterInfo = findStudentByClassAndNumber(selectedClass, activeStudentNumber);
+          const studentDisplayName = rosterInfo?.chineseName || studentName || `${activeStudentNumber}號同學`;
+          const sId = rosterInfo?.studentId || '';
+          const sEmail = rosterInfo?.email || studentEmail || '';
+
+          const subject = `[即時預警] 天主教善導小學 學生情緒警報 - ${selectedClass}班 ${activeStudentNumber}號 ${studentDisplayName}`;
+          
+          const htmlBody = buildStudentAlertEmailHtml({
+            alertType,
+            studentClass: selectedClass,
+            studentNumber: activeStudentNumber,
+            studentName: studentDisplayName,
+            studentId: sId,
+            studentEmail: sEmail,
+            moodScore: studentMood,
+            reason: alertReason,
+            comment: studentComment.trim(),
+            scores: [studentMood]
+          });
+
+          console.log("QUEUED HTML EMAIL ALERT IN FIRESTORE:", { to: alertEmails, subject });
           try {
             await addDoc(collection(db, "pending_alerts"), {
               class: selectedClass,
               studentNumber: activeStudentNumber,
-              studentEmail: studentEmail,
-              studentName: studentName,
+              studentEmail: sEmail,
+              studentName: studentDisplayName,
               reason: alertReason,
               comment: studentComment.trim(),
               moodScore: studentMood,
               timestamp: serverTimestamp(),
               to: alertEmails,
               subject,
-              body,
+              body: htmlBody,
               status: 'pending',
               sentAt: null
             });
@@ -1368,51 +1479,72 @@ export default function App() {
         }
 
         const scoreNum = typeof item.moodScore === "string" ? parseInt(item.moodScore) : item.moodScore;
-        if (!isNaN(scoreNum) && scoreNum <= 3) {
-          const pastHistory = reports.filter(
-            (r: any) =>
-              (r.class || r.班別) === selectedClass &&
-              String(r.studentNumber || r.學號) === String(studentNo) &&
-              getDisplayDate(r) !== todayStr
-          ).sort((a, b) => getUnixTime(b) - getUnixTime(a));
+        const commentStr = item.comment || "";
+        const nlpResult = analyzeTextNlp(commentStr);
 
-          let alertSub = "";
-          let alertBod = "";
+        let shouldBatchAlert = false;
+        let batchAlertType: 'CRITICAL_NLP' | 'CONSECUTIVE_LOW' | 'EMOTIONAL_DROP' = 'CRITICAL_NLP';
+        let batchReason = "";
 
-          if (pastHistory.length >= 2) {
-            const prev1 = pastHistory[0];
-            const prev2 = pastHistory[1];
-            const prev1Score = parseInt(prev1.moodScore || prev1.心情指數 || "5");
-            const prev2Score = parseInt(prev2.moodScore || prev2.心情指數 || "5");
-
-            if (prev1Score <= 3 && prev2Score <= 3) {
-              alertSub = `[自動警報] 學生情緒警示 (3天) - ${selectedClass}班 ${studentNo}號 ${rosterInfo ? rosterInfo.chineseName : ''}`;
-              alertBod = `系統偵測到異常情況：\n\n原因: 學生連續三天情緒指數低落 (先前: ${prev2Score}, ${prev1Score}, 這次: ${scoreNum})\n學生姓名: ${studentNameStr} (${rosterInfo?.studentId || ''})\n\n請盡速跟進處理。`;
-            }
+        if (nlpResult.level === 'red') {
+          shouldBatchAlert = true;
+          batchAlertType = 'CRITICAL_NLP';
+          batchReason = `🚨 學生提交了高危敏感言論 (${nlpResult.matchedRuleSummary})`;
+        } else if (!isNaN(scoreNum) && scoreNum <= 3) {
+          const checkRes = checkSingleStudentAlert(
+            reports,
+            selectedClass,
+            String(studentNo),
+            scoreNum,
+            commentStr,
+            todayStr
+          );
+          if (checkRes.shouldAlert && checkRes.alert) {
+            shouldBatchAlert = true;
+            batchAlertType = checkRes.alert.type === 'severe_drop' ? 'EMOTIONAL_DROP' : 'CONSECUTIVE_LOW';
+            batchReason = checkRes.alert.description;
           }
+        }
 
-          if (alertSub && alertBod) {
-            console.log("QUEUED EMAIL ALERT (BATCH INSERT) IN FIRESTORE:", { to: alertEmails, subject: alertSub, body: alertBod });
-            try {
-              await addDoc(collection(db, "pending_alerts"), {
-                class: selectedClass,
-                studentNumber: String(studentNo),
-                studentName: studentNameStr,
-                studentId: rosterInfo?.studentId || "",
-                reason: alertBod,
-                comment: item.comment || "",
-                moodScore: scoreNum,
-                timestamp: serverTimestamp(),
-                to: alertEmails,
-                subject: alertSub,
-                body: alertBod,
-                status: 'pending',
-                sentAt: null
-              });
-              console.log("Batch Alert queued in Firestore successfully!");
-            } catch (dbErr) {
-              console.error("Failed to queue batch alert in Firestore:", dbErr);
-            }
+        if (shouldBatchAlert) {
+          const studentDisplayName = rosterInfo ? rosterInfo.chineseName : studentNameStr;
+          const sId = rosterInfo?.studentId || "";
+          const sEmail = rosterInfo?.email || "";
+
+          const alertSub = `[即時預警] 天主教善導小學 學生情緒警報 - ${selectedClass}班 ${studentNo}號 ${studentDisplayName}`;
+          const htmlBody = buildStudentAlertEmailHtml({
+            alertType: batchAlertType,
+            studentClass: selectedClass,
+            studentNumber: String(studentNo),
+            studentName: studentDisplayName,
+            studentId: sId,
+            studentEmail: sEmail,
+            moodScore: scoreNum,
+            reason: batchReason,
+            comment: commentStr.trim(),
+            scores: [scoreNum]
+          });
+
+          console.log("QUEUED HTML EMAIL ALERT (BATCH INSERT) IN FIRESTORE:", { to: alertEmails, subject: alertSub });
+          try {
+            await addDoc(collection(db, "pending_alerts"), {
+              class: selectedClass,
+              studentNumber: String(studentNo),
+              studentName: studentDisplayName,
+              studentId: sId,
+              reason: batchReason,
+              comment: commentStr,
+              moodScore: scoreNum,
+              timestamp: serverTimestamp(),
+              to: alertEmails,
+              subject: alertSub,
+              body: htmlBody,
+              status: 'pending',
+              sentAt: null
+            });
+            console.log("Batch Alert queued in Firestore successfully!");
+          } catch (dbErr) {
+            console.error("Failed to queue batch alert in Firestore:", dbErr);
           }
         }
       });
@@ -1851,51 +1983,13 @@ export default function App() {
   }, [reports]);
 
   const consecutiveLowMoodStudents = useMemo(() => {
-    if (!reports || reports.length === 0) return [];
-
-    const studentMap: Record<string, any[]> = {};
-    reports.forEach((r: any) => {
-      const cls = r.class || r.班別 || '';
-      const sId = String(r.studentNumber || r.學號 || '').trim();
-      if (!sId) return;
-      const key = `${cls}_${sId}`;
-      if (!studentMap[key]) {
-        studentMap[key] = [];
-      }
-      studentMap[key].push(r);
+    return detectConsecutiveLowMood(reports, {
+      lowScoreThreshold: 3,
+      criticalScoreThreshold: 2,
+      minStreakDays: 3,
+      detectSevereDrop: true,
+      onlySchoolDays: true
     });
-
-    const flagged: { class: string; studentNo: string; dates: string[]; scores: number[] }[] = [];
-
-    const now = new Date().getTime();
-    const stringD1 = formatDateObj(new Date(now));
-    const stringD2 = formatDateObj(new Date(now - 86400000));
-    const stringD3 = formatDateObj(new Date(now - 2 * 86400000));
-
-    Object.keys(studentMap).forEach(key => {
-      const history = studentMap[key];
-
-      const rec1 = history.find(r => getDisplayDate(r) === stringD1);
-      const rec2 = history.find(r => getDisplayDate(r) === stringD2);
-      const rec3 = history.find(r => getDisplayDate(r) === stringD3);
-
-      if (rec1 && rec2 && rec3) {
-        const s1 = parseInt(rec1.moodScore || rec1.心情指數 || "5");
-        const s2 = parseInt(rec2.moodScore || rec2.心情指數 || "5");
-        const s3 = parseInt(rec3.moodScore || rec3.心情指數 || "5");
-
-        if (s1 > 0 && s1 < 3 && s2 > 0 && s2 < 3 && s3 > 0 && s3 < 3) {
-          flagged.push({
-            class: rec1.class || rec1.班別 || '',
-            studentNo: rec1.studentNumber || rec1.學號 || '',
-            dates: [stringD3, stringD2, stringD1],
-            scores: [s3, s2, s1]
-          });
-        }
-      }
-    });
-
-    return flagged;
   }, [reports]);
 
   // GCCPS Safety Center Today's tracking
@@ -2106,6 +2200,7 @@ export default function App() {
                 isSavingPass={isSavingPass}
                 loginHistory={loginHistory}
                 tokenExpiryTime={tokenExpiryTime}
+                cachedAccessToken={cachedAccessToken}
                 hasPendingUndispatchedAlerts={hasPendingUndispatchedAlerts}
                 gmailCredentials={gmailCredentials}
                 handleSaveOAuthCredentials={handleSaveOAuthCredentials}
